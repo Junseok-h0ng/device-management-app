@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 
 function _app() {
     return (
         <div>
-            _app
+            a
         </div>
-    )
+    );
 }
 
-export default _app
+export default _app;
