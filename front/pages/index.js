@@ -1,9 +1,19 @@
 import React from 'react'
 
+
+import Login from '../components/user/login'
+
 function index() {
+    const isLogin = false;
+
+
+
     return (
         <div>
-            index
+            {isLogin &&
+                indexPage   
+            }
+            <Login/>
         </div>
     )
 }
