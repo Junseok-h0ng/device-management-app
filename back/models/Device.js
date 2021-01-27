@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 
-const DeviceSchema = mongoose.Schema({
+const deviceSchema = mongoose.Schema({
     group_id:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Group'
@@ -24,6 +24,6 @@ const DeviceSchema = mongoose.Schema({
 
 });
 
-const Device = mongoose.model('User',DeviceSchema);
+const Device = mongoose.model('Device',deviceSchema);
 
 module.exports = {Device}

@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 
-const UserSchema = mongoose.Schema({
+const userSchema = mongoose.Schema({
     groups:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Group'
@@ -9,14 +10,19 @@ const UserSchema = mongoose.Schema({
     email:{
         type: String,
         trim: true,
-        unique: 1
+        unique: true,
+        lowercase: true,
+        required: true
     },
     password:{
         type:String,
-        minlength:5
+        minlength:5,
+        trim: true,
+        required: true
     },
     lastname:{
-        type:String
+        type:String,
+        required: true
     },
     firstname:{
         type:String
@@ -24,6 +30,23 @@ const UserSchema = mongoose.Schema({
 
 });
 
-const User = mongoose.model('User',UserSchema);
+userSchema.pre('save',function(next){
+    let user = this;
+    const saltRounds = 10;
+    if(user.isModified('password')){
+        bcrypt.genSalt(saltRounds,function(err,salt){
+            if(err) return next(err);
+            bcrypt.hash(user.password,salt,function(err,hash){
+                if(err) return next(err);
+                user.password = hash;
+                next();
+            })
+        })
+    }else{
+        next();
+    }
+})
+
+const User = mongoose.model('User',userSchema);
 
 module.exports = {User}

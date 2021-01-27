@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 
-const GroupSchema = mongoose.Schema({
+const groupSchema = mongoose.Schema({
    root_admin:{
        type:mongoose.Schema.Types.ObjectId,
        ref:'User'
@@ -18,6 +18,6 @@ const GroupSchema = mongoose.Schema({
 
 });
 
-const Group = mongoose.model('Group',GroupSchema);
+const Group = mongoose.model('Group',groupSchema);
 
 module.exports = {Group}

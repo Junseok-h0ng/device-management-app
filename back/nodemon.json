@@ -1,6 +1,8 @@
 {
     "watch":[
         "app.js",
+        "./routes",
+        "./models",
         "nodemon.json"
     ],
     "exec": "node app.js",
