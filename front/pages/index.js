@@ -1,19 +1,22 @@
 import React from 'react'
+import {useSelector} from 'react-redux'
 
 
 import Login from '../components/user/login'
 
 function index() {
-    const isLogin = false;
-
-
-
+    const {isLogin} = useSelector(state=>state.user)
     return (
         <div>
-            {isLogin &&
-                indexPage   
+            {isLogin && 
+                <div>
+                    index
+                </div>
             }
-            <Login/>
+            {!isLogin &&
+                <Login/>
+            }
+            
         </div>
     )
 }

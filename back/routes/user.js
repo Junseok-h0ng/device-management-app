@@ -12,16 +12,16 @@ router.post('/register',(req,res)=>{
     });
 });
 
-router.get('/login',(req,res)=>{
+router.post('/login',(req,res)=>{
     const userInfo = req.body;
-    User.findOne({email:userInfo.email},(err,user)=>{
-        if(err) return res.json({success:false,err});
-        
+    User.findOne({email:userInfo.email},(err,user) =>{
+        if(!user) return res.json({isLogin:false,message:"Wrong email"});
         user.comparePassword(userInfo.password,(err,isMatch)=>{
             if(!isMatch){
-                return res.json({loginSuccess:false, message:"Wrong password"});
+                return res.json({isLogin:false, message:"Wrong password"});
             }
-            return res.json({loginSuccess:true,user});
+            user.password = null;
+            return res.status(200).json({isLogin:true,user});
         })
     })
 })

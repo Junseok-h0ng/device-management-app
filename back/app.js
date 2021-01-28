@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const config = require('./config/key');
 const mongoose = require('mongoose');
 mongoose.set('useCreateIndex',true);
@@ -9,9 +10,13 @@ mongoose.connect(config.mongoURI
         
 
 const port = 8080;
-
+app.use(cors({
+    origin:'http://localhost:3000',
+    credentials:true
+}));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+
 
 
 app.get('/',(req,res)=>{

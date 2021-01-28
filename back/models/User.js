@@ -18,7 +18,7 @@ const userSchema = mongoose.Schema({
         type:String,
         minlength:5,
         trim: true,
-        required: true
+        required: true,
     },
     lastname:{
         type:String,

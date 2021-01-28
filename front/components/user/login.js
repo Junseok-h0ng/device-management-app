@@ -1,5 +1,9 @@
 import React,{useState} from 'react'
+import {useDispatch} from 'react-redux'
 import {Form,Input,Button,Row,Col} from 'antd'
+
+
+import { loginRequestAction } from '../../_actions/user_actions';
 
 function login() {
     const layout = {
@@ -10,6 +14,7 @@ function login() {
         wrapperCol: { offset: 8, span: 16 },
       };
 
+    const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("")
 
@@ -20,12 +25,14 @@ function login() {
         setPassword(event.target.value);
     }
     const handleSubmit = ()=>{
-        let body = {
+        setEmail("");
+        setPassword("");
+        let userData = {
             email,
             password
         }
-        console.log(body);
-        // dispatch
+        dispatch(loginRequestAction(userData))
+        
     }
     return (
         <div style={{
@@ -47,6 +54,7 @@ function login() {
                                 type="email"
                                 value={email}
                                 onChange={handleEmailChange}
+                                required
                             />
                         </Form.Item>
                         <Form.Item 
@@ -58,6 +66,7 @@ function login() {
                                 type="password"
                                 value={password}
                                 onChange={handlePasswordChange}
+                                required
                             />
                         </Form.Item>
                         <Form.Item {...tailLayout}>
