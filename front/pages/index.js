@@ -3,6 +3,7 @@ import {useSelector} from 'react-redux'
 
 
 import Login from '../components/user/login'
+import UserProfile from './userProfile'
 
 function index() {
     const {isLogin} = useSelector(state=>state.user)
@@ -10,13 +11,12 @@ function index() {
         <div>
             {isLogin && 
                 <div>
-                    index
+                    <UserProfile/>
                 </div>
             }
             {!isLogin &&
                 <Login/>
             }
-            
         </div>
     )
 }

@@ -2,12 +2,14 @@ import axios from 'axios';
 import{all,fork,call,put,takeLatest} from 'redux-saga/effects'
 import { LOG_IN_FAILURE, LOG_IN_REQUEST, LOG_IN_SUCCESS, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS } from '../_actions/types';
 
+
+
 function loginAPI(data){
-    return axios.post('http://localhost:8080/user/login',data);
+    return axios.post('/user/login',data);
 }
 
 function registerAPI(data){
-    return axios.post('http://localhost:8080/user/register',data);
+    return axios.post('/user/register',data);
 }
 
 function* login(action){
@@ -27,7 +29,7 @@ function* login(action){
 
 function* register(action){
     try{
-        const result = yield call(registerAPI,action.data);
+        yield call(registerAPI,action.data);
         yield put({
             type:REGISTER_SUCCESS
         });

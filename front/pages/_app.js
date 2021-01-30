@@ -11,10 +11,10 @@ import rootReducer from '../_reducers';
 import rootSaga from '../sagas';
 
 import 'antd/dist/antd.css';
-import { Layout, Menu, Breadcrumb, AutoComplete } from 'antd';
+import { Layout, Menu} from 'antd';
 import {
     DesktopOutlined,
-    PieChartOutlined,
+    HomeOutlined,
     FileOutlined,
     TeamOutlined,
     UserOutlined,
@@ -39,8 +39,8 @@ function _app({Component,store}) {
                 <Sider collapsed>
                 <div className="logo" />
                 <Menu theme="dark" mode="inline">
-                    <Menu.Item key="1" icon={<PieChartOutlined />}>
-                    <Link href="/"><a>Index</a></Link>
+                    <Menu.Item key="1" icon={<HomeOutlined />}>
+                    <Link href="/"><a>Home</a></Link>
                     </Menu.Item>
                     <Menu.Item key="2" icon={<DesktopOutlined />}>
                     Option 2
