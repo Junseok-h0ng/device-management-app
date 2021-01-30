@@ -22,8 +22,8 @@ router.post('/login',(req,res)=>{
             }
             user.password = null;
             return res.status(200).json({isLogin:true,user});
-        })
-    })
-})
+        });
+    });
+});
 
 module.exports = router;

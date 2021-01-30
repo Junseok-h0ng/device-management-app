@@ -1,14 +1,18 @@
 import axios from 'axios';
 import{all,fork,call,put,takeLatest} from 'redux-saga/effects'
-import { LOG_IN_FAILURE, LOG_IN_REQUEST, LOG_IN_SUCCESS } from '../_actions/types';
+import { LOG_IN_FAILURE, LOG_IN_REQUEST, LOG_IN_SUCCESS, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS } from '../_actions/types';
 
-function logInAPI(data){
+function loginAPI(data){
     return axios.post('http://localhost:8080/user/login',data);
 }
 
-function* logIn(action){
+function registerAPI(data){
+    return axios.post('http://localhost:8080/user/register',data);
+}
+
+function* login(action){
     try{
-        const result = yield call(logInAPI,action.data);
+        const result = yield call(loginAPI,action.data);
             yield put({
                 type: LOG_IN_SUCCESS,
                 data: result.data
@@ -21,12 +25,31 @@ function* logIn(action){
     }
 }
 
+function* register(action){
+    try{
+        const result = yield call(registerAPI,action.data);
+        yield put({
+            type:REGISTER_SUCCESS
+        });
+    }catch(err){
+        yield put({
+            type:REGISTER_FAILURE,
+            error:err.response.data
+        });
+    }
+}
+
 function* watchLogin(){
-    yield takeLatest(LOG_IN_REQUEST,logIn);
+    yield takeLatest(LOG_IN_REQUEST,login);
+}
+
+function* watchRegister(){
+    yield takeLatest(REGISTER_REQUEST,register);
 }
 
 export default function* userSaga(){
     yield all([
         fork(watchLogin),
+        fork(watchRegister)
     ]);
 }

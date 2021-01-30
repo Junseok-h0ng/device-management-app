@@ -2,7 +2,9 @@ import {
     LOG_IN_FAILURE,
     LOG_IN_REQUEST,
     LOG_IN_SUCCESS,
-    REGISTER_USER
+    REGISTER_FAILURE,
+    REGISTER_REQUEST,
+    REGISTER_SUCCESS
 } from '../_actions/types';
 
 export const initialState = {
@@ -29,8 +31,18 @@ export default function (state=initialState, action){
                 data:action.data
             }
         }
-        case REGISTER_USER:
-            return
+        case REGISTER_REQUEST:
+            return{
+                ...state
+            }
+        case REGISTER_SUCCESS:
+            return{
+                ...state
+            }
+        case REGISTER_FAILURE:
+            return{
+                ...state
+            }
         default:
             return {
                 ...state

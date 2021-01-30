@@ -1,6 +1,8 @@
 import React from 'react';
 import Head from 'next/head';
 
+import Link from 'next/link'
+
 import withRedux from 'next-redux-wrapper';
 import {applyMiddleware, compose, createStore} from 'redux';
 import { Provider } from 'react-redux';
@@ -36,9 +38,9 @@ function _app({Component,store}) {
             <Layout style={{ minHeight: '100vh' }}>
                 <Sider collapsed>
                 <div className="logo" />
-                <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+                <Menu theme="dark" mode="inline">
                     <Menu.Item key="1" icon={<PieChartOutlined />}>
-                    Option 1
+                    <Link href="/"><a>Index</a></Link>
                     </Menu.Item>
                     <Menu.Item key="2" icon={<DesktopOutlined />}>
                     Option 2

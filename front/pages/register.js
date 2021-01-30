@@ -1,10 +1,8 @@
 import React,{useState} from 'react'
 import {useDispatch} from 'react-redux'
-import Link from 'next/link'
 import {Form,Input,Button,Row,Col} from 'antd'
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-
-import { loginRequestAction } from '../../_actions/user_actions';
+import { LockOutlined, SmileOutlined, UserOutlined } from '@ant-design/icons';
+import { registerRequestAction } from '../_actions/user_actions';
 
 function login() {
     const layout = {
@@ -17,7 +15,8 @@ function login() {
 
     const dispatch = useDispatch();
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("")
+    const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
 
     const handleEmailChange = (event)=>{
         setEmail(event.target.value);        
@@ -25,15 +24,18 @@ function login() {
     const handlePasswordChange = (event)=>{
         setPassword(event.target.value);
     }
-    const handleSubmit = ()=>{
-        setEmail("");
-        setPassword("");
-        let userData = {
-            email,
-            password
-        }
-        dispatch(loginRequestAction(userData))
+    const handleNameChange = (event)=>{
+        setName(event.target.value);
     }
+    const handleSubmit = ()=>{
+        const userData = {
+            email,
+            password,
+            name
+        }
+        dispatch(registerRequestAction(userData));
+    }
+    
     return (
         <div style={{
             display:'flex', justifyContent:'center',alignItems:'center',
@@ -48,8 +50,8 @@ function login() {
                         <Form.Item 
                             required
                             label="Email">
-                            <Input
-                                prefix={<UserOutlined className="site-form-item-icon"/>} 
+                            <Input 
+                                prefix={<UserOutlined className="site-form-item-icon"/>}
                                 id="email"
                                 placeholder="Email"
                                 type="email"
@@ -61,7 +63,7 @@ function login() {
                         <Form.Item 
                             required
                             label="Password">
-                            <Input.Password 
+                            <Input.Password
                                 prefix= {<LockOutlined className="site-form-item-icon"/>}
                                 id="password"
                                 placeholder="Password"
@@ -71,27 +73,26 @@ function login() {
                                 required
                             />
                         </Form.Item>
+                        <Form.Item 
+                            required
+                            label="Name">
+                            <Input
+                                prefix={<SmileOutlined className="site-form-item-icon"/>}
+                                id="name"
+                                placeholder="Name"
+                                value={name}
+                                onChange={handleNameChange}
+                                required
+                            />
+                        </Form.Item>                    
                         <Form.Item {...tailLayout}>
                             <Button htmlType="submit">
-                                Sign In
+                                Sign Up
                             </Button>
                         </Form.Item>
                     </Form>
                 </Col>
-                <Col span={24}>
-                    <Button style={{float:'right',marginLeft:'10px'}}>
-                        <Link href="/register"><a>Sign Up</a></Link>
-                    </Button>
-                    <Button style={{float:'right',marginLeft:'10px'}}>
-                        Sign In Kakao
-                    </Button>
-                    <Button style={{float:'right',marginLeft:'10px'}}>
-                        Sign In Naver
-                    </Button>
-                    <Button style={{float:'right'}}>
-                        Sign In Google
-                    </Button>
-                </Col>
+
             </Row>
         </div>
     )
