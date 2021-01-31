@@ -34,7 +34,8 @@ passportConfig();
 
 
 app.get('/',(req,res)=>{
-    res.send("hello World");
+    console.log(req.user);
+    res.send(req.session);
 });
 app.use('/user',require('./routes/user'));
 

@@ -7,11 +7,12 @@ module.exports = () =>{
         done(null, user.id);
       });
     
-    passport.deserializeUser(async function(id, done) {
-        const user = await User.findOne({id:id});
-        done(null,user);
+    passport.deserializeUser(function(id, done) {
+        console.log(id);
+        User.findById(id,(err,user)=>{
+            done(null,user);
+        });
     });
-    
     localStrategy();
 
 }

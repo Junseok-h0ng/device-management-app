@@ -1,4 +1,5 @@
-import React from 'react';
+import React,{useEffect} from 'react';
+import axios from 'axios';
 import Head from 'next/head';
 
 import Link from 'next/link'
@@ -26,6 +27,10 @@ import {
 
 function _app({Component,store}) {
 
+
+    useEffect(async() => {
+        console.log(await axios.get('/'));
+    }, [])
 
     const { Header, Content, Footer, Sider } = Layout;
     const { SubMenu } = Menu;

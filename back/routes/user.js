@@ -12,18 +12,23 @@ router.post('/register',(req,res)=>{
     });
 });
 
-router.post('/login',(req,res)=>{
-    const userInfo = req.body;
-    User.findOne({email:userInfo.email},(err,user) =>{
-        if(!user) return res.json({isLogin:false,message:"Wrong email"});
-        user.comparePassword(userInfo.password,(err,isMatch)=>{
-            if(!isMatch){
-                return res.json({isLogin:false, message:"Wrong password"});
-            }
-            user.password = null;
-            return res.status(200).json({isLogin:true,user});
-        });
-    });
+router.post('/login',(req,res,next)=>{
+    passport.authenticate('local',(err,user,info)=>{
+        if(err) return next(err);
+        if(info) return res.status(401).send(info.reason);
+        return req.login(user,(err)=>{
+            if(err) return next(err);
+            const user = Object.assign({},req.user.toJSON());
+            delete user.password;
+            return res.json(user);
+        })
+    })(req,res,next);
 });
+
+router.post('/logout',(req,res)=>{
+    req.logout();
+    req.session.destroy();
+    res.status(200).send('logout success');
+})
 
 module.exports = router;

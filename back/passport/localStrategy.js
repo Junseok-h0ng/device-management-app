@@ -8,9 +8,10 @@ module.exports = () =>{
     passport.use(new LocalStrategy({
         usernameField:'email',
         passwordField:'password',
-        session:true
+        session:true,
+        passReqToCallback:true
     },
-        function(email, password, done) {
+        function(req,email, password, done) {
           User.findOne({ email: email }, function (err, user) {
             if (err) { return done(err); }
             if (!user) {

@@ -3,6 +3,7 @@
         "app.js",
         "./routes",
         "./models",
+        "./passport",
         "nodemon.json"
     ],
     "exec": "node app.js",
