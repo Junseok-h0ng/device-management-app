@@ -7,7 +7,10 @@ import {
     LOG_OUT_SUCCESS,
     REGISTER_FAILURE,
     REGISTER_REQUEST,
-    REGISTER_SUCCESS
+    REGISTER_SUCCESS,
+    USER_STATUS_FAILURE,
+    USER_STATUS_REQUEST,
+    USER_STATUS_SUCCESS
 } from '../_actions/types';
 
 export const initialState = {
@@ -57,6 +60,20 @@ export default function (state=initialState, action){
                 ...state
             }
         case REGISTER_FAILURE:
+            return{
+                ...state
+            }
+        case USER_STATUS_REQUEST:
+            return{
+                ...state
+            }
+        case USER_STATUS_SUCCESS:
+            return{
+                ...state,
+                isLogin:true,
+                data:action.data
+            }
+        case USER_STATUS_FAILURE:
             return{
                 ...state
             }

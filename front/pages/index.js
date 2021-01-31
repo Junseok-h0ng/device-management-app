@@ -10,9 +10,7 @@ function index() {
     return (
         <div>
             {isLogin && 
-                <div>
-                    <UserProfile/>
-                </div>
+                <UserProfile/>
             }
             {!isLogin &&
                 <Login/>

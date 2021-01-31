@@ -4,6 +4,16 @@ const passport = require('passport');
 
 const {User} = require('../models/User');
 
+router.post('/',(req,res)=>{
+    if(req.user){
+        const user = Object.assign({},req.user.toJSON());
+        delete user.password;
+        return res.status(200).json(user);
+    }else{
+        return res.status(401).send("로그인을 해야합니다.");
+    }
+})
+
 router.post('/register',(req,res)=>{  
     const user = new User(req.body);
     user.save((err,doc)=>{
@@ -21,7 +31,7 @@ router.post('/login',(req,res,next)=>{
             const user = Object.assign({},req.user.toJSON());
             delete user.password;
             return res.json(user);
-        })
+        });
     })(req,res,next);
 });
 
