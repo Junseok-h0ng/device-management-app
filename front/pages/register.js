@@ -1,8 +1,8 @@
-import React,{useState} from 'react'
-import {useDispatch} from 'react-redux'
-import {Form,Input,Button,Row,Col} from 'antd'
+import React,{useState,useEffect} from 'react'
+import {useDispatch,useSelector} from 'react-redux'
+import {Form,Input,Button,Row,Col,message} from 'antd'
 import { LockOutlined, SmileOutlined, UserOutlined } from '@ant-design/icons';
-import { registerRequestAction } from '../_actions/user_actions';
+import { registerRequestAction, resetErrorMessage } from '../_actions/user_actions';
 
 function login() {
     const layout = {
@@ -14,6 +14,7 @@ function login() {
       };
 
     const dispatch = useDispatch();
+    const {error} = useSelector(state=>state.user);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
@@ -33,8 +34,17 @@ function login() {
             password,
             name
         }
+        if(password.length < 5){
+            return message.error('최소 패스워드는 5자리 이상입니다.');
+        }
         dispatch(registerRequestAction(userData));
     }
+    useEffect(() => {
+        if(error){
+            message.error(error);
+            dispatch(resetErrorMessage());
+        }
+    }, [error])
     
     return (
         <div style={{

@@ -8,13 +8,15 @@ import {
     REGISTER_FAILURE,
     REGISTER_REQUEST,
     REGISTER_SUCCESS,
+    RESET_ERROR_MESSAGE,
     USER_STATUS_FAILURE,
     USER_STATUS_REQUEST,
     USER_STATUS_SUCCESS
 } from '../_actions/types';
 
 export const initialState = {
-        isLogin:false
+        isLogin:false,
+        error:false
 }
 
 export default function (state=initialState, action){
@@ -34,7 +36,7 @@ export default function (state=initialState, action){
         case LOG_IN_FAILURE:{
             return{
                 ...state,
-                data:action.data
+                error:action.message,
             }
         }
         case LOG_OUT_REQUEST:
@@ -61,7 +63,8 @@ export default function (state=initialState, action){
             }
         case REGISTER_FAILURE:
             return{
-                ...state
+                ...state,
+                error:action.message
             }
         case USER_STATUS_REQUEST:
             return{
@@ -76,6 +79,11 @@ export default function (state=initialState, action){
         case USER_STATUS_FAILURE:
             return{
                 ...state
+            }
+        case RESET_ERROR_MESSAGE:
+            return{
+                ...state,
+                error:false
             }
         default:
             return {

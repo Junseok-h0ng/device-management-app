@@ -2,6 +2,7 @@ import {
     LOG_IN_REQUEST,
     LOG_OUT_REQUEST,
     REGISTER_REQUEST,
+    RESET_ERROR_MESSAGE,
     USER_STATUS_REQUEST
 } from './types'
 
@@ -21,4 +22,8 @@ export const logoutRequestAction = () =>({
 
 export const userStatusRequestAction = () =>({
     type: USER_STATUS_REQUEST
+})
+
+export const resetErrorMessage = () =>({
+    type: RESET_ERROR_MESSAGE
 })

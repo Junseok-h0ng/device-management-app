@@ -15,7 +15,7 @@ module.exports = () =>{
           User.findOne({ email: email }, function (err, user) {
             if (err) { return done(err); }
             if (!user) {
-              return done(null, false, { message: 'Incorrect username.' });
+              return done(null, false, { message: '없는 이메일주소 입니다.' });
             }
             user.comparePassword(password,(err,isMatch)=>{
                 if(isMatch){
