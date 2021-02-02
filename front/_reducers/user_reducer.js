@@ -59,7 +59,8 @@ export default function (state=initialState, action){
             }
         case REGISTER_SUCCESS:
             return{
-                ...state
+                ...state,
+                requestSuccess:true
             }
         case REGISTER_FAILURE:
             return{

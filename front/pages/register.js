@@ -1,10 +1,11 @@
 import React,{useState,useEffect} from 'react'
 import {useDispatch,useSelector} from 'react-redux'
+import Router from 'next/router';
 import {Form,Input,Button,Row,Col,message} from 'antd'
 import { LockOutlined, SmileOutlined, UserOutlined } from '@ant-design/icons';
 import { registerRequestAction, resetErrorMessage } from '../_actions/user_actions';
 
-function login() {
+function login(props) {
     const layout = {
         labelCol: {span:8},
         wrapperCol: {span:16}

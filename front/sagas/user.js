@@ -64,7 +64,7 @@ function* register(action){
         if(!result.data.error){
             yield put({
                 type:REGISTER_SUCCESS
-            });
+            }); 
         }else{
             yield put({
                 type:REGISTER_FAILURE,
