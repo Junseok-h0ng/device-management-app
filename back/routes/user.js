@@ -4,6 +4,7 @@ const passport = require('passport');
 
 const {User} = require('../models/User');
 
+//유저의 로그인 상태여부 검사
 router.post('/',(req,res)=>{
     if(req.user){
         const user = Object.assign({},req.user.toJSON());

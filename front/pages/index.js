@@ -4,7 +4,7 @@ import {useSelector,useDispatch} from 'react-redux'
 import {message} from 'antd'
 
 import Login from '../components/user/login'
-import UserProfile from './userProfile'
+import UserProfile from '../components/user/userProfile'
 import { resetErrorMessage } from '../_actions/user_actions'
 
 

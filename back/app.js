@@ -16,17 +16,19 @@ mongoose.connect(config.mongoURI
         
 
 app.use(cors({
-    origin:'http://localhost:3000',
+    origin:config.frontServer,
     credentials:true
 }));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use(cookieParser());
+
+app.use(cookieParser(config.COOKIE_SECRET));
 app.use(session({
-    secret: 'secret',
+    secret: config.COOKIE_SECRET,
     resave:false,
     saveUninitialized:true
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 passportConfig();
@@ -34,7 +36,6 @@ passportConfig();
 
 
 app.get('/',(req,res)=>{
-    console.log(req.user);
     res.send(req.session);
 });
 app.use('/user',require('./routes/user'));

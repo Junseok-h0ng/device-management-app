@@ -1,8 +1,8 @@
 import React,{useState} from 'react'
-import {useDispatch} from 'react-redux'
+import {useDispatch,useSelector} from 'react-redux'
 import Link from 'next/link'
 import {Form,Input,Button,Row,Col} from 'antd'
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { LockOutlined, UserOutlined} from '@ant-design/icons';
 
 import { loginRequestAction } from '../../_actions/user_actions';
 
@@ -16,6 +16,7 @@ function login() {
       };
 
     const dispatch = useDispatch();
+    const {isLoading} = useSelector(state=>state.user);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("")
 
@@ -68,11 +69,11 @@ function login() {
                                 type="password"
                                 value={password}
                                 onChange={handlePasswordChange}
-                                required
+                                required    
                             />
                         </Form.Item>
                         <Form.Item {...tailLayout}>
-                            <Button htmlType="submit">
+                            <Button htmlType="submit" loading={isLoading}>
                                 Sign In
                             </Button>
                         </Form.Item>

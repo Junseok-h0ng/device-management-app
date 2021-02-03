@@ -5,7 +5,7 @@ import {Form,Input,Button,Row,Col,message} from 'antd'
 import { LockOutlined, SmileOutlined, UserOutlined } from '@ant-design/icons';
 import { registerRequestAction, resetErrorMessage } from '../_actions/user_actions';
 
-function login(props) {
+function login() {
     const layout = {
         labelCol: {span:8},
         wrapperCol: {span:16}
@@ -15,7 +15,7 @@ function login(props) {
       };
 
     const dispatch = useDispatch();
-    const {error} = useSelector(state=>state.user);
+    const user = useSelector(state=>state.user);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
@@ -41,11 +41,16 @@ function login(props) {
         dispatch(registerRequestAction(userData));
     }
     useEffect(() => {
-        if(error){
+        if(user.error){
             message.error(error);
             dispatch(resetErrorMessage());
         }
-    }, [error])
+        if(user.requestSuccess){
+            message.success('회원가입이 완료되었습니다.');
+            Router.push('/');
+            dispatch(resetErrorMessage());
+        }
+    }, [user.error,user.requestSuccess])
     
     return (
         <div style={{
@@ -97,7 +102,7 @@ function login(props) {
                             />
                         </Form.Item>                    
                         <Form.Item {...tailLayout}>
-                            <Button htmlType="submit">
+                            <Button htmlType="submit"loading={user.isLoading}>
                                 Sign Up
                             </Button>
                         </Form.Item>
