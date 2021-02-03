@@ -39,6 +39,7 @@ app.get('/',(req,res)=>{
     res.send(req.session);
 });
 app.use('/user',require('./routes/user'));
+app.use('/group',require('./routes/group'));
 
 app.listen(port,()=>{
     console.log('express server is running at 8080');

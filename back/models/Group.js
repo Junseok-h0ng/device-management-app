@@ -6,6 +6,14 @@ const groupSchema = mongoose.Schema({
        type:mongoose.Schema.Types.ObjectId,
        ref:'User'
    },
+   device_id:{
+       type:mongoose.Schema.Types.ObjectId,
+       ref:'Device'
+   },
+   name:{
+       type:String,
+       unique: true
+   },
    admins:{
        type:Array,
        default:[]
@@ -13,7 +21,12 @@ const groupSchema = mongoose.Schema({
    members:{
        type:Array,
        default:[]
+   },
+   joinWaiting:{
+       type:Array,
+       default:[]
    }
+
 
 
 });

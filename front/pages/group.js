@@ -1,12 +1,18 @@
 import React,{useState} from 'react'
-import {Form,Row,Col,Input,Button} from 'antd';
+import {useDispatch,useSelector} from 'react-redux'
+import {Form,Input,Button} from 'antd';
 
 import LoginedMenu from '../components/menu/loginedMenu'
+import { createGroupActionRequest } from '../_actions/group_actions';
 
 
 function group() {
+    const dispatch = useDispatch();
+    const userInfo = useSelector(state=>state.user.data);
+
     const [createGroupName, setCreateGroupName] = useState("");
     const [joinGroupName, setJoinGroupName] = useState("")
+
     const handleCreateGroupName = (event)=>{
         setCreateGroupName(event.target.value);
     }
@@ -15,7 +21,11 @@ function group() {
     }
 
     const handleCreateSubmit =()=>{
-
+        const data ={
+            root_admin: userInfo._id,
+            name:createGroupName
+        }
+        dispatch(createGroupActionRequest(data));
     }
     const handleJoinSubmit = ()=>{
 
