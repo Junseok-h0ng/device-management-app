@@ -3,6 +3,15 @@ const router = express.Router();
 const {Group} = require('../models/Group');
 const {User} = require('../models/User');
 
+router.post('/',(req,res,next)=>{
+    Group.find({_id:{$in:req.body}})
+    .select('name')
+    .exec((err,groups)=>{
+        if(err) return res.json({error:true,message:'그룹 로드를 실패했습니다.'});
+        return res.json(groups);
+    })
+})
+
 router.post('/create',(req,res)=>{
 
     const group = new Group(req.body);

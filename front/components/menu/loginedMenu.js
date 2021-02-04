@@ -1,32 +1,45 @@
-import React from 'react';
-import {useDispatch} from 'react-redux';
+import React,{useEffect} from 'react';
+import {useDispatch,useSelector} from 'react-redux';
 import Link from 'next/link';
 import Router from 'next/router';
 import {Menu,Dropdown,Row,Col} from 'antd';
 import {DownOutlined } from '@ant-design/icons'
 import { logoutRequestAction } from '../../_actions/user_actions';
+import { loadGroupsActionRequest } from '../../_actions/group_actions';
 
 function loginedMenu() {
 
-    const menu = (
-        <Menu>
-            <Menu.Item key="0">
-            <Link href="/group">
-                <a>Add Group</a>
-            </Link>
-            </Menu.Item>
-            <Menu.Divider />
-            <Menu.Item key="1">
-                UserGroup(12312)
-            </Menu.Item>
-        </Menu>
-    )
-
+    const {groups} = useSelector(state=>state.user.data);
+    const groupsData = useSelector(state=>state.group.data);
     const dispatch = useDispatch();
+
     const onLogout = () =>{
         dispatch(logoutRequestAction());
         Router.push('/');
     }
+
+    useEffect(() => {
+        dispatch(loadGroupsActionRequest(groups));
+    },[groups])
+    
+    const menu = (
+        <Menu>
+            <Menu.Item key="0">
+                <Link href="/group">
+                    <a>AddGroup</a>
+                </Link>
+            </Menu.Item>           
+            <Menu.Divider />
+            {groupsData && groupsData.map((group,index)=>(
+                <Menu.Item key={index+1}>
+                    <Link href={`/group/${group._id}`}>
+                        <a>{group.name}</a>
+                    </Link>
+                </Menu.Item>
+            ))}
+        </Menu>
+    )
+
     return (
         <Row>
         <Col span={12}>

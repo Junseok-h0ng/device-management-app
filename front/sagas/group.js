@@ -1,10 +1,13 @@
 import axios from "axios";
 import { all, fork, put, takeLatest,call} from "redux-saga/effects";
-import { GROUP_CREATE_FAILURE, GROUP_CREATE_REQUEST, GROUP_CREATE_SUCCESS } from "../_actions/types";
+import { GROUP_CREATE_FAILURE, GROUP_CREATE_REQUEST, GROUP_CREATE_SUCCESS, GROUPS_LOAD_REQUEST, GROUPS_LOAD_SUCCESS, GROUPS_LOAD_FAILURE } from "../_actions/types";
 
 function createGroupAPI(data){
-    console.log(data);
     return axios.post('/group/create',data);
+}
+
+function loadGroupsAPI(data){
+    return axios.post('/group',data);
 }
 
 function* createGroup(action){
@@ -20,12 +23,32 @@ function* createGroup(action){
     }
 }
 
+function* loadGroups(action){
+    try{
+        const result = yield call(loadGroupsAPI,action.data);
+        yield put({
+            type:GROUPS_LOAD_SUCCESS,
+            data: result.data
+        });
+    }catch(err){
+        yield put({
+            type:GROUPS_LOAD_FAILURE
+        })
+    }
+}
+
+
+
 function* watchCreateGroup(){
     yield takeLatest(GROUP_CREATE_REQUEST,createGroup);
+}
+function* watchLoadGroups(){
+    yield takeLatest(GROUPS_LOAD_REQUEST,loadGroups);
 }
 
 export default function* groupSaga(){
     yield all([
-        fork(watchCreateGroup)
+        fork(watchCreateGroup),
+        fork(watchLoadGroups)
     ])
 }
