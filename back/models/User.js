@@ -3,10 +3,10 @@ const bcrypt = require('bcrypt');
 
 
 const userSchema = mongoose.Schema({
-    groups:{
+    groups:[{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Group'
-    },
+        ref:'Group'
+    }],
     email:{
         type: String,
         trim: true,

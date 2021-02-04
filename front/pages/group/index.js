@@ -2,8 +2,8 @@ import React,{useState} from 'react'
 import {useDispatch,useSelector} from 'react-redux'
 import {Form,Input,Button} from 'antd';
 
-import LoginedMenu from '../components/menu/loginedMenu'
-import { createGroupActionRequest } from '../_actions/group_actions';
+import LoginedMenu from '../../components/menu/loginedMenu'
+import { createGroupActionRequest } from '../../_actions/group_actions';
 
 
 function group() {
