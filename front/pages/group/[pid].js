@@ -13,4 +13,9 @@ function usergroup() {
     )
 }
 
+usergroup.getInitialProps = ()=>{
+    const userStatus = "member";
+    return userStatus;
+}
+
 export default usergroup

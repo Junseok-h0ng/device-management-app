@@ -9,18 +9,20 @@ import { loadGroupsActionRequest } from '../../_actions/group_actions';
 
 function loginedMenu() {
 
-    const {groups} = useSelector(state=>state.user.data);
+    const userData = useSelector(state=>state.user.data);
     const groupsData = useSelector(state=>state.group.data);
     const dispatch = useDispatch();
 
     const onLogout = () =>{
         dispatch(logoutRequestAction());
         Router.push('/');
-    }
+    }   
 
     useEffect(() => {
-        dispatch(loadGroupsActionRequest(groups));
-    },[groups])
+        if(userData)
+            dispatch(loadGroupsActionRequest(userData.groups));
+
+    },[userData])
     
     const menu = (
         <Menu>
