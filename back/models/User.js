@@ -3,9 +3,15 @@ const bcrypt = require('bcrypt');
 
 
 const userSchema = mongoose.Schema({
-    groups:[{
-        type: mongoose.Schema.Types.ObjectId,
-        ref:'Group'
+    groups:[
+        {
+        groupId:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref:'Group'
+        },
+        role:{
+            type:String
+        }
     }],
     email:{
         type: String,

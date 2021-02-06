@@ -3,6 +3,9 @@ import{all,fork,call,put,takeLatest} from 'redux-saga/effects'
 import { LOG_IN_FAILURE, LOG_IN_REQUEST, LOG_IN_SUCCESS, 
     LOG_OUT_FAILURE, LOG_OUT_REQUEST, LOG_OUT_SUCCESS, 
     REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS,
+    USER_ROLE_FAILURE,
+    USER_ROLE_REQUEST,
+    USER_ROLE_SUCCESS,
     USER_STATUS_FAILURE, USER_STATUS_REQUEST, USER_STATUS_SUCCESS } from '../_actions/types';
 
 
@@ -91,6 +94,19 @@ function* userStatus(){
         })
     }
 }
+function* userRole(action){
+    console.log(action.data);
+    try{
+        yield put({
+            type:USER_ROLE_SUCCESS,
+            data:action.data
+        });
+    }catch(err){
+        yield put({
+            type:USER_ROLE_FAILURE
+        })
+    }
+}
 
 function* watchLogin(){
     yield takeLatest(LOG_IN_REQUEST,login);
@@ -106,6 +122,9 @@ function* watchRegister(){
 function* watchUserStatus(){
     yield takeLatest(USER_STATUS_REQUEST,userStatus);
 }
+function* watchUserRole(){
+    yield takeLatest(USER_ROLE_REQUEST,userRole);
+}
 
 export default function* userSaga(){
     yield all([
@@ -113,5 +132,6 @@ export default function* userSaga(){
         fork(watchRegister),
         fork(watchLogout),
         fork(watchUserStatus),
+        fork(watchUserRole)
     ]);
 }

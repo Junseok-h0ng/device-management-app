@@ -36,15 +36,6 @@ function group() {
         wrapperCol: {span:16 }
     }
 
-    const menuItem = (
-        <>         
-            <Menu.Item key="2" icon={<DesktopOutlined />}>Device</Menu.Item>
-            <Menu.Item key="3" icon={<ToolOutlined />}>Repair</Menu.Item>
-            <Menu.Item key="6" icon={<TeamOutlined />}>Team</Menu.Item>
-            <Menu.Item key="9" icon={<InfoOutlined />}>Notice</Menu.Item>
-        </>
-        )
-
     return (
         <div>
             <LoginedMenu/>

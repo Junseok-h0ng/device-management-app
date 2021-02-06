@@ -9,6 +9,9 @@ import {
     REGISTER_REQUEST,
     REGISTER_SUCCESS,
     RESET_ERROR_MESSAGE,
+    USER_ROLE_FAILURE,
+    USER_ROLE_SUCCESS,
+    USER_ROLE_REQUEST,
     USER_STATUS_FAILURE,
     USER_STATUS_REQUEST,
     USER_STATUS_SUCCESS
@@ -18,7 +21,8 @@ export const initialState = {
         isLogin:false,
         error:false,
         isLoading:false,
-        requestSuccess:null
+        requestSuccess:null,
+        role:null
 }
 
 export default function (state=initialState, action){
@@ -100,6 +104,19 @@ export default function (state=initialState, action){
                 ...state,
                 error:false,
                 requestSuccess:null
+            }
+        case USER_ROLE_REQUEST:
+            return{
+                ...state,
+            }
+        case USER_ROLE_SUCCESS:
+            return{
+                ...state,
+                role:action.data
+            }
+        case USER_ROLE_FAILURE:
+            return{
+                ...state
             }
         default:
             return {

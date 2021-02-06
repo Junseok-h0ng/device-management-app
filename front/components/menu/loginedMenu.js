@@ -19,8 +19,12 @@ function loginedMenu() {
     }   
 
     useEffect(() => {
+        const groupsId =[]
+        userData.groups.map(groupId=>{
+            groupsId.push(groupId.groupId);
+        })
         if(userData)
-            dispatch(loadGroupsActionRequest(userData.groups));
+            dispatch(loadGroupsActionRequest(groupsId));
 
     },[userData])
     

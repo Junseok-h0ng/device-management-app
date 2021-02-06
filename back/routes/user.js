@@ -13,7 +13,7 @@ router.post('/',(req,res)=>{
     }else{
         return res.status(401).send("로그인을 해야합니다.");
     }
-})
+});
 
 router.post('/register',(req,res)=>{  
     const user = new User(req.body);

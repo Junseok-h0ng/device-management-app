@@ -21,7 +21,8 @@ router.post('/create',(req,res)=>{
         .populate('groups')
         .exec((err,user)=>{
             if(err) return res.json({error:true,message:'잘못된 접근 입니다.'});
-            user.groups.push(group._id);
+            console.log(group._id);
+            user.groups.push({groupId:group._id,role:'owner'});
             user.save();
         });
         return res.status(200).json({success:true});
