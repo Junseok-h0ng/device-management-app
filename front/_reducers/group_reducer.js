@@ -1,8 +1,8 @@
-import { GROUP_CREATE_FAILURE, GROUP_CREATE_REQUEST, GROUP_CREATE_SUCCESS, GROUPS_LOAD_FAILURE, GROUPS_LOAD_REQUEST, GROUPS_LOAD_SUCCESS } from "../_actions/types";
+import { GROUP_CREATE_FAILURE, GROUP_CREATE_REQUEST, GROUP_CREATE_SUCCESS, GROUPS_LOAD_FAILURE, GROUPS_LOAD_REQUEST, GROUPS_LOAD_SUCCESS, RESET_GROUP_STATUS } from "../_actions/types";
 
 
 export const initialState={
-
+    history: null
 }
 
 export default function(state=initialState,action){
@@ -13,7 +13,8 @@ export default function(state=initialState,action){
             }
         case GROUP_CREATE_SUCCESS:
             return{
-                ...state
+                ...state,
+                history:action.history
             }
         case GROUP_CREATE_FAILURE:
             return{
@@ -31,6 +32,11 @@ export default function(state=initialState,action){
         case GROUPS_LOAD_FAILURE:
             return{
                 ...state
+            }
+        case RESET_GROUP_STATUS:
+            return{
+                ...state,
+                history:null
             }
         default:
             return{

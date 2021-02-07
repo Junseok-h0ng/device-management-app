@@ -5,8 +5,9 @@ import {message} from 'antd'
 
 import Login from '../components/user/login'
 import UserProfile from '../components/user/userProfile'
-import { resetErrorMessage, userStatusRequestAction } from '../_actions/user_actions'
-import { useRouter } from 'next/router'
+import { resetErrorMessage, resetUserStatus } from '../_actions/user_actions'
+
+import { resetGroupStatus } from '../_actions/group_actions'
 
 
 
@@ -15,6 +16,8 @@ function index() {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        dispatch(resetUserStatus());
+        dispatch(resetGroupStatus());
         //에러가 있을시 에러메시지 출력
         if(error){
             message.error(error);

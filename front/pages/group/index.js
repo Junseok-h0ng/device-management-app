@@ -1,5 +1,6 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import {useDispatch,useSelector} from 'react-redux'
+import Router from 'next/router';
 import {Form,Input,Button} from 'antd';
 
 import LoginedMenu from '../../components/menu/loginedMenu'
@@ -9,9 +10,15 @@ import { createGroupActionRequest } from '../../_actions/group_actions';
 function group() {
     const dispatch = useDispatch();
     const userInfo = useSelector(state=>state.user.data);
-
+    const {history} = useSelector(state=>state.group);
     const [createGroupName, setCreateGroupName] = useState("");
     const [joinGroupName, setJoinGroupName] = useState("")
+
+    useEffect(() => {
+       if(history != null){
+           Router.push(`/group/${history}`)
+       }
+    },[history])
 
     const handleCreateGroupName = (event)=>{
         setCreateGroupName(event.target.value);

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { all, fork, put, takeLatest,call} from "redux-saga/effects";
+import { all, fork, put, takeLatest,call, getContext} from "redux-saga/effects";
 import { GROUP_CREATE_FAILURE, GROUP_CREATE_REQUEST, GROUP_CREATE_SUCCESS, GROUPS_LOAD_REQUEST, GROUPS_LOAD_SUCCESS, GROUPS_LOAD_FAILURE } from "../_actions/types";
 
 function createGroupAPI(data){
@@ -12,9 +12,11 @@ function loadGroupsAPI(data){
 
 function* createGroup(action){
     try{
-        yield call(createGroupAPI,action.data);
+        const result = yield call(createGroupAPI,action.data);
+        console.log(result);
         yield put({
-            type:GROUP_CREATE_SUCCESS
+            type:GROUP_CREATE_SUCCESS,
+            history:result.data.history
         })
     }catch(err){
         yield put({

@@ -25,7 +25,7 @@ router.post('/create',(req,res)=>{
             user.groups.push({groupId:group._id,role:'owner'});
             user.save();
         });
-        return res.status(200).json({success:true});
+        return res.status(200).json({success:true,history:group._id});
     });
 })
 

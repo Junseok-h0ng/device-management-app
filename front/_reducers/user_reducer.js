@@ -14,7 +14,8 @@ import {
     USER_ROLE_REQUEST,
     USER_STATUS_FAILURE,
     USER_STATUS_REQUEST,
-    USER_STATUS_SUCCESS
+    USER_STATUS_SUCCESS,
+    RESET_USER_STATUS
 } from '../_actions/types';
 
 export const initialState = {
@@ -104,6 +105,11 @@ export default function (state=initialState, action){
                 ...state,
                 error:false,
                 requestSuccess:null
+            }
+        case RESET_USER_STATUS:
+            return{
+                ...state,
+                role:null,
             }
         case USER_ROLE_REQUEST:
             return{
