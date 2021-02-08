@@ -26,18 +26,6 @@ function _app({Component,pageProps,store}) {
     );
 }
 
-_app.getInitialProps = async(context)=>{
-    const { ctx, Component } = context;
-    let pageProps = {};
-    if (Component.getInitialProps) {
-      // Component (pages 폴더에 있는 컴포넌트)에 getInitialProps가 있다면
-      pageProps = (await Component.getInitialProps(ctx)) || {};
-  
-      return { pageProps };
-    }
-}
-
-
 export default withRedux((initialState,options)=>{
     const sagaMiddleware = createSagaMiddleware();
     const middleWares = [sagaMiddleware];

@@ -9,7 +9,11 @@ const groupSchema = mongoose.Schema({
    name:{
        type:String,
        unique: true
-   }
+   },
+   join:[{
+       type:mongoose.Schema.Types.ObjectId,
+       ref:'User'
+   }]
 });
 
 const Group = mongoose.model('Group',groupSchema);

@@ -17,7 +17,6 @@ function index() {
 
     useEffect(() => {
         dispatch(resetUserStatus());
-        dispatch(resetGroupStatus());
         //에러가 있을시 에러메시지 출력
         if(error){
             message.error(error);

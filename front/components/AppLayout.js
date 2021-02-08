@@ -18,7 +18,7 @@ function AppLayout({children}) {
     
     return (
         <Layout style={{ minHeight: '100vh' }}>
-        <Sider userStatus={children.props[0]}/>
+        <Sider/>
         <Layout className="site-layout">
         <Content style={{ margin: '0 16px' }}>
             <div className="site-layout-background" style={{ margin:'Auto', width:'50%',padding:'10px' }}>

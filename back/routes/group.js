@@ -9,6 +9,51 @@ router.post('/',(req,res,next)=>{
     .exec((err,groups)=>{
         if(err) return res.json({error:true,message:'그룹 로드를 실패했습니다.'});
         return res.json(groups);
+    });
+});
+
+router.post('/joined',(req,res)=>{
+    const groupId = req.body.groupId;
+    Group.findById(groupId)
+    .populate('join')
+    .exec((err,usersInfo)=>{
+        if(err) return res.json({error:true,message:'잘못된 접근 입니다.'});
+        let users = []
+        usersInfo.join.map(userInfo=>{
+            const user = Object.assign({},userInfo.toJSON());
+            delete user.password;
+            delete user.groups;
+            users.push(user);
+        });
+        res.json({success:true,users});
+    })
+});
+
+router.post('/join',(req,res)=>{
+    const groupId = req.body.groupId;
+    const userId = req.body.userId;
+    User.findById(userId)
+        .populate('groups')
+        .exec((err,user)=>{
+            if(err) return res.json({error:true,message:'잘못된 접근 입니다.'});
+            user.groups.map(group=>{
+                if(group.groupId == groupId){
+                    console.log('이미 가입')
+                    if(err) return res.json({error:true,message:'이미 가입된 계정입니다.'});
+                }
+                user.groups.push({groupId:group._id,role:'join'});
+                user.save();
+            });
+
+        });
+    Group.findByIdAndUpdate({_id:groupId},{
+        $push:{
+            join:userId
+        }
+    }).exec((err,group)=>{
+        if(err) return res.json({error:true,message:'잘못된 접근 입니다.'});
+        
+        res.json({success:true});
     })
 })
 
@@ -21,7 +66,6 @@ router.post('/create',(req,res)=>{
         .populate('groups')
         .exec((err,user)=>{
             if(err) return res.json({error:true,message:'잘못된 접근 입니다.'});
-            console.log(group._id);
             user.groups.push({groupId:group._id,role:'owner'});
             user.save();
         });

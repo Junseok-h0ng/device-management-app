@@ -1,10 +1,10 @@
-import React,{useState,useEffect} from 'react'
-import {useDispatch,useSelector} from 'react-redux'
+import React,{useState,useEffect} from 'react';
+import {useDispatch,useSelector} from 'react-redux';
 import Router from 'next/router';
 import {Form,Input,Button} from 'antd';
 
 import LoginedMenu from '../../components/menu/loginedMenu'
-import { createGroupActionRequest } from '../../_actions/group_actions';
+import { createGroupActionRequest, joinGroupActionRequest, resetGroupStatus } from '../../_actions/group_actions';
 
 
 function group() {
@@ -16,6 +16,7 @@ function group() {
 
     useEffect(() => {
        if(history != null){
+           dispatch(resetGroupStatus());
            Router.push(`/group/${history}`)
        }
     },[history])
@@ -28,14 +29,18 @@ function group() {
     }
 
     const handleCreateSubmit =()=>{
-        const data ={
+        const data = {
             root_admin: userInfo._id,
             name:createGroupName
         }
         dispatch(createGroupActionRequest(data));
     }
     const handleJoinSubmit = ()=>{
-
+        const data = {
+            userId: userInfo._id,
+            groupId: joinGroupName
+        }
+        dispatch(joinGroupActionRequest(data));
     }
 
     const layout = {

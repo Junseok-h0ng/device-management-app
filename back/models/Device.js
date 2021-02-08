@@ -17,6 +17,9 @@ const deviceSchema = mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
     },
+    location:{
+        type:String
+    },
     update_date:{
         type:Date,
         default:Date.now
