@@ -35,26 +35,25 @@ router.post('/join',(req,res)=>{
     User.findById(userId)
         .populate('groups')
         .exec((err,user)=>{
-            if(err) return res.json({error:true,message:'잘못된 접근 입니다.'});
-            user.groups.map(group=>{
-                if(group.groupId == groupId){
-                    console.log('이미 가입')
-                    if(err) return res.json({error:true,message:'이미 가입된 계정입니다.'});
-                }
-                user.groups.push({groupId:group._id,role:'join'});
-                user.save();
-            });
-
+            if(err) throw err;
+            const result = user.groups.map(group =>group.groupId).indexOf(groupId);
+            if(result > -1){
+                return res.json({error:true,message:'이미 가입된 아이디 입니다.'});
+            }else{
+                Group.findByIdAndUpdate({_id:groupId},{
+                    $push:{
+                        join:userId
+                    }
+                }).exec((err,group)=>{
+                    if(err) return res.json({error:true,message:'잘못된 접근 입니다.'});
+                    user.groups.push({groupId:groupId,role:'join'});
+                    user.save();
+                    res.json({success:true});
+                })
+                
+            }  
         });
-    Group.findByIdAndUpdate({_id:groupId},{
-        $push:{
-            join:userId
-        }
-    }).exec((err,group)=>{
-        if(err) return res.json({error:true,message:'잘못된 접근 입니다.'});
-        
-        res.json({success:true});
-    })
+   
 })
 
 router.post('/create',(req,res)=>{

@@ -35,8 +35,10 @@ function* createGroup(action){
 function* joinGroup(action){
     try{
         const result = yield call(joinGroupAPI,action.data);
+        console.log(result);
         yield put({
             type:GROUP_JOIN_SUCCESS,
+            data:result.data.message
         });
     }catch(err){
         yield put({

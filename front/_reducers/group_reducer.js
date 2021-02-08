@@ -28,7 +28,8 @@ export default function(state=initialState,action){
             }
         case GROUP_JOIN_SUCCESS:
             return{
-                ...state
+                ...state,
+                message: action.data
             }
         case GROUP_JOIN_FAILURE:
             return{

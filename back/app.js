@@ -11,7 +11,7 @@ const port = 8080;
 const mongoose = require('mongoose');
 mongoose.set('useCreateIndex',true);
 mongoose.connect(config.mongoURI
-        ,{useNewUrlParser: true, useUnifiedTopology: true})
+        ,{useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify:true})
         .then(()=>console.log('MongoDB connected'));
         
 
