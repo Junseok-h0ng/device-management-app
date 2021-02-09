@@ -1,6 +1,6 @@
 import axios from "axios";
 import { all, fork, put, takeLatest,call, getContext} from "redux-saga/effects";
-import { GROUP_CREATE_FAILURE, GROUP_CREATE_REQUEST, GROUP_CREATE_SUCCESS, GROUPS_LOAD_REQUEST, GROUPS_LOAD_SUCCESS, GROUPS_LOAD_FAILURE, GROUP_JOIN_REQUEST, GROUP_JOIN_SUCCESS, GROUP_JOIN_FAILURE, GROUP_LOAD_JOIN_REQUEST, GROUP_LOAD_JOIN_SUCCESS, GROUP_LOAD_JOIN_FAILURE } from "../_actions/types";
+import { GROUP_CREATE_FAILURE, GROUP_CREATE_REQUEST, GROUP_CREATE_SUCCESS, GROUPS_LOAD_REQUEST, GROUPS_LOAD_SUCCESS, GROUPS_LOAD_FAILURE, GROUP_JOIN_REQUEST, GROUP_JOIN_SUCCESS, GROUP_JOIN_FAILURE, GROUP_LOAD_JOIN_REQUEST, GROUP_LOAD_JOIN_SUCCESS, GROUP_LOAD_JOIN_FAILURE, GROUP_ACCESS_JOIN_REQUEST, GROUP_ACCESS_JOIN_SUCCESS, GROUP_ACCESS_JOIN_FAILURE } from "../_actions/types";
 
 function createGroupAPI(data){
     return axios.post('/group/create',data);
@@ -12,6 +12,10 @@ function joinGroupAPI(data){
 
 function loadJoinGroupAPI(data){
     return axios.post('/group/joined',data);
+}
+
+function accessJoinGroupAPI(data){
+    return axios.post('/group/accessJoin',data);
 }
 
 function loadGroupsAPI(data){
@@ -55,10 +59,25 @@ function* loadJoinGroup(action){
             data: result.data.users
         });
     }catch(err){
-        yield(put({
+        yield put({
             type:GROUP_LOAD_JOIN_FAILURE
-        }))
+        })
     }
+}
+
+function* accessJoinGroup(action){
+    try{
+        const result = yield call(accessJoinGroupAPI,action.data);
+        console.log('fadsfa');
+        yield put({
+            type: GROUP_ACCESS_JOIN_SUCCESS
+        })
+    }catch(err){
+        yield put({
+            type:GROUP_ACCESS_JOIN_FAILURE
+        })
+    }
+   
 }
 
 function* loadGroups(action){
@@ -88,6 +107,9 @@ function* watchJoinGroup(){
 function* watchLoadJoinGroup(){
     yield takeLatest(GROUP_LOAD_JOIN_REQUEST,loadJoinGroup);
 }
+function* watchAccessJoinGroup(){
+    yield takeLatest(GROUP_ACCESS_JOIN_REQUEST,accessJoinGroup);
+}
 
 function* watchLoadGroups(){
     yield takeLatest(GROUPS_LOAD_REQUEST,loadGroups);
@@ -98,6 +120,7 @@ export default function* groupSaga(){
         fork(watchCreateGroup),
         fork(watchJoinGroup),
         fork(watchLoadGroups),
-        fork(watchLoadJoinGroup)
+        fork(watchLoadJoinGroup),
+        fork(watchAccessJoinGroup),
     ])
 }

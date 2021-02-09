@@ -10,6 +10,10 @@ const groupSchema = mongoose.Schema({
        type:String,
        unique: true
    },
+   member:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User'
+   }],
    join:[{
        type:mongoose.Schema.Types.ObjectId,
        ref:'User'

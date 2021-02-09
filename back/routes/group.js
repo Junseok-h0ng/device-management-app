@@ -36,6 +36,7 @@ router.post('/join',(req,res)=>{
         .populate('groups')
         .exec((err,user)=>{
             if(err) throw err;
+            //유저가 이미 그룹에 속해 있는지 확인
             const result = user.groups.map(group =>group.groupId).indexOf(groupId);
             if(result > -1){
                 return res.json({error:true,message:'이미 가입된 아이디 입니다.'});
@@ -53,8 +54,26 @@ router.post('/join',(req,res)=>{
                 
             }  
         });
-   
-})
+});
+
+router.post('/accessJoin',(req,res)=>{
+    const groupId = req.body.groupId;
+    const userId = req.body.userId;
+    Group.findByIdAndUpdate({_id:groupId},{
+        $push:{
+            member:{
+                $each:userId
+            }
+        },
+        $pullAll:{
+            join:'60210f85979fe31c18dd44c2'
+        }
+    })
+    .exec((err,group)=>{
+        if(err) return res.json({error:true,message:'멤버로 전환되는중 오류가 발생했습니다.'});
+        console.log(group);
+    })
+});
 
 router.post('/create',(req,res)=>{
 

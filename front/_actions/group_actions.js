@@ -1,4 +1,4 @@
-import { GROUP_CREATE_REQUEST, GROUPS_LOAD_REQUEST, RESET_GROUP_STATUS, GROUP_CONNECTED_STATUS, GROUP_JOIN_REQUEST, GROUP_LOAD_JOIN_REQUEST } from "./types";
+import { GROUP_CREATE_REQUEST, GROUPS_LOAD_REQUEST, RESET_GROUP_STATUS, GROUP_CONNECTED_STATUS, GROUP_JOIN_REQUEST, GROUP_LOAD_JOIN_REQUEST, GROUP_ACCESS_JOIN_REQUEST } from "./types";
 
 export const createGroupActionRequest = (data) =>({
     type: GROUP_CREATE_REQUEST,
@@ -27,5 +27,10 @@ export const joinGroupActionRequest = (data)=>({
 
 export const loadJoinGroupActionRequest = (data)=>({
     type:GROUP_LOAD_JOIN_REQUEST,
+    data
+});
+
+export const accessJoinGroupAction = (data)=>({
+    type: GROUP_ACCESS_JOIN_REQUEST,
     data
 })
