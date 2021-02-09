@@ -59,19 +59,21 @@ router.post('/join',(req,res)=>{
 router.post('/accessJoin',(req,res)=>{
     const groupId = req.body.groupId;
     const userId = req.body.userId;
-    Group.findByIdAndUpdate({_id:groupId},{
-        $push:{
-            member:{
-                $each:userId
-            }
-        },
-        $pullAll:{
-            join:'60210f85979fe31c18dd44c2'
-        }
-    })
+    Group.findById({_id:groupId})
     .exec((err,group)=>{
         if(err) return res.json({error:true,message:'멤버로 전환되는중 오류가 발생했습니다.'});
-        console.log(group);
+        for(let i = 0; i<userId.length;i++){
+            group.members.push(userId[i]);
+            group.join.pull(userId[i]);
+            User.findByIdAndUpdate({_id:userId[i]})
+            .select({groups:{$elemMatch:{groupId:groupId}}})
+            .exec((err,user)=>{
+                user.groups[0].role = 'member'
+                user.save();
+                console.log(user);
+            });
+        }
+        group.save();
     })
 });
 
