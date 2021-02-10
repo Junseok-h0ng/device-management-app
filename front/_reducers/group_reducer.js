@@ -1,4 +1,4 @@
-import { GROUP_CREATE_FAILURE, GROUP_CREATE_REQUEST, GROUP_CREATE_SUCCESS, GROUPS_LOAD_FAILURE, GROUPS_LOAD_REQUEST, GROUPS_LOAD_SUCCESS, RESET_GROUP_STATUS, GROUP_CONNECTED_STATUS, GROUP_JOIN_REQUEST, GROUP_JOIN_SUCCESS, GROUP_JOIN_FAILURE, GROUP_LOAD_JOIN_REQUEST, GROUP_LOAD_JOIN_SUCCESS,GROUP_LOAD_JOIN_FAILURE, GROUP_ACCESS_JOIN_REQUEST, GROUP_ACCESS_JOIN_SUCCESS, GROUP_ACCESS_JOIN_FAILURE } from "../_actions/types";
+import { GROUP_CREATE_FAILURE, GROUP_CREATE_REQUEST, GROUP_CREATE_SUCCESS, GROUPS_LOAD_FAILURE, GROUPS_LOAD_REQUEST, GROUPS_LOAD_SUCCESS, RESET_GROUP_STATUS, GROUP_CONNECTED_STATUS, GROUP_JOIN_REQUEST, GROUP_JOIN_SUCCESS, GROUP_JOIN_FAILURE, GROUP_LOAD_JOIN_REQUEST, GROUP_LOAD_JOIN_SUCCESS,GROUP_LOAD_JOIN_FAILURE, GROUP_ACCESS_JOIN_REQUEST, GROUP_ACCESS_JOIN_SUCCESS, GROUP_ACCESS_JOIN_FAILURE, RESET_ERROR_MESSAGE } from "../_actions/types";
 
 
 export const initialState={
@@ -29,7 +29,8 @@ export default function(state=initialState,action){
         case GROUP_JOIN_SUCCESS:
             return{
                 ...state,
-                message: action.data
+                error: action.error,
+                history: action.history
             }
         case GROUP_JOIN_FAILURE:
             return{
@@ -46,20 +47,24 @@ export default function(state=initialState,action){
             }
         case GROUPS_LOAD_FAILURE:
             return{
-                ...state
+                ...state,
+                data:action.data
             }
         case GROUP_LOAD_JOIN_REQUEST:
             return{
-                ...state
+                ...state,
+                isLoading:true
             }
         case GROUP_LOAD_JOIN_SUCCESS:
             return{
                 ...state,
-                join:action.data
+                join:action.data,
+                isLoading:false
             }
         case GROUP_LOAD_JOIN_FAILURE:
             return{
-                ...state
+                ...state,
+                isLoading:false
             }
         case GROUP_ACCESS_JOIN_REQUEST:
             return{
@@ -76,6 +81,7 @@ export default function(state=initialState,action){
         case RESET_GROUP_STATUS:
             return{
                 ...state,
+                error:null,
                 history:null,
                 connected:null
             }

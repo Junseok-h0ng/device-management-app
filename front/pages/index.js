@@ -1,18 +1,17 @@
 import React,{useEffect} from 'react'
 import {useSelector,useDispatch} from 'react-redux'
 
-import {message} from 'antd'
+import {message} from 'antd';
+
 
 import Login from '../components/user/login'
 import UserProfile from '../components/user/userProfile'
 import { resetErrorMessage, resetUserStatus } from '../_actions/user_actions'
-
-import { resetGroupStatus } from '../_actions/group_actions'
-
+import Loading from '../components/util/Loading';
 
 
 function index() {
-    const {isLogin,error} = useSelector(state=>state.user)
+    const {isLogin,error,isLoading} = useSelector(state=>state.user)
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -24,13 +23,23 @@ function index() {
         }
     }, [error])
 
+
+
     return (
-        <div>
-            {isLogin && 
-                <UserProfile/>
-            }
-            {!isLogin &&
-                <Login/>
+        <div style={{
+            display:'flex', justifyContent:'center',alignItems:'center',
+            width:'100%',height:'100vh'}}>
+            {isLoading ?
+                <Loading/>
+            :
+            <div>
+                {isLogin ? 
+                    <UserProfile/>
+                :
+                    <Login/>
+                }
+            </div>  
+
             }
         </div>
     )

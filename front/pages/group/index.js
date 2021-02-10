@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import {useDispatch,useSelector} from 'react-redux';
 import Router from 'next/router';
-import {Form,Input,Button} from 'antd';
+import {Form,Input,Button,message} from 'antd';
 
 import LoginedMenu from '../../components/menu/loginedMenu'
 import { createGroupActionRequest, joinGroupActionRequest, resetGroupStatus } from '../../_actions/group_actions';
@@ -10,7 +10,7 @@ import { createGroupActionRequest, joinGroupActionRequest, resetGroupStatus } fr
 function group() {
     const dispatch = useDispatch();
     const userInfo = useSelector(state=>state.user.data);
-    const {history} = useSelector(state=>state.group);
+    const {history,error} = useSelector(state=>state.group);
     const [createGroupName, setCreateGroupName] = useState("");
     const [joinGroupName, setJoinGroupName] = useState("")
 
@@ -19,7 +19,11 @@ function group() {
            dispatch(resetGroupStatus());
            Router.push(`/group/${history}`)
        }
-    },[history])
+       if(error != null){
+        message.error(error);
+        dispatch(resetGroupStatus());
+       }
+    },[history,error])
 
     const handleCreateGroupName = (event)=>{
         setCreateGroupName(event.target.value);

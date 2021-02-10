@@ -42,7 +42,8 @@ function* joinGroup(action){
         console.log(result);
         yield put({
             type:GROUP_JOIN_SUCCESS,
-            data:result.data.message
+            error:result.data.message,
+            history:result.data.history
         });
     }catch(err){
         yield put({

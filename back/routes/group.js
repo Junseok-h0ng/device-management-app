@@ -49,7 +49,7 @@ router.post('/join',(req,res)=>{
                     if(err) return res.json({error:true,message:'잘못된 접근 입니다.'});
                     user.groups.push({groupId:groupId,role:'join'});
                     user.save();
-                    res.json({success:true});
+                    res.json({success:true,history:groupId});
                 })
                 
             }  
@@ -70,7 +70,6 @@ router.post('/accessJoin',(req,res)=>{
             .exec((err,user)=>{
                 user.groups[0].role = 'member'
                 user.save();
-                console.log(user);
             });
         }
         group.save();

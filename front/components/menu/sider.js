@@ -23,6 +23,14 @@ function sider() {
             <Menu.Item key="5" icon={<InfoOutlined />}>Notice</Menu.Item>
         </>
     )
+    const memberMenu = (
+        <>
+            <Menu.Item key="1" icon={<GroupOutlined />}><Link href={`/group/${connected}`}><a>Group</a></Link></Menu.Item>
+            <Menu.Item key="2" icon={<DesktopOutlined />}><Link href={`/device/${connected}`}><a>Device</a></Link></Menu.Item>
+            {/* <Menu.Item key="3" icon={<ToolOutlined />}><Link><a>Repair</a></Link></Menu.Item> */}
+            <Menu.Item key="5" icon={<InfoOutlined />}>Notice</Menu.Item>
+        </>
+    )
 
     
 
@@ -36,6 +44,9 @@ function sider() {
             </Menu.Item>
             {role === 'owner' && 
                 adminMenu
+            }
+            {role === 'member' &&
+                memberMenu
             }
         </Menu>
         </Sider>
