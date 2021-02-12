@@ -114,15 +114,18 @@ export default function (state=initialState, action){
         case USER_ROLE_REQUEST:
             return{
                 ...state,
+                isLoading:true
             }
         case USER_ROLE_SUCCESS:
             return{
                 ...state,
-                role:action.data
+                role:action.data,
+                isLoading:false
             }
         case USER_ROLE_FAILURE:
             return{
-                ...state
+                ...state,
+                isLoading:false
             }
         default:
             return {

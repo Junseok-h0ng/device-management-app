@@ -11,44 +11,53 @@ export default function(state=initialState,action){
     switch(action.type){
         case GROUP_CREATE_REQUEST:
             return{
-                ...state
+                ...state,
+                isLoading:true
             }
         case GROUP_CREATE_SUCCESS:
             return{
                 ...state,
-                history:action.data
+                history:action.data,
+                isLoading:false
             }
         case GROUP_CREATE_FAILURE:
             return{
-                ...state
+                ...state,
+                isLoading:false
             }
         case GROUP_JOIN_REQUEST:
             return{
-                ...state
+                ...state,
+                isLoading:true
             }
         case GROUP_JOIN_SUCCESS:
             return{
                 ...state,
                 error: action.error,
-                history: action.history
+                history: action.history,
+                isLoading:false
             }
         case GROUP_JOIN_FAILURE:
             return{
-                ...state
+                ...state,
+                isLoading:false
             }
         case GROUPS_LOAD_REQUEST:
             return{
-                ...state
+                ...state,
+                isLoading:true
             }
         case GROUPS_LOAD_SUCCESS:
             return{
                 ...state,
-                data:action.data
+                data:action.data,
+                isLoading:false
             }
         case GROUPS_LOAD_FAILURE:
             return{
                 ...state,
-                data:action.data
+                data:action.data,
+                isLoading:false
             }
         case GROUP_LOAD_JOIN_REQUEST:
             return{
@@ -68,15 +77,18 @@ export default function(state=initialState,action){
             }
         case GROUP_ACCESS_JOIN_REQUEST:
             return{
-                ...state
+                ...state,
+                isLoading:true
             }
         case GROUP_ACCESS_JOIN_SUCCESS:
             return{
-                ...state
+                ...state,
+                isLoading:false
             }
         case GROUP_ACCESS_JOIN_FAILURE:
             return{
-                ...state
+                ...state,
+                isLoading:false
             }
         case RESET_GROUP_STATUS:
             return{

@@ -1,6 +1,7 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import {useSelector} from 'react-redux';
 import Link from 'next/link'
+import {useRouter} from 'next/router'
 import { Layout, Menu} from 'antd';
 import {
     DesktopOutlined,
@@ -14,6 +15,33 @@ import {
 function sider() {
     const {role} = useSelector(state=>state.user);
     const {connected} = useSelector(state=>state.group);
+    const router = useRouter();
+    const {route} = router;
+    const selected = route.split('/')[1];
+    const [selectedMenu, setSelectedMenu] = useState('0');
+    useEffect(() => {
+        switch(selected){
+            case 'group':
+                setSelectedMenu('1');
+                break;
+            case 'device':
+                setSelectedMenu('2');
+                break;
+            case 'repaire':
+                setSelectedMenu('3');
+                break;
+            case 'team':
+                setSelectedMenu('4');
+                break;
+            case 'notice':
+                setSelectedMenu('5');
+                break;
+            default:
+                setSelectedMenu('0');
+                break;
+        }
+    }, [selected])
+
     const adminMenu = (
         <>
             <Menu.Item key="1" icon={<GroupOutlined />}><Link href={`/group/${connected}`}><a>Group</a></Link></Menu.Item>
@@ -38,7 +66,7 @@ function sider() {
     return (
         <Sider collapsed>
         <div className="logo" />
-        <Menu theme="dark" mode="inline">
+        <Menu theme="dark" mode="inline" selectedKeys={selectedMenu}>
             <Menu.Item key="0" icon={<HomeOutlined />}>
             <Link href="/"><a>Home</a></Link>
             </Menu.Item>
