@@ -79,17 +79,16 @@ router.post('/accessJoin',(req,res)=>{
 router.post('/create',(req,res)=>{
 
     const group = new Group(req.body);
-    group.save((err,group)=>{
-        if(err) return res.json({errror:true,message:'이미있는 그룹명 입니다.'});
-        User.findById({_id:req.body.root_admin})
-        .populate('groups')
-        .exec((err,user)=>{
-            if(err) return res.json({error:true,message:'잘못된 접근 입니다.'});
-            user.groups.push({groupId:group._id,role:'owner'});
-            user.save();
-        });
-        return res.status(200).json({success:true,history:group._id});
+    User.findById({_id:req.body.root_admin})
+    .populate('groups')
+    .exec((err,user)=>{
+        if(err) return res.json({error:true,message:'잘못된 접근 입니다.'});
+        user.groups.push({groupId:group._id,role:'owner'});
+        user.save();
+        group.members.push(user._id);
+        group.save();
     });
+    return res.status(200).json({success:true,history:group._id});
 })
 
 module.exports = router;

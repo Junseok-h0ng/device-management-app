@@ -13,7 +13,9 @@ import 'antd/dist/antd.css';
 
 import AppLayout from '../components/AppLayout';
 
+
 function _app({Component,pageProps,store}) {
+    
     return (
         <Provider store={store}>
             <Head>
