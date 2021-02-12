@@ -1,4 +1,10 @@
-import { GROUP_CREATE_FAILURE, GROUP_CREATE_REQUEST, GROUP_CREATE_SUCCESS, GROUPS_LOAD_FAILURE, GROUPS_LOAD_REQUEST, GROUPS_LOAD_SUCCESS, RESET_GROUP_STATUS, GROUP_CONNECTED_STATUS, GROUP_JOIN_REQUEST, GROUP_JOIN_SUCCESS, GROUP_JOIN_FAILURE, GROUP_LOAD_JOIN_REQUEST, GROUP_LOAD_JOIN_SUCCESS,GROUP_LOAD_JOIN_FAILURE, GROUP_ACCESS_JOIN_REQUEST, GROUP_ACCESS_JOIN_SUCCESS, GROUP_ACCESS_JOIN_FAILURE, RESET_ERROR_MESSAGE } from "../_actions/types";
+import { GROUP_CREATE_FAILURE, GROUP_CREATE_REQUEST, GROUP_CREATE_SUCCESS, 
+    GROUPS_LOAD_FAILURE, GROUPS_LOAD_REQUEST, GROUPS_LOAD_SUCCESS, 
+    RESET_GROUP_STATUS, GROUP_CONNECTED_STATUS,
+    GROUP_JOIN_REQUEST, GROUP_JOIN_SUCCESS, GROUP_JOIN_FAILURE, 
+    GROUP_LOAD_JOIN_REQUEST, GROUP_LOAD_JOIN_SUCCESS,GROUP_LOAD_JOIN_FAILURE, 
+    GROUP_ACCESS_JOIN_REQUEST, GROUP_ACCESS_JOIN_SUCCESS, GROUP_ACCESS_JOIN_FAILURE,
+    GROUP_REJECT_JOIN_REQUEST,GROUP_REJECT_JOIN_SUCCESS,GROUP_REJECT_JOIN_FAILURE } from "../_actions/types";
 
 
 export const initialState={
@@ -86,6 +92,21 @@ export default function(state=initialState,action){
                 isLoading:false
             }
         case GROUP_ACCESS_JOIN_FAILURE:
+            return{
+                ...state,
+                isLoading:false
+            }
+        case GROUP_REJECT_JOIN_REQUEST:
+            return{
+                ...state,
+                isLoding:true
+            }
+        case GROUP_REJECT_JOIN_SUCCESS:
+            return{
+                ...state,
+                isLoading:false
+            }
+        case GROUP_REJECT_JOIN_FAILURE:
             return{
                 ...state,
                 isLoading:false

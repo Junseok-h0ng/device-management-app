@@ -3,10 +3,10 @@ import {useSelector,useDispatch} from 'react-redux';
 import Router,{useRouter} from 'next/router';
 
 
-import {Form,Button,Table,message} from 'antd'
+import {Form,Button,Table,message,Row,Col} from 'antd'
 
 import LoginedMenu from '../../components/menu/loginedMenu';
-import { accessJoinGroupAction, loadJoinGroupActionRequest,connectedGroupStatus } from '../../_actions/group_actions';
+import { accessJoinGroupAction, loadJoinGroupActionRequest,connectedGroupStatus, rejectJoinGroupAction } from '../../_actions/group_actions';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
 import { userRoleRequestAction} from '../../_actions/user_actions';
 import Loading from '../../components/util/Loading';
@@ -85,6 +85,36 @@ function team() {
         dispatch(accessJoinGroupAction(data));
         window.location.reload();
     }
+    const handleReject = () =>{
+        const data = {
+            groupId:pid,
+            userId:[]
+        }
+        selectedUser.map(user=>{
+            data.userId.push(user.userId);
+        });
+        dispatch(rejectJoinGroupAction(data));
+        window.location.reload();
+    }
+    const adminTable = (
+        <Form onFinish={onSubmit}>
+            <h1>관리자 목록</h1>
+            <Table
+            rowSelection={{type:Checkbox,...rowSelection}} columns={columns} dataSource={data}
+            />
+            <Button style={{marginTop:'10px'}} disabled={!hasSelected} htmlType="submit">수락</Button>
+        </Form>
+    )
+
+    const memberTable = (
+        <Form onFinish={onSubmit}>
+            <h1>그룹 멤버 목록</h1>
+            <Table
+            rowSelection={{type:Checkbox,...rowSelection}} columns={columns} dataSource={data}
+            />
+            <Button style={{marginTop:'10px',marginLeft:'10px'}} disabled={!hasSelected} htmlType="submit">수락</Button>
+        </Form>
+    )
 
     const joinTable = (
         <Form onFinish={onSubmit}>
@@ -92,20 +122,26 @@ function team() {
                 <Table
                 rowSelection={{type:Checkbox,...rowSelection}} columns={columns} dataSource={data}
                 />
-                <Button disabled={!hasSelected} htmlType="submit">수락</Button>
+                <Button style={{marginTop:'10px'}} htmlType="submit">수락</Button>
+                <Button onClick={handleReject} style={{marginTop:'10px'}} htmlType = "button">거절</Button>
             </Form>
     )
 
     return (
         <div>
         <LoginedMenu/>
-        <div  style={{
-            display:'flex',justifyContent:'center',alignItems:'center',
-            width:'100%',height:'100vh'}}>
+        <div style={{
+                display:'flex',justifyContent:'center',alignItems:'center',
+                width:'100%',height:'100vh',marginTop:'10px'}}>
             {isLoading ?
                 <Loading/>
             :   
-                joinTable    
+                <Row gutter={[16,16]}>
+                    <Col span={24}>{adminTable}</Col>
+                    <Col span={24}>{memberTable}</Col>
+                    <Col span={24}>{joinTable}</Col>
+                </Row>
+                    
             }
         </div>
     </div>

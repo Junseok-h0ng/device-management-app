@@ -61,7 +61,7 @@ router.post('/accessJoin',(req,res)=>{
     const userId = req.body.userId;
     Group.findById({_id:groupId})
     .exec((err,group)=>{
-        if(err) return res.json({error:true,message:'멤버로 전환되는중 오류가 발생했습니다.'});
+        if(err) return res.json({error:true,message:'해당되는 그룹을 찾지 못했습니다.'});
         for(let i = 0; i<userId.length;i++){
             group.members.push(userId[i]);
             group.join.pull(userId[i]);
@@ -72,9 +72,29 @@ router.post('/accessJoin',(req,res)=>{
                 user.save();
             });
         }
-        group.save();
+        
     })
 });
+
+router.post('/rejectJoin',(req,res)=>{
+    const groupId = req.body.groupId;
+    const userId = req.body.userId;
+    Group.findById({_id:groupId})
+    .exec((err,group)=>{
+        if(err) return res.json({error:true,message:'해당되는 그룹을 찾지 못했습니다.'});
+        for(let i = 0; i<userId.length;i++){
+            group.join.pull(userId[i]);
+            User.findById({_id:userId[i]})
+            .exec((err,user)=>{
+                const deleteGroup = user.groups.map(group=>group.groupId).indexOf(groupId);
+                user.groups[deleteGroup].remove();
+                user.save();
+                group.save();
+                res.json({success:true});
+            })
+        }
+    })
+})
 
 router.post('/create',(req,res)=>{
 

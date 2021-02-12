@@ -1,6 +1,6 @@
 import axios from "axios";
 import { all, fork, put, takeLatest,call} from "redux-saga/effects";
-import { GROUP_CREATE_FAILURE, GROUP_CREATE_REQUEST, GROUP_CREATE_SUCCESS, GROUPS_LOAD_REQUEST, GROUPS_LOAD_SUCCESS, GROUPS_LOAD_FAILURE, GROUP_JOIN_REQUEST, GROUP_JOIN_SUCCESS, GROUP_JOIN_FAILURE, GROUP_LOAD_JOIN_REQUEST, GROUP_LOAD_JOIN_SUCCESS, GROUP_LOAD_JOIN_FAILURE, GROUP_ACCESS_JOIN_REQUEST, GROUP_ACCESS_JOIN_SUCCESS, GROUP_ACCESS_JOIN_FAILURE } from "../_actions/types";
+import { GROUP_CREATE_FAILURE, GROUP_CREATE_REQUEST, GROUP_CREATE_SUCCESS, GROUPS_LOAD_REQUEST, GROUPS_LOAD_SUCCESS, GROUPS_LOAD_FAILURE, GROUP_JOIN_REQUEST, GROUP_JOIN_SUCCESS, GROUP_JOIN_FAILURE, GROUP_LOAD_JOIN_REQUEST, GROUP_LOAD_JOIN_SUCCESS, GROUP_LOAD_JOIN_FAILURE, GROUP_ACCESS_JOIN_REQUEST, GROUP_ACCESS_JOIN_SUCCESS, GROUP_ACCESS_JOIN_FAILURE, GROUP_REJECT_JOIN_REQUEST, GROUP_REJECT_JOIN_SUCCESS, GROUP_REJECT_JOIN_FAILURE } from "../_actions/types";
 
 function createGroupAPI(data){
     return axios.post('/group/create',data);
@@ -16,6 +16,10 @@ function loadJoinGroupAPI(data){
 
 function accessJoinGroupAPI(data){
     return axios.post('/group/accessJoin',data);
+}
+
+function rejectJoinGroupAPI(data){
+    return axios.post('/group/rejectJoin',data);
 }
 
 function loadGroupsAPI(data){
@@ -71,13 +75,25 @@ function* accessJoinGroup(action){
         yield call(accessJoinGroupAPI,action.data);
         yield put({
             type: GROUP_ACCESS_JOIN_SUCCESS
-        })
+        });
     }catch(err){
         yield put({
             type:GROUP_ACCESS_JOIN_FAILURE
+        });
+    }
+}
+
+function* rejectJoinGroup(action){
+    try{
+        yield call(rejectJoinGroupAPI,action.data);
+        yield put({
+            type:GROUP_REJECT_JOIN_SUCCESS
+        })
+    }catch(err){
+        yield put({
+            type:GROUP_REJECT_JOIN_FAILURE
         })
     }
-   
 }
 
 function* loadGroups(action){
@@ -110,6 +126,9 @@ function* watchLoadJoinGroup(){
 function* watchAccessJoinGroup(){
     yield takeLatest(GROUP_ACCESS_JOIN_REQUEST,accessJoinGroup);
 }
+function* watchRejectJoinGroup(){
+    yield takeLatest(GROUP_REJECT_JOIN_REQUEST,rejectJoinGroup);
+}
 
 function* watchLoadGroups(){
     yield takeLatest(GROUPS_LOAD_REQUEST,loadGroups);
@@ -122,5 +141,6 @@ export default function* groupSaga(){
         fork(watchLoadGroups),
         fork(watchLoadJoinGroup),
         fork(watchAccessJoinGroup),
+        fork(watchRejectJoinGroup)
     ])
 }
