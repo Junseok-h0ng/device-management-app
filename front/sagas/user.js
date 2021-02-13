@@ -80,8 +80,7 @@ function* register(action){
         });
     }
 }
-
-function* userStatus(){
+ function* userStatus(){
     try{
         const result = yield call(userStatusAPI)
         yield put({
@@ -91,7 +90,7 @@ function* userStatus(){
     }catch(err){
         yield put({
             type:USER_STATUS_FAILURE
-        })
+        });
     }
 }
 function* userRole(action){

@@ -2,8 +2,8 @@ import React,{useEffect} from 'react'
 import {useSelector,useDispatch} from 'react-redux'
 import {useRouter} from 'next/router';
 import LoginedMenu from '../../components/menu/loginedMenu';
-import { userRoleRequestAction } from '../../_actions/user_actions';
-import { connectedGroupStatus } from '../../_actions/group_actions';
+import { userRoleRequestAction, userStatusRequestAction } from '../../_actions/user_actions';
+import { connectedGroupStatus, loadGroupsActionRequest } from '../../_actions/group_actions';
 import Loading from '../../components/util/Loading'
 
 function usergroup() {
@@ -20,7 +20,7 @@ function usergroup() {
                 dispatch(userRoleRequestAction(group.role));
                 dispatch(connectedGroupStatus(pid));
                }
-           })
+           });
         }
     }, [user])
 

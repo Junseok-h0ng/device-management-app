@@ -12,21 +12,30 @@ router.post('/',(req,res,next)=>{
     });
 });
 
-router.post('/joined',(req,res)=>{
+router.post('/loadJoin',(req,res)=>{
     const groupId = req.body.groupId;
     Group.findById(groupId)
-    .populate('join')
+    .populate('members join')
     .exec((err,usersInfo)=>{
         if(err) return res.json({error:true,message:'잘못된 접근 입니다.'});
-        let users = []
-        usersInfo.join.map(userInfo=>{
-            const user = Object.assign({},userInfo.toJSON());
+        let join = [];
+        let members = [];
+
+        usersInfo.members.map(memberInfo=>{{
+            const user = Object.assign({},memberInfo.toJSON());
             delete user.password;
             delete user.groups;
-            users.push(user);
+            members.push(user);
+        }});
+        usersInfo.join.map(joinInfo=>{
+            const user = Object.assign({},joinInfo.toJSON());
+            delete user.password;
+            delete user.groups;
+            join.push(user);
         });
-        res.json({success:true,users});
-    })
+
+        res.json({success:true,members,join});
+    });
 });
 
 router.post('/join',(req,res)=>{
@@ -69,7 +78,10 @@ router.post('/accessJoin',(req,res)=>{
             .select({groups:{$elemMatch:{groupId:groupId}}})
             .exec((err,user)=>{
                 user.groups[0].role = 'member'
+                console.log(user);
                 user.save();
+                group.save();
+                res.json({success:true})
             });
         }
         
@@ -97,7 +109,6 @@ router.post('/rejectJoin',(req,res)=>{
 })
 
 router.post('/create',(req,res)=>{
-
     const group = new Group(req.body);
     User.findById({_id:req.body.root_admin})
     .populate('groups')

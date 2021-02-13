@@ -1,6 +1,6 @@
 import axios from "axios";
 import { all, fork, put, takeLatest,call} from "redux-saga/effects";
-import { GROUP_CREATE_FAILURE, GROUP_CREATE_REQUEST, GROUP_CREATE_SUCCESS, GROUPS_LOAD_REQUEST, GROUPS_LOAD_SUCCESS, GROUPS_LOAD_FAILURE, GROUP_JOIN_REQUEST, GROUP_JOIN_SUCCESS, GROUP_JOIN_FAILURE, GROUP_LOAD_JOIN_REQUEST, GROUP_LOAD_JOIN_SUCCESS, GROUP_LOAD_JOIN_FAILURE, GROUP_ACCESS_JOIN_REQUEST, GROUP_ACCESS_JOIN_SUCCESS, GROUP_ACCESS_JOIN_FAILURE, GROUP_REJECT_JOIN_REQUEST, GROUP_REJECT_JOIN_SUCCESS, GROUP_REJECT_JOIN_FAILURE } from "../_actions/types";
+import { GROUP_CREATE_FAILURE, GROUP_CREATE_REQUEST, GROUP_CREATE_SUCCESS, GROUPS_LOAD_REQUEST, GROUPS_LOAD_SUCCESS, GROUPS_LOAD_FAILURE, GROUP_JOIN_REQUEST, GROUP_JOIN_SUCCESS, GROUP_JOIN_FAILURE, GROUP_LOAD_JOIN_REQUEST, GROUP_LOAD_JOIN_SUCCESS, GROUP_LOAD_JOIN_FAILURE, GROUP_ACCESS_JOIN_REQUEST, GROUP_ACCESS_JOIN_SUCCESS, GROUP_ACCESS_JOIN_FAILURE, GROUP_REJECT_JOIN_REQUEST, GROUP_REJECT_JOIN_SUCCESS, GROUP_REJECT_JOIN_FAILURE, USER_STATUS_REQUEST } from "../_actions/types";
 
 function createGroupAPI(data){
     return axios.post('/group/create',data);
@@ -11,7 +11,7 @@ function joinGroupAPI(data){
 }
 
 function loadJoinGroupAPI(data){
-    return axios.post('/group/joined',data);
+    return axios.post('/group/loadJoin',data);
 }
 
 function accessJoinGroupAPI(data){
@@ -43,7 +43,6 @@ function* createGroup(action){
 function* joinGroup(action){
     try{
         const result = yield call(joinGroupAPI,action.data);
-        console.log(result);
         yield put({
             type:GROUP_JOIN_SUCCESS,
             error:result.data.message,
@@ -59,9 +58,13 @@ function* joinGroup(action){
 function* loadJoinGroup(action){
     try{
         const result = yield call(loadJoinGroupAPI,action.data);
+
         yield put({
             type:GROUP_LOAD_JOIN_SUCCESS,
-            data: result.data.users
+            data: {
+                join: result.data.join,
+                members: result.data.members
+            }
         });
     }catch(err){
         yield put({

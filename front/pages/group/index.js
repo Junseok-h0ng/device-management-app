@@ -17,7 +17,7 @@ function group() {
     useEffect(() => {
        if(history != null){
            dispatch(resetGroupStatus());
-           Router.push(`/group/${history}`)
+           Router.push('/');
        }
        if(error != null){
         message.error(error);
@@ -38,6 +38,7 @@ function group() {
             name:createGroupName
         }
         dispatch(createGroupActionRequest(data));
+        message.success('그룹생성을 완료했습니다.');
     }
     const handleJoinSubmit = ()=>{
         const data = {
@@ -45,6 +46,7 @@ function group() {
             groupId: joinGroupName
         }
         dispatch(joinGroupActionRequest(data));
+        message.success('그룹참가요청을 완료했습니다.');
     }
 
     const layout = {

@@ -10,7 +10,8 @@ import { GROUP_CREATE_FAILURE, GROUP_CREATE_REQUEST, GROUP_CREATE_SUCCESS,
 export const initialState={
     history: null,
     connected:null,
-    join:[]
+    join:[],
+    members:[]  
 }
 
 export default function(state=initialState,action){
@@ -73,7 +74,8 @@ export default function(state=initialState,action){
         case GROUP_LOAD_JOIN_SUCCESS:
             return{
                 ...state,
-                join:action.data,
+                join:action.data.join,
+                members:action.data.members,
                 isLoading:false
             }
         case GROUP_LOAD_JOIN_FAILURE:

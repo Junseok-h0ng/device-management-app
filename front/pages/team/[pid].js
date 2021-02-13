@@ -13,10 +13,13 @@ import Loading from '../../components/util/Loading';
 
 function team() {
     const user = useSelector(state=>state.user.data);
-    const {join,isLoading} = useSelector(state=>state.group)
+    const {join,isLoading,members} = useSelector(state=>state.group)
     const dispatch = useDispatch();
     const router = useRouter();
     const {pid} = router.query;
+
+    let joinData = [];
+    let membersData = [];
 
     useEffect(() => {
         if(user){
@@ -26,6 +29,8 @@ function team() {
                         dispatch(userRoleRequestAction(group.role));
                         dispatch(connectedGroupStatus(pid));
                         dispatch(loadJoinGroupActionRequest({groupId:pid}));
+
+                        
                     }else{
                         Router.push('/');
                         message.error('권한이 없는 아이디 입니다.');
@@ -33,21 +38,14 @@ function team() {
 
                 }
             })
-        }        
+        }
     }, [user]);
 
     const [selectedUser, setSelectedUser] = useState([]);
     const [hasSelected,setHasSelected] = useState(0);
 
-    let data = [];
-    join.map((user,index)=>{
-        data.push({
-            key:index,
-            userId: user._id,
-            email: user.email,
-            name: user.name
-        })
-    });
+
+
     const columns = [
         {
             title: 'UserId',
@@ -74,6 +72,8 @@ function team() {
         }),
       };
 
+
+
     const onSubmit = () =>{
         const data = {
             groupId:pid,
@@ -96,52 +96,76 @@ function team() {
         dispatch(rejectJoinGroupAction(data));
         window.location.reload();
     }
+
     const adminTable = (
         <Form onFinish={onSubmit}>
             <h1>관리자 목록</h1>
             <Table
-            rowSelection={{type:Checkbox,...rowSelection}} columns={columns} dataSource={data}
+            rowSelection={{type:Checkbox,...rowSelection}} columns={columns}
             />
-            <Button style={{marginTop:'10px'}} disabled={!hasSelected} htmlType="submit">수락</Button>
+            <Button style={{marginTop:'10px'}} disabled={!hasSelected} htmlType="submit">강등</Button>
         </Form>
     )
 
     const memberTable = (
         <Form onFinish={onSubmit}>
-            <h1>그룹 멤버 목록</h1>
+            <h1>멤버 목록</h1>
             <Table
-            rowSelection={{type:Checkbox,...rowSelection}} columns={columns} dataSource={data}
+            rowSelection={{type:Checkbox,...rowSelection}} columns={columns} dataSource={membersData}
             />
-            <Button style={{marginTop:'10px',marginLeft:'10px'}} disabled={!hasSelected} htmlType="submit">수락</Button>
+            <Button style={{marginTop:'10px'}} disabled={!hasSelected} htmlType="submit">승급</Button>
         </Form>
     )
 
     const joinTable = (
         <Form onFinish={onSubmit}>
-                <h1>그룹 참가 희망 인원</h1>
+                <h1>참가 희망 인원</h1>
                 <Table
-                rowSelection={{type:Checkbox,...rowSelection}} columns={columns} dataSource={data}
+                rowSelection={{type:Checkbox,...rowSelection}} columns={columns} dataSource={joinData}
                 />
-                <Button style={{marginTop:'10px'}} htmlType="submit">수락</Button>
-                <Button onClick={handleReject} style={{marginTop:'10px'}} htmlType = "button">거절</Button>
+                <Button style={{marginTop:'10px'}} disabled={!hasSelected} htmlType="submit">수락</Button>
+                <Button onClick={handleReject} style={{marginTop:'10px', marginLeft:'10px'}} disabled={!hasSelected} htmlType = "button">거절</Button>
             </Form>
     )
+    const pushTableData = (dataTarget,pushTarget) =>{
+        dataTarget.map((user,index)=>{
+            pushTarget.push({
+                key:index,
+                userId: user._id,
+                email: user.email,
+                name:user.name
+            });
+        });
+    }
+
+    const drawTable = ()=>{
+
+        pushTableData(join,joinData);
+        pushTableData(members,membersData);
+        return (
+            <Row gutter={[16,16]}>
+                <Col span={24}>{adminTable}</Col>
+                <Col span={24}>{memberTable}</Col>
+                <Col span={24}>{joinTable}</Col>
+            </Row>
+        )
+    } 
 
     return (
         <div>
         <LoginedMenu/>
         <div style={{
-                display:'flex',justifyContent:'center',alignItems:'center',
+                display:'flex',justifyContent:'center',alignItems:'center', 
                 width:'100%',height:'100vh',marginTop:'10px'}}>
             {isLoading ?
                 <Loading/>
             :   
-                <Row gutter={[16,16]}>
-                    <Col span={24}>{adminTable}</Col>
-                    <Col span={24}>{memberTable}</Col>
-                    <Col span={24}>{joinTable}</Col>
-                </Row>
-                    
+                drawTable()
+            // <Row gutter={[16,16]}>
+            //     <Col span={24}>{adminTable}</Col>
+            //     <Col span={24}>{memberTable}</Col>
+            //     <Col span={24}>{joinTable}</Col>
+            // </Row>
             }
         </div>
     </div>

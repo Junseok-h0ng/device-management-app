@@ -1,20 +1,20 @@
 import React,{useEffect} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch,useSelector} from 'react-redux';
 
 
 import { Layout} from 'antd';
 
 import { userStatusRequestAction } from '../_actions/user_actions';
 import Sider from './menu/sider'
+
+
 function AppLayout({children}) {
 
     const {Content, Footer } = Layout;
-
     const dispatch = useDispatch();
-
     useEffect(() => {
         dispatch(userStatusRequestAction());
-    }, []);
+    }, [children]);
     
     return (
         <Layout style={{ minHeight: '100vh' }}>

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 import {Menu,Dropdown,Row,Col} from 'antd';
 import {DownOutlined } from '@ant-design/icons'
-import { logoutRequestAction } from '../../_actions/user_actions';
+import { logoutRequestAction, userStatusRequestAction } from '../../_actions/user_actions';
 import { loadGroupsActionRequest } from '../../_actions/group_actions';
 
 function loginedMenu() {
@@ -26,10 +26,6 @@ function loginedMenu() {
             })
             dispatch(loadGroupsActionRequest(groupsId));
         }
-        
-
-
-
     },[userData])
     
     const menu = (
