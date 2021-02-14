@@ -10,10 +10,12 @@ import { accessJoinGroupAction, loadJoinGroupActionRequest,connectedGroupStatus,
 import Checkbox from 'antd/lib/checkbox/Checkbox';
 import { userRoleRequestAction} from '../../_actions/user_actions';
 import Loading from '../../components/util/Loading';
+import ErrorPage from '../../components/util/ErrorPage';
 
 function team() {
     const user = useSelector(state=>state.user.data);
-    const {join,isLoading,members,admins} = useSelector(state=>state.group)
+    const {join,members,admins} = useSelector(state=>state.group)
+    const {role,isLoading} = useSelector(state=>state.user);
     const dispatch = useDispatch();
     const router = useRouter();
     const {pid} = router.query;
@@ -22,8 +24,7 @@ function team() {
     const [hasMemberSelected,setHasMemberSelected] = useState(0);
     const [hasAdminSelected,setHasAdminSelected] = useState(0);
     const [hasJoinSelected,setHasJoinSelected] = useState(0);
-    const [hasSelected,setHasSelected] = useState(0);
-    
+
     let joinData = [];
     let membersData = [];
     let adminsData = [];
@@ -32,16 +33,12 @@ function team() {
         if(user){
             user.groups.map(group=>{
                 if(group.groupId === pid){
-                    if(group.role === 'owner'  || group.role === 'admin'){
-                        dispatch(userRoleRequestAction(group.role));
-                        dispatch(connectedGroupStatus(pid));
+                    if(group.role === 'owner' || group.role === 'admin'){
                         dispatch(loadJoinGroupActionRequest({groupId:pid}));
-                    }else{
-                        Router.push('/');
-                        message.error('권한이 없는 아이디 입니다.');
+                        dispatch(connectedGroupStatus(pid));
+                        dispatch(userRoleRequestAction(group.role));
                     }
-
-                }
+                }   
             })
         }
     }, [user]);
@@ -183,13 +180,14 @@ function team() {
                 width:'100%',height:'100vh',marginTop:'10px'}}>
             {isLoading ?
                 <Loading/>
-            :   
-                drawTable()
-            // <Row gutter={[16,16]}>
-            //     <Col span={24}>{adminTable}</Col>
-            //     <Col span={24}>{memberTable}</Col>
-            //     <Col span={24}>{joinTable}</Col>
-            // </Row>
+            :
+                <div>
+                    {role != null ?
+                        drawTable()
+                    :
+                        <ErrorPage/>  
+                    }    
+                </div>
             }
         </div>
     </div>

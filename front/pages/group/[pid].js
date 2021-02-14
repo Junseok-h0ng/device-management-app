@@ -2,9 +2,10 @@ import React,{useEffect} from 'react'
 import {useSelector,useDispatch} from 'react-redux'
 import {useRouter} from 'next/router';
 import LoginedMenu from '../../components/menu/loginedMenu';
-import { userRoleRequestAction, userStatusRequestAction } from '../../_actions/user_actions';
-import { connectedGroupStatus, loadGroupsActionRequest } from '../../_actions/group_actions';
+import { userRoleRequestAction } from '../../_actions/user_actions';
+import { connectedGroupStatus } from '../../_actions/group_actions';
 import Loading from '../../components/util/Loading'
+import ErrorPage from '../../components/util/ErrorPage';
 
 function usergroup() {
     const user = useSelector(state=>state.user.data);
@@ -24,8 +25,6 @@ function usergroup() {
         }
     }, [user])
 
-
-
     return (
         <div>
             <LoginedMenu/>
@@ -36,10 +35,21 @@ function usergroup() {
                     <Loading/>
                 :
                 <div>
-                    <p>그룹 ID: {pid}</p>
-                    <p>그룹의 권한 : {role} </p>
-                    <p>근무지 : </p>
-                    <p>사용중인 장비 : </p>
+                    {role === 'join'?
+                    <div>
+                        <p>어드민이 그룹권한을 검토중입니다.</p>
+                    </div>
+                    :role != null?
+                    <div>
+                        <p>그룹 ID: {pid}</p>
+                        <p>그룹의 권한 : {role} </p>
+                        <p>근무지 : </p>
+                        <p>사용중인 장비 : </p>
+                    </div>
+                    :
+                    <ErrorPage/>
+                }
+
                 </div>
                 }
             </div>

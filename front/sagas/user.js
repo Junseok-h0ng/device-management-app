@@ -94,7 +94,6 @@ function* register(action){
     }
 }
 function* userRole(action){
-    console.log(action.data);
     try{
         yield put({
             type:USER_ROLE_SUCCESS,
