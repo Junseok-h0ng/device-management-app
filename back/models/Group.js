@@ -10,6 +10,10 @@ const groupSchema = mongoose.Schema({
        type:String,
        unique: true
    },
+   admins:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User'
+   }],
    members:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'

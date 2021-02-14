@@ -6,20 +6,27 @@ import Router,{useRouter} from 'next/router';
 import {Form,Button,Table,message,Row,Col} from 'antd'
 
 import LoginedMenu from '../../components/menu/loginedMenu';
-import { accessJoinGroupAction, loadJoinGroupActionRequest,connectedGroupStatus, rejectJoinGroupAction } from '../../_actions/group_actions';
+import { accessJoinGroupAction, loadJoinGroupActionRequest,connectedGroupStatus, rejectJoinGroupAction, increaseRoleGroupAction, decreaseRoleGroupAction } from '../../_actions/group_actions';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
 import { userRoleRequestAction} from '../../_actions/user_actions';
 import Loading from '../../components/util/Loading';
 
 function team() {
     const user = useSelector(state=>state.user.data);
-    const {join,isLoading,members} = useSelector(state=>state.group)
+    const {join,isLoading,members,admins} = useSelector(state=>state.group)
     const dispatch = useDispatch();
     const router = useRouter();
     const {pid} = router.query;
 
+    const [selectedUser, setSelectedUser] = useState([]);
+    const [hasMemberSelected,setHasMemberSelected] = useState(0);
+    const [hasAdminSelected,setHasAdminSelected] = useState(0);
+    const [hasJoinSelected,setHasJoinSelected] = useState(0);
+    const [hasSelected,setHasSelected] = useState(0);
+    
     let joinData = [];
     let membersData = [];
+    let adminsData = [];
 
     useEffect(() => {
         if(user){
@@ -29,8 +36,6 @@ function team() {
                         dispatch(userRoleRequestAction(group.role));
                         dispatch(connectedGroupStatus(pid));
                         dispatch(loadJoinGroupActionRequest({groupId:pid}));
-
-                        
                     }else{
                         Router.push('/');
                         message.error('권한이 없는 아이디 입니다.');
@@ -41,8 +46,6 @@ function team() {
         }
     }, [user]);
 
-    const [selectedUser, setSelectedUser] = useState([]);
-    const [hasSelected,setHasSelected] = useState(0);
 
 
 
@@ -60,21 +63,25 @@ function team() {
             dataIndex: 'name'
         }
     ]
-
-    const rowSelection = {
+    const rowAdminSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
-        setHasSelected(selectedRowKeys.length);
-        setSelectedUser(selectedRows);
-        },
-        getCheckboxProps: (record) => ({
-          disabled: record.name === 'Disabled User', // Column configuration not to be checked
-          name: record.name,
-        }),
+            setHasAdminSelected(selectedRowKeys.length);
+            setSelectedUser(selectedRows);
+            }
       };
-
-
-
-    const onSubmit = () =>{
+    const rowMemberSelection = {
+        onChange: (selectedRowKeys, selectedRows) => {
+            setHasMemberSelected(selectedRowKeys.length);
+            setSelectedUser(selectedRows);
+            }
+      };
+      const rowJoinSelection = {
+        onChange: (selectedRowKeys, selectedRows) => {
+            setHasJoinSelected(selectedRowKeys.length);
+            setSelectedUser(selectedRows);
+            }
+      };    
+    const submitData = () =>{
         const data = {
             groupId:pid,
             userId:[]
@@ -82,9 +89,23 @@ function team() {
         selectedUser.map(user=>{
             data.userId.push(user.userId);
         });
-        dispatch(accessJoinGroupAction(data));
+        return data;
+    }
+
+
+    const onSubmitJoin = () =>{
+        dispatch(accessJoinGroupAction(submitData()));
         window.location.reload();
     }
+    const onSubmitIncrease = () =>{
+        dispatch(increaseRoleGroupAction(submitData()));
+        window.location.reload();
+    }
+    const onSubmitDecrease = () =>{
+        dispatch(decreaseRoleGroupAction(submitData()));
+        window.location.reload();
+    }
+
     const handleReject = () =>{
         const data = {
             groupId:pid,
@@ -97,34 +118,35 @@ function team() {
         window.location.reload();
     }
 
+
     const adminTable = (
-        <Form onFinish={onSubmit}>
+        <Form onFinish={onSubmitDecrease}>
             <h1>관리자 목록</h1>
-            <Table
-            rowSelection={{type:Checkbox,...rowSelection}} columns={columns}
+            <Table loading={isLoading}
+            rowSelection={{type:Checkbox,...rowAdminSelection}} columns={columns} dataSource={adminsData}
             />
-            <Button style={{marginTop:'10px'}} disabled={!hasSelected} htmlType="submit">강등</Button>
+            <Button style={{marginTop:'10px'}} disabled={!hasAdminSelected} htmlType="submit">강등</Button>
         </Form>
     )
 
     const memberTable = (
-        <Form onFinish={onSubmit}>
+        <Form onFinish={onSubmitIncrease}>
             <h1>멤버 목록</h1>
-            <Table
-            rowSelection={{type:Checkbox,...rowSelection}} columns={columns} dataSource={membersData}
+            <Table loading={isLoading}
+            rowSelection={{type:Checkbox,...rowMemberSelection}} columns={columns} dataSource={membersData}
             />
-            <Button style={{marginTop:'10px'}} disabled={!hasSelected} htmlType="submit">승급</Button>
+            <Button style={{marginTop:'10px'}} disabled={!hasMemberSelected} htmlType="submit">승급</Button>
         </Form>
     )
 
     const joinTable = (
-        <Form onFinish={onSubmit}>
+        <Form onFinish={onSubmitJoin}>
                 <h1>참가 희망 인원</h1>
-                <Table
-                rowSelection={{type:Checkbox,...rowSelection}} columns={columns} dataSource={joinData}
+                <Table loading={isLoading}
+                rowSelection={{type:Checkbox,...rowJoinSelection}} columns={columns} dataSource={joinData}
                 />
-                <Button style={{marginTop:'10px'}} disabled={!hasSelected} htmlType="submit">수락</Button>
-                <Button onClick={handleReject} style={{marginTop:'10px', marginLeft:'10px'}} disabled={!hasSelected} htmlType = "button">거절</Button>
+                <Button style={{marginTop:'10px'}} disabled={!hasJoinSelected} htmlType="submit">수락</Button>
+                <Button onClick={handleReject} style={{marginTop:'10px', marginLeft:'10px'}} disabled={!hasJoinSelected} htmlType = "button">거절</Button>
             </Form>
     )
     const pushTableData = (dataTarget,pushTarget) =>{
@@ -142,6 +164,8 @@ function team() {
 
         pushTableData(join,joinData);
         pushTableData(members,membersData);
+        pushTableData(admins,adminsData);
+
         return (
             <Row gutter={[16,16]}>
                 <Col span={24}>{adminTable}</Col>

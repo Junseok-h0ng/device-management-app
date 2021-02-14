@@ -71,6 +71,8 @@ function sider() {
             </Menu.Item>
             {role === 'owner' ? 
                 ownerMenu
+            :role === 'admin' ?
+                ownerMenu
             :role === 'member' ?
                 memberMenu
             :

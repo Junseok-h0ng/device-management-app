@@ -15,11 +15,19 @@ router.post('/',(req,res,next)=>{
 router.post('/loadJoin',(req,res)=>{
     const groupId = req.body.groupId;
     Group.findById(groupId)
-    .populate('members join')
+    .populate('admins members join')
     .exec((err,usersInfo)=>{
         if(err) return res.json({error:true,message:'잘못된 접근 입니다.'});
         let join = [];
         let members = [];
+        let admins = [];
+        
+        usersInfo.admins.map(memberInfo=>{
+            const user = Object.assign({},memberInfo.toJSON());
+            delete user.password;
+            delete user.groups;
+            admins.push(user);
+        })
 
         usersInfo.members.map(memberInfo=>{{
             const user = Object.assign({},memberInfo.toJSON());
@@ -34,9 +42,11 @@ router.post('/loadJoin',(req,res)=>{
             join.push(user);
         });
 
-        res.json({success:true,members,join});
+        res.json({success:true,admins,members,join});
     });
 });
+
+
 
 router.post('/join',(req,res)=>{
     const groupId = req.body.groupId;
@@ -78,15 +88,56 @@ router.post('/accessJoin',(req,res)=>{
             .select({groups:{$elemMatch:{groupId:groupId}}})
             .exec((err,user)=>{
                 user.groups[0].role = 'member'
-                console.log(user);
                 user.save();
                 group.save();
-                res.json({success:true})
+                res.json({success:true});
             });
         }
         
     })
 });
+
+router.post('/increaseRole',(req,res)=>{
+    const groupId = req.body.groupId;
+    const userId = req.body.userId;
+    Group.findById({_id:groupId})
+    .exec((err,group)=>{
+        if(err) return res.json({error:true});
+        for(let i = 0; i<userId.length;i++){
+            group.admins.push(userId[i]);
+            group.members.pull(userId[i]);
+            User.findById({_id:userId[i]})
+            .select({groups:{$elemMatch:{groupId:groupId}}})
+            .exec((err,user)=>{
+                user.groups[0].role = 'admin';
+                user.save();
+                group.save();
+                res.json({success:true});
+            });
+        }
+    });
+});
+
+router.post('/decreaseRole',(req,res)=>{
+    const groupId = req.body.groupId;
+    const userId = req.body.userId;
+    Group.findById({_id:groupId})
+    .exec((err,group)=>{
+        if(err) return res.json({error:true});
+        for(let i=0;i<userId.length;i++){
+            group.admins.pull(userId[i]);
+            group.members.push(userId[i]);
+            User.findById({_id:userId[i]})
+            .select({groups:{$elemMatch:{groupId:groupId}}})
+            .exec((err,user)=>{
+                user.groups[0].role = 'member';
+                user.save();
+                group.save();
+                res.json({success:true});
+            })
+        }
+    })
+})
 
 router.post('/rejectJoin',(req,res)=>{
     const groupId = req.body.groupId;
@@ -116,7 +167,6 @@ router.post('/create',(req,res)=>{
         if(err) return res.json({error:true,message:'잘못된 접근 입니다.'});
         user.groups.push({groupId:group._id,role:'owner'});
         user.save();
-        group.members.push(user._id);
         group.save();
     });
     return res.status(200).json({success:true,history:group._id});
