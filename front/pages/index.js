@@ -9,7 +9,6 @@ import UserProfile from '../components/user/userProfile'
 import { resetErrorMessage, resetUserStatus } from '../_actions/user_actions'
 import Loading from '../components/util/Loading';
 
-
 function index() {
     const {isLogin,error,isLoading} = useSelector(state=>state.user)
     const dispatch = useDispatch();
@@ -33,7 +32,7 @@ function index() {
                 <Loading/>
             :
             <div>
-                {isLogin ? 
+                {isLogin ?                    
                     <UserProfile/>
                 :
                     <Login/>

@@ -29,21 +29,21 @@ function loginedMenu() {
     },[userData])
     
     const menu = (
-        <Menu>
-            <Menu.Item key="0">
-                <Link href="/group">
-                    <a>AddGroup</a>
-                </Link>
-            </Menu.Item>           
-            <Menu.Divider />
-            {groupsData && groupsData.map((group,index)=>(
-                <Menu.Item key={index+1}>
-                    <Link href={`/group/${group._id}`}>
-                        <a>{group.name}</a>
+            <Menu>
+                <Menu.Item key="0">
+                    <Link href="/group">
+                        <a>AddGroup</a>
                     </Link>
-                </Menu.Item>
-            ))}
-        </Menu>
+                </Menu.Item>           
+                <Menu.Divider />
+                {groupsData && groupsData.map((group,index)=>(
+                    <Menu.Item key={index+1}>
+                        <Link href={`/group/${group._id}`}>
+                            <a>{group.name}</a>
+                        </Link>
+                    </Menu.Item>
+                ))}
+            </Menu>
     )
 
     return (

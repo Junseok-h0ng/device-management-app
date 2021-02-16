@@ -41,7 +41,7 @@ function team() {
                 }   
             })
         }
-    }, [user]);
+    }, [user,pid]);
 
 
 
