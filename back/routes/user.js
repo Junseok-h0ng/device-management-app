@@ -15,6 +15,17 @@ router.post('/',(req,res)=>{
     }
 });
 
+router.post('/loadData',(req,res)=>{
+    const userId = req.body.userId;
+    User.findById({_id:userId})
+    .exec((err,userData)=>{
+        if(err) return res.json({error:true});
+        const user = Object.assign({},userData.toJSON());
+        delete user.password;
+        return res.json(user)
+    })
+})
+
 router.post('/register',(req,res)=>{  
     const user = new User(req.body);
     user.save((err,doc)=>{

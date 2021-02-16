@@ -6,6 +6,7 @@ import { Layout} from 'antd';
 
 import { userStatusRequestAction } from '../_actions/user_actions';
 import Sider from './menu/sider'
+import Router from 'next/router';
 
 
 function AppLayout({children}) {
@@ -14,8 +15,8 @@ function AppLayout({children}) {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(userStatusRequestAction());
-    }, [children]);
-    
+    }, []);
+
     return (
         <Layout style={{ minHeight: '100vh' }}>
         <Sider/>

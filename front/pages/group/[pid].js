@@ -2,7 +2,7 @@ import React,{useEffect} from 'react'
 import {useSelector,useDispatch} from 'react-redux'
 import {useRouter} from 'next/router';
 import LoginedMenu from '../../components/menu/loginedMenu';
-import { userRoleRequestAction } from '../../_actions/user_actions';
+import { userRoleRequestAction, userStatusRequestAction } from '../../_actions/user_actions';
 import { connectedGroupStatus } from '../../_actions/group_actions';
 import Loading from '../../components/util/Loading'
 import ErrorPage from '../../components/util/ErrorPage';
@@ -23,7 +23,7 @@ function usergroup() {
                }
            });
         }
-    }, [user])
+    }, [user,pid])
 
     return (
         <div>

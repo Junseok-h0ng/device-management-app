@@ -4,6 +4,7 @@ import {
     REGISTER_REQUEST,
     RESET_ERROR_MESSAGE,
     RESET_USER_STATUS,
+    USER_LOAD_DATA_REQUEST,
     USER_ROLE_REQUEST,
     USER_STATUS_REQUEST
 } from './types'
@@ -37,4 +38,9 @@ export const resetErrorMessage = () =>({
 
 export const resetUserStatus = () =>({
     type: RESET_USER_STATUS
+});
+
+export const userLoadDataAction = (data) =>({
+    type: USER_LOAD_DATA_REQUEST,
+    data
 })

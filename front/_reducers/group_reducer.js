@@ -26,7 +26,8 @@ export default function(state=initialState,action){
             return{
                 ...state,
                 history:action.data,
-                isLoading:false
+                isLoading:false,
+                
             }
         case GROUP_CREATE_FAILURE:
             return{

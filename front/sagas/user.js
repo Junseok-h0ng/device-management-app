@@ -3,6 +3,9 @@ import{all,fork,call,put,takeLatest} from 'redux-saga/effects'
 import { LOG_IN_FAILURE, LOG_IN_REQUEST, LOG_IN_SUCCESS, 
     LOG_OUT_FAILURE, LOG_OUT_REQUEST, LOG_OUT_SUCCESS, 
     REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS,
+    USER_LOAD_DATA_REQUEST,
+    USER_LOAD_DATA_SUCCESS,
+    USER_LOAD_DATA_FAILURE,
     USER_ROLE_FAILURE,
     USER_ROLE_REQUEST,
     USER_ROLE_SUCCESS,
@@ -22,6 +25,9 @@ function registerAPI(data){
 }
 function userStatusAPI(){
     return axios.post('/user');
+}
+function userLoadDataAPI(data){
+    return axios.post('user/loadData',data)
 }
 
 function* login(action){
@@ -105,6 +111,20 @@ function* userRole(action){
         })
     }
 }
+function* userLoadData(action){
+    try{
+        const result = yield call(userLoadDataAPI,action.data);
+        console.log(result);
+        yield put({
+            type:USER_LOAD_DATA_SUCCESS,
+            data:result.data
+        });
+    }catch(err){
+        yield put({
+            type:USER_LOAD_DATA_FAILURE
+        })
+    }
+}
 
 function* watchLogin(){
     yield takeLatest(LOG_IN_REQUEST,login);
@@ -123,6 +143,9 @@ function* watchUserStatus(){
 function* watchUserRole(){
     yield takeLatest(USER_ROLE_REQUEST,userRole);
 }
+function* watchUserLoadData(){
+    yield takeLatest(USER_LOAD_DATA_REQUEST,userLoadData)
+}
 
 export default function* userSaga(){
     yield all([
@@ -130,6 +153,7 @@ export default function* userSaga(){
         fork(watchRegister),
         fork(watchLogout),
         fork(watchUserStatus),
-        fork(watchUserRole)
+        fork(watchUserRole),
+        fork(watchUserLoadData)
     ]);
 }

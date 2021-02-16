@@ -15,7 +15,10 @@ import {
     USER_STATUS_FAILURE,
     USER_STATUS_REQUEST,
     USER_STATUS_SUCCESS,
-    RESET_USER_STATUS
+    RESET_USER_STATUS,
+    USER_LOAD_DATA_REQUEST,
+    USER_LOAD_DATA_SUCCESS,
+    USER_LOAD_DATA_FAILURE
 } from '../_actions/types';
 
 export const initialState = {
@@ -123,6 +126,22 @@ export default function (state=initialState, action){
                 isLoading:false
             }
         case USER_ROLE_FAILURE:
+            return{
+                ...state,
+                isLoading:false
+            }
+        case USER_LOAD_DATA_REQUEST:
+            return{
+                ...state,
+                isLoading:true
+            }
+        case USER_LOAD_DATA_SUCCESS:
+            return{
+                ...state,
+                isLoading:false,
+                data:action.data
+            }
+        case USER_LOAD_DATA_FAILURE:
             return{
                 ...state,
                 isLoading:false

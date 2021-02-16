@@ -5,6 +5,7 @@ import {Form,Input,Button,message} from 'antd';
 
 import LoginedMenu from '../../components/menu/loginedMenu'
 import { createGroupActionRequest, joinGroupActionRequest, resetGroupStatus } from '../../_actions/group_actions';
+import { userLoadDataAction } from '../../_actions/user_actions';
 
 
 function group() {
@@ -16,8 +17,9 @@ function group() {
 
     useEffect(() => {
        if(history != null){
+           dispatch(userLoadDataAction({userId:userInfo._id}));
            dispatch(resetGroupStatus());
-           Router.push('/');
+           Router.push(`/group/${history}`);
        }
        if(error != null){
         message.error(error);
@@ -38,7 +40,6 @@ function group() {
             name:createGroupName
         }
         dispatch(createGroupActionRequest(data));
-        message.success('그룹생성을 완료했습니다.');
     }
     const handleJoinSubmit = ()=>{
         const data = {
@@ -46,7 +47,6 @@ function group() {
             groupId: joinGroupName
         }
         dispatch(joinGroupActionRequest(data));
-        message.success('그룹참가요청을 완료했습니다.');
     }
 
     const layout = {
