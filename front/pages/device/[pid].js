@@ -2,7 +2,7 @@ import React,{useEffect}  from 'react'
 import {useDispatch,useSelector} from 'react-redux'
 import {useRouter} from 'next/router';
 import LoginedMenu from '../../components/menu/loginedMenu';
-import DeviceTable from '../../components/DeviceTable';
+import DeviceTable from '../../components/Device/DeviceTable';
 import { userRoleRequestAction } from '../../_actions/user_actions';
 import { connectedGroupStatus } from '../../_actions/group_actions';
 import Loading from '../../components/util/Loading';
@@ -41,7 +41,7 @@ function device() {
                 :
                 <div>
                     {role != null ?
-                        <DeviceTable/>
+                        <DeviceTable pid={pid}/>
                     :
                         <ErrorPage/>
                     }

@@ -2,18 +2,18 @@ const mongoose = require('mongoose');
 
 
 const deviceSchema = mongoose.Schema({
-    group_id:{
+    groupId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Group'
     },
-    device_info_id:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'DeviceInfo'
-    },
-    serial_number:{
+    // device_info_id:{
+    //     type:mongoose.Schema.Types.ObjectId,
+    //     ref:'DeviceInfo'
+    // },
+    serialNumber:{
         type:String
     },
-    host:{
+    owner:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
     },

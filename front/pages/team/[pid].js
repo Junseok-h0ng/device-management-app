@@ -138,13 +138,13 @@ function team() {
 
     const joinTable = (
         <Form onFinish={onSubmitJoin}>
-                <h1>참가 희망 인원</h1>
-                <Table loading={isLoading}
-                rowSelection={{type:Checkbox,...rowJoinSelection}} columns={columns} dataSource={joinData}
-                />
-                <Button style={{marginTop:'10px'}} disabled={!hasJoinSelected} htmlType="submit">수락</Button>
-                <Button onClick={handleReject} style={{marginTop:'10px', marginLeft:'10px'}} disabled={!hasJoinSelected} htmlType = "button">거절</Button>
-            </Form>
+            <h1>참가 희망 인원</h1>
+            <Table loading={isLoading}
+            rowSelection={{type:Checkbox,...rowJoinSelection}} columns={columns} dataSource={joinData}
+            />
+            <Button style={{marginTop:'10px'}} disabled={!hasJoinSelected} htmlType="submit">수락</Button>
+            <Button onClick={handleReject} style={{marginTop:'10px', marginLeft:'10px'}} disabled={!hasJoinSelected} htmlType = "button">거절</Button>
+        </Form>
     )
     const pushTableData = (dataTarget,pushTarget) =>{
         dataTarget.map((user,index)=>{

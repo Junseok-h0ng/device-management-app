@@ -1,7 +1,10 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Table, Input, Button, Popconfirm, Form } from 'antd';
+import { Table, Input, Button, Popconfirm, Form, Select} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons'
+import {useDispatch} from 'react-redux'
+import { addDeviceAction } from '../../_actions/device_action';
 const EditableContext = React.createContext(null);
+
 
 const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
@@ -83,8 +86,11 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
+
+
 class EditableTable extends React.Component {
   constructor(props) {
+
     super(props);
     this.columns = [
       {
@@ -104,11 +110,6 @@ class EditableTable extends React.Component {
         editable:true
       },
       {
-          title:'Info',
-          dataIndex:'info',
-          editable:true
-      },
-      {
         title: 'Delete',
         dataIndex: 'delete',
         render: (_, record) =>
@@ -121,21 +122,13 @@ class EditableTable extends React.Component {
     ];
     this.state = {
       dataSource: [
-        {
-          key: '0',
-          serialNumber: '1231rwearf124',
-          owner: 'Edward King 0',
-          location: 'London, Park Lane no. 0',
-        },
-        {
-            key: '1',
-            serialNumber: '1231rwearf124',
-            owner: 'Edward King 0',
-            location: 'London, Park Lane no. 0',
-        },
+
       ],
-      count: 2,
+      pid: props.pid,
+      dispatch:props.dispatch,
+      count:0
     };
+    
   }
 
   handleDelete = (key) => {
@@ -145,13 +138,13 @@ class EditableTable extends React.Component {
     });
   };
   handleAdd = () => {
-    const { count, dataSource } = this.state;
+    const { count, dataSource,pid } = this.state;
     const newData = {
-      key: count,
-      serialNumber: `Edward King ${count}`,
-      owner: '32',
-      location: `London, Park Lane no. ${count}`,
-      info:'123'
+      key:count,
+      serialNumber: 'null',
+      owner: 'null',
+      location: 'null',
+      groupId:pid
     };
     this.setState({
       dataSource: [...dataSource, newData],
@@ -169,7 +162,8 @@ class EditableTable extends React.Component {
   };
 
   render() {
-    const { dataSource } = this.state;
+    const { dataSource ,pid,dispatch} = this.state;
+    
     const components = {
       body: {
         row: EditableRow,
@@ -192,6 +186,14 @@ class EditableTable extends React.Component {
         }),
       };
     });
+
+    const onSubmit =()=>{
+      const data = {
+        groupId:pid,
+        deviceInfo:dataSource
+      }
+      dispatch(addDeviceAction(data))
+    }
     return (
       <div>
         <Button
@@ -203,22 +205,26 @@ class EditableTable extends React.Component {
         >
           Add a row
         </Button>
-        <Table
-          components={components}
-          rowClassName={() => 'editable-row'}
-          bordered
-          dataSource={dataSource}
-          columns={columns}
-        />
+        <Form onFinish={onSubmit}>
+          <Table
+            components={components}
+            rowClassName={() => 'editable-row'}
+            bordered
+            dataSource={dataSource}
+            columns={columns}
+          />
+          <Button style={{marginTop:'10px'}}htmlType="submit">수락</Button>
+        </Form>
       </div>
     );
   }
 }
 
-function DeviceTable() {
+function DeviceTable(props) {
+    const dispatch = useDispatch();
     return (
         <div>
-            <EditableTable />
+            <EditableTable pid={props.pid} dispatch={dispatch}/>
         </div>
     )
 }

@@ -53,7 +53,7 @@ function group() {
         labelCol: {span:10},
         wrapperCol: {span:16 }
     }
-
+ 
     return (
         <div>
             <LoginedMenu/>

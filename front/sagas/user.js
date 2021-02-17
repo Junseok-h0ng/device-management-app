@@ -114,7 +114,6 @@ function* userRole(action){
 function* userLoadData(action){
     try{
         const result = yield call(userLoadDataAPI,action.data);
-        console.log(result);
         yield put({
             type:USER_LOAD_DATA_SUCCESS,
             data:result.data
