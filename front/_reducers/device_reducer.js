@@ -1,11 +1,12 @@
-import { DEVICE_ADD_FAILURE, DEVICE_ADD_REQUEST, DEVICE_ADD_SUCCESS } from "../_actions/types";
+import { DEVICE_ADD_FAILURE, DEVICE_ADD_REQUEST, DEVICE_ADD_SUCCESS, DEVICE_LIST_FAILURE, DEVICE_LIST_REQUEST, DEVICE_LIST_SUCCESS } from "../_actions/types";
 
 export const initialState = {
-    isLoading:false
+    isLoading:false,
+    deviceList:null
 }
 
 export default function(state=initialState,action){
-    switch(action){
+    switch(action.type){
         case DEVICE_ADD_REQUEST:
             return{
                 ...state,
@@ -18,6 +19,22 @@ export default function(state=initialState,action){
                 alreadyDevice:action.data
             }
         case DEVICE_ADD_FAILURE:
+            return{
+                ...state,
+                isLoading:false
+            }
+        case DEVICE_LIST_REQUEST:
+            return{
+                ...state,
+                isLoading:true
+            }
+        case DEVICE_LIST_SUCCESS:
+            return{
+                ...state,
+                isLoading:false,
+                deviceList:action.data
+            }
+        case DEVICE_LIST_FAILURE:
             return{
                 ...state,
                 isLoading:false

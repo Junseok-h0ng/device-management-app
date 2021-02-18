@@ -3,6 +3,15 @@ const router = express.Router();
 const {Device} = require('../models/Device');
 
 
+router.post('/',(req,res)=>{
+    const groupId = req.body.groupId
+    Device.find({groupId:groupId})
+    .exec((err,deviceList)=>{
+        if(err) return res.json({error:true});
+        res.json({success:true,deviceList})
+    })
+})
+
 router.post('/add',  (req,res)=>{
     const deviceInfo = req.body.deviceInfo;
     let alreadyDevice =  [];
@@ -17,15 +26,10 @@ router.post('/add',  (req,res)=>{
                 device.save();
             }
         });
- 
     }
     return res.json({success:true,alreadyDevice});
-
-
-    // Device.insertMany(deviceInfo);
-
-
 });
+
 
 
 module.exports = router;

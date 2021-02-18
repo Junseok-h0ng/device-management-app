@@ -1,15 +1,8 @@
-import React, { useState } from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Typography } from 'antd';
-const originData = [];
-
-for (let i = 0; i < 10; i++) {
-  originData.push({
-    key: i.toString(),
-    name: `Edrward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
-  });
-}
+import React, { useState,useEffect } from 'react';
+import { Table, Input, InputNumber, Popconfirm, Form, Typography, Button } from 'antd';
+import { useDispatch,useSelector } from 'react-redux';
+import { deviceListAction } from '../../_actions/device_action';
+import Loading from '../util/Loading';
 
 const EditableCell = ({
   editing,
@@ -48,11 +41,25 @@ const EditableCell = ({
 
 const EditableTable = () => {
   const [form] = Form.useForm();
-  const [data, setData] = useState(originData);
+  const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState('');
-
   const isEditing = (record) => record.key === editingKey;
+  const {deviceList} = useSelector(state=>state.device);
 
+  useEffect(() => {
+    if(deviceList != null){
+      const originData = [];
+      for (let i = 0; i < deviceList.length; i++) {
+        originData.push({
+          key: i.toString(),
+          serialNumber: deviceList[i].serialNumber,
+          owner: deviceList[i].owner,
+          location: deviceList[i].location,
+        });
+      }
+      setData(originData);
+    }
+  }, [deviceList])
   const edit = (record) => {
     form.setFieldsValue({
       name: '',
@@ -90,21 +97,21 @@ const EditableTable = () => {
 
   const columns = [
     {
-      title: 'name',
-      dataIndex: 'name',
-      width: '25%',
-      editable: true,
+      title: 'SerialNumber',
+      dataIndex: 'serialNumber',
+      width: '30%',
+      editable: false,
     },
     {
-      title: 'age',
-      dataIndex: 'age',
-      width: '15%',
-      editable: true,
-    },
-    {
-      title: 'address',
-      dataIndex: 'address',
+      title: 'Owner',
+      dataIndex: 'owner',
       width: '40%',
+      editable: true,
+    },
+    {
+      title: 'Location',
+      dataIndex: 'location',
+      width: '15%',
       editable: true,
     },
     {
@@ -151,32 +158,46 @@ const EditableTable = () => {
       }),
     };
   });
-  return (
-    <Form form={form} component={false} >
-      <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-        bordered
-        dataSource={data}
-        columns={mergedColumns}
-        rowClassName="editable-row"
-        pagination={{
-          onChange: cancel,
-        }}
-      />
-    </Form>
-  );
+    return (
+      <Form form={form} >
+        <Table
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
+          bordered
+          dataSource={data}
+          columns={mergedColumns}
+          rowClassName="editable-row"
+          pagination={{
+            onChange: cancel,
+          }}
+        />
+      </Form>
+    );
+  
 };
 
 
 
-function EditDeviceTable() {
+function EditDeviceTable(props) {
+  const dispatch = useDispatch();
+  const {isLoading} = useSelector(state => state.device);
+
+  useEffect(() => {
+       dispatch(deviceListAction({groupId:props.pid}));
+  }, [])
+
     return (
+    
         <div>
+          {isLoading ?
+            <Loading/>
+          :
             <EditableTable/>
+          }
+            
         </div>
     )
 }

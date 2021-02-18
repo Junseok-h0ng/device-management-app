@@ -20,7 +20,6 @@ function sider() {
     const selected = asPath.split('/')[1];
     const subSelected = asPath.split('/')[2];
     const [selectedMenu, setSelectedMenu] = useState('0');
-    console.log(asPath.split('/')[2]);
     useEffect(() => {
         switch(selected){
             case 'group':

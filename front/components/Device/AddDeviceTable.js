@@ -214,7 +214,7 @@ class EditableTable extends React.Component {
             dataSource={dataSource}
             columns={columns}
           />
-          <Button style={{marginTop:'10px'}}htmlType="submit">수락</Button>
+          <Button style={{marginTop:'10px'}} htmlType="submit">수락</Button>
         </Form>
       </div>
     );
