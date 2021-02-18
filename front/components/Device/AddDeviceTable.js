@@ -193,6 +193,7 @@ class EditableTable extends React.Component {
         deviceInfo:dataSource
       }
       dispatch(addDeviceAction(data))
+      window.location.reload();
     }
     return (
       <div>

@@ -9,6 +9,7 @@ function addDeviceAPI(data){
 function* addDevice(action){
     try{
         const result = yield call(addDeviceAPI,action.data);
+        console.log(result);
         yield put({
             type: DEVICE_ADD_SUCCESS,
             data: result.data.alreadyDevice

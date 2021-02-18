@@ -16,39 +16,50 @@ function sider() {
     const {role} = useSelector(state=>state.user);
     const {connected} = useSelector(state=>state.group);
     const router = useRouter();
-    const {route} = router;
-    const selected = route.split('/')[1];
+    const {asPath} = router;
+    const selected = asPath.split('/')[1];
+    const subSelected = asPath.split('/')[2];
     const [selectedMenu, setSelectedMenu] = useState('0');
+    console.log(asPath.split('/')[2]);
     useEffect(() => {
         switch(selected){
             case 'group':
                 setSelectedMenu('1');
                 break;
             case 'device':
-                setSelectedMenu('2');
+                if(subSelected === 'add'){
+                    setSelectedMenu('2');
+                }else if(subSelected === 'list'){
+                    setSelectedMenu('3');
+                }
                 break;
-            case 'repaire':
-                setSelectedMenu('3');
-                break;
-            case 'team':
+            case 'repair':
                 setSelectedMenu('4');
                 break;
-            case 'notice':
+            case 'team':
                 setSelectedMenu('5');
+                break;
+            case 'notice':
+                setSelectedMenu('6');
                 break;
             default:
                 setSelectedMenu('0');
                 break;
         }
-    }, [selected])
+    }, [selected,subSelected])
 
     const ownerMenu = (
         <>
             <Menu.Item key="1" icon={<GroupOutlined />}><Link href={`/group/${connected}`}><a>Group</a></Link></Menu.Item>
-            <Menu.Item key="2" icon={<DesktopOutlined />}><Link href={`/device/${connected}`}><a>Device</a></Link></Menu.Item>
-            {/* <Menu.Item key="3" icon={<ToolOutlined />}><Link><a>Repair</a></Link></Menu.Item> */}
-            <Menu.Item key="4" icon={<TeamOutlined />}><Link href={`/team/${connected}`}><a>Team</a></Link></Menu.Item>
-            <Menu.Item key="5" icon={<InfoOutlined />}>Notice</Menu.Item>
+            
+            {/* <Menu.Item key="4" icon={<ToolOutlined />}><Link><a>Repair</a></Link></Menu.Item> */}
+            <Menu.SubMenu key="sub1" icon={<DesktopOutlined/>}>
+                <Menu.Item key="2"><Link href={`/device/add/${connected}`}><a>AddDevice</a></Link></Menu.Item>
+                <Menu.Item key="3"><Link href={`/device/list/${connected}`}><a>DeviceList</a></Link></Menu.Item>
+            </Menu.SubMenu>
+            <Menu.Item key="5" icon={<TeamOutlined />}><Link href={`/team/${connected}`}><a>Team</a></Link></Menu.Item>
+            
+            <Menu.Item key="6" icon={<InfoOutlined />}>Notice</Menu.Item>
         </>
     )
     const memberMenu = (

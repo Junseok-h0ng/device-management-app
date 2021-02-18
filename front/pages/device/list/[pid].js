@@ -1,12 +1,14 @@
 import React,{useEffect}  from 'react'
 import {useDispatch,useSelector} from 'react-redux'
 import {useRouter} from 'next/router';
-import LoginedMenu from '../../components/menu/loginedMenu';
-import DeviceTable from '../../components/Device/DeviceTable';
-import { userRoleRequestAction } from '../../_actions/user_actions';
-import { connectedGroupStatus } from '../../_actions/group_actions';
-import Loading from '../../components/util/Loading';
-import ErrorPage from '../../components/util/ErrorPage';
+import {Row,Col} from 'antd';
+import LoginedMenu from '../../../components/menu/loginedMenu';
+import { userRoleRequestAction } from '../../../_actions/user_actions';
+import { connectedGroupStatus } from '../../../_actions/group_actions';
+import Loading from '../../../components/util/Loading';
+import ErrorPage from '../../../components/util/ErrorPage';
+import EditDeviceTable from '../../../components/Device/EditDeviceTable';
+
 
 
 function device() {
@@ -41,7 +43,7 @@ function device() {
                 :
                 <div>
                     {role != null ?
-                        <DeviceTable pid={pid}/>
+                        <EditDeviceTable pid ={pid}/>
                     :
                         <ErrorPage/>
                     }
