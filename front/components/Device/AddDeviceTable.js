@@ -3,6 +3,9 @@ import { Table, Input, Button, Popconfirm, Form, Select} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons'
 import {useDispatch} from 'react-redux'
 import { addDeviceAction } from '../../_actions/device_action';
+import SelectLocation from './Sections/SelectMenu/SelectLocation';
+import SelectOwner from './Sections/SelectMenu/SelectOwner';
+import SelectSerialNumber from './Sections/SelectMenu/SelectSerialNumber';
 const EditableContext = React.createContext(null);
 
 
@@ -97,17 +100,21 @@ class EditableTable extends React.Component {
         title: 'SerialNumber',
         dataIndex: 'serialNumber',
         width: '30%',
-        editable: true,
+        editable:true,
       },
       {
         title: 'Owner',
         dataIndex: 'owner',
-        editable:true
+        render:(_,record)=>(
+          <SelectOwner record={record} handleOwner={this.handleOwner}/>
+        )
       },
       {
         title: 'Location',
         dataIndex: 'location',
-        editable:true
+        render: (_, record) =>(
+            <SelectLocation record={record} handleLocation={this.handleLocation}/>
+          )
       },
       {
         title: 'Delete',
@@ -128,7 +135,24 @@ class EditableTable extends React.Component {
       dispatch:props.dispatch,
       count:0
     };
-    
+  }
+
+  handleSerialNumber = (record,newData)=>{
+    const values = {serialNumber:newData};
+    record.serialNumber = newData;
+    this.handleSave({...record,...values});
+  }
+
+  handleOwner = (record,newData)=>{
+    const values= {owner:newData};
+    record.owner = newData;
+    this.handleSave({...record,...values});
+  }
+
+  handleLocation = (record,newData) =>{
+    const values = {location:newData};
+    record.location = newData;
+    this.handleSave({...record,...values});
   }
 
   handleDelete = (key) => {
@@ -141,9 +165,7 @@ class EditableTable extends React.Component {
     const { count, dataSource,pid } = this.state;
     const newData = {
       key:count,
-      serialNumber: 'null',
-      owner: 'null',
-      location: 'null',
+      serialNumber:'-',
       groupId:pid
     };
     this.setState({
@@ -183,7 +205,8 @@ class EditableTable extends React.Component {
           dataIndex: col.dataIndex,
           title: col.title,
           handleSave: this.handleSave,
-        }),
+        })
+        ,
       };
     });
 
