@@ -30,6 +30,23 @@ router.post('/add',  (req,res)=>{
     return res.json({success:true,alreadyDevice});
 });
 
+router.post('/edit',(req,res)=>{
+    const deviceList = req.body.deviceList;
+    for(let i = 0;i<deviceList.length;i++){
+        Device.findOne({serialNumber:deviceList[i].serialNumber})
+        .exec(async (err,device)=>{
+            await device.updateOne({
+                owner:deviceList[i].owner,
+                location:deviceList[i].location,
+                update_date:Date.now()
+            });
+            device.save();
+        });
+        
+        res.json();
+    }
+
+});
 
 
 module.exports = router;

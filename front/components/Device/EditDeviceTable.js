@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import { Table, Input, InputNumber, Popconfirm, Form, Typography, Button } from 'antd';
 import { useDispatch,useSelector } from 'react-redux';
-import { deviceListAction } from '../../_actions/device_action';
+import { deviceEditAction, deviceListAction, editDeviceAction } from '../../_actions/device_action';
 import Loading from '../util/Loading';
 
 const EditableCell = ({
@@ -39,10 +39,11 @@ const EditableCell = ({
   );
 };
 
-const EditableTable = () => {
+const EditableTable = (props) => {
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState('');
+  const dispatch = useDispatch();
   const isEditing = (record) => record.key === editingKey;
   const {deviceList} = useSelector(state=>state.device);
 
@@ -158,8 +159,12 @@ const EditableTable = () => {
       }),
     };
   });
+  const onSubmit = () =>{
+    dispatch(editDeviceAction({deviceList: data}));
+    window.location.reload();
+  }
     return (
-      <Form form={form} >
+      <Form form={form} onFinish={onSubmit}>
         <Table
           components={{
             body: {
@@ -174,6 +179,7 @@ const EditableTable = () => {
             onChange: cancel,
           }}
         />
+        <Button htmlType="submit" type="primary">저장</Button>
       </Form>
     );
   
