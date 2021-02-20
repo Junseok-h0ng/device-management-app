@@ -6,6 +6,7 @@ import { addDeviceAction } from '../../_actions/device_action';
 import SelectLocation from './Sections/SelectMenu/SelectLocation';
 import SelectOwner from './Sections/SelectMenu/SelectOwner';
 import SelectSerialNumber from './Sections/SelectMenu/SelectSerialNumber';
+import { loadJoinGroupActionRequest } from '../../_actions/group_actions';
 const EditableContext = React.createContext(null);
 
 
@@ -246,6 +247,9 @@ class EditableTable extends React.Component {
 
 function DeviceTable(props) {
     const dispatch = useDispatch();
+    useEffect(() => {
+      dispatch(loadJoinGroupActionRequest({groupId:props.pid}))   
+    }, [])
     return (
         <div>
             <EditableTable pid={props.pid} dispatch={dispatch}/>

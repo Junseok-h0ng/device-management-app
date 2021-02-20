@@ -5,6 +5,7 @@ import { deviceEditAction, deviceListAction, editDeviceAction } from '../../_act
 import Loading from '../util/Loading';
 import SelectLocation from './Sections/SelectMenu/SelectLocation';
 import SelectOwner from './Sections/SelectMenu/SelectOwner';
+import { loadJoinGroupActionRequest } from '../../_actions/group_actions';
 
 const EditableCell = ({
   editing,
@@ -16,9 +17,10 @@ const EditableCell = ({
   children,
   handleLocation,
   handleOwner,
+  
   ...restProps
 }) => {
-  const inputNode = inputType === 'owner' ? <SelectOwner record={record} handleOwner={handleOwner}/> : <SelectLocation record={record} handleLocation={handleLocation}/>;
+  const inputNode = inputType === 'owner' ? <SelectOwner  record={record} handleOwner={handleOwner}/> : <SelectLocation  record={record} handleLocation={handleLocation}/>;
   return (
     <td {...restProps}>
       {editing ? (
@@ -74,6 +76,7 @@ const EditableTable = (props) => {
           location: deviceList[i].location,
         });
       }
+      
       setData(originData);
     }
   }, [deviceList]);
@@ -177,7 +180,7 @@ const EditableTable = (props) => {
         title: col.title,
         editing: isEditing(record),
         handleLocation: handleLocation,
-        handleOwner: handleOwner
+        handleOwner: handleOwner,
       }),
     };
   });
@@ -215,6 +218,7 @@ function EditDeviceTable(props) {
 
   useEffect(() => {
        dispatch(deviceListAction({groupId:props.pid}));
+       dispatch(loadJoinGroupActionRequest({groupId:props.pid}))    
   }, [])
 
     return (
