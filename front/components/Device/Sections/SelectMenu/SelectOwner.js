@@ -11,6 +11,7 @@ function SelectOwner(props) {
     return (
         <Select
         showSearch
+        defaultValue={props.record.owner}
         style={{ width: 200 }}
         placeholder="Select a Owner"
         optionFilterProp="children"

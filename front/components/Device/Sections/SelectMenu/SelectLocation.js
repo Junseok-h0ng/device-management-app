@@ -4,6 +4,7 @@ import { Select } from 'antd';
 const { Option } = Select;
 function SelectLocation(props) {
 
+    console.log(props);
     function onChange(value) {
         props.handleLocation(props.record,value);
       }
@@ -11,6 +12,7 @@ function SelectLocation(props) {
     return (
         <Select
         showSearch
+        defaultValue={props.record.location}
         style={{ width: 200 }}
         placeholder="Select a Location"
         optionFilterProp="children"

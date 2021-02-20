@@ -3,6 +3,8 @@ import { Table, Input, InputNumber, Popconfirm, Form, Typography, Button } from 
 import { useDispatch,useSelector } from 'react-redux';
 import { deviceEditAction, deviceListAction, editDeviceAction } from '../../_actions/device_action';
 import Loading from '../util/Loading';
+import SelectLocation from './Sections/SelectMenu/SelectLocation';
+import SelectOwner from './Sections/SelectMenu/SelectOwner';
 
 const EditableCell = ({
   editing,
@@ -12,9 +14,11 @@ const EditableCell = ({
   record,
   index,
   children,
+  handleLocation,
+  handleOwner,
   ...restProps
 }) => {
-  const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
+  const inputNode = inputType === 'owner' ? <SelectOwner record={record} handleOwner={handleOwner}/> : <SelectLocation record={record} handleLocation={handleLocation}/>;
   return (
     <td {...restProps}>
       {editing ? (
@@ -30,7 +34,8 @@ const EditableCell = ({
             },
           ]}
         >
-          {inputNode}
+           {inputNode}
+          
         </Form.Item>
       ) : (
         children
@@ -46,6 +51,17 @@ const EditableTable = (props) => {
   const dispatch = useDispatch();
   const isEditing = (record) => record.key === editingKey;
   const {deviceList} = useSelector(state=>state.device);
+  const [editOwner, setEditOwner] = useState("");
+  const [editLocation, setEditLocation] = useState("");
+
+  const handleOwner = (record,newData)=>{
+    setEditOwner(newData);
+  }
+
+  const handleLocation = (record,newData) =>{
+    setEditLocation(newData);
+  }
+
 
   useEffect(() => {
     if(deviceList != null){
@@ -60,14 +76,17 @@ const EditableTable = (props) => {
       }
       setData(originData);
     }
-  }, [deviceList])
+  }, [deviceList]);
+
   const edit = (record) => {
     form.setFieldsValue({
-      name: '',
-      age: '',
-      address: '',
+      serialNumber: '',
+      owner: '',
+      location: '',
       ...record,
     });
+    setEditLocation(record.location);
+    setEditOwner(record.owner);
     setEditingKey(record.key);
   };
 
@@ -77,10 +96,12 @@ const EditableTable = (props) => {
 
   const save = async (key) => {
     try {
-      const row = await form.validateFields();
+      const row = {
+        owner: editOwner,
+        location: editLocation
+      }
       const newData = [...data];
       const index = newData.findIndex((item) => key === item.key);
-
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, { ...item, ...row });
@@ -100,20 +121,17 @@ const EditableTable = (props) => {
     {
       title: 'SerialNumber',
       dataIndex: 'serialNumber',
-      width: '30%',
       editable: false,
     },
     {
       title: 'Owner',
       dataIndex: 'owner',
-      width: '40%',
       editable: true,
     },
     {
       title: 'Location',
       dataIndex: 'location',
-      width: '15%',
-      editable: true,
+      editable:true,
     },
     {
       title: 'operation',
@@ -143,19 +161,23 @@ const EditableTable = (props) => {
       },
     },
   ];
+
+
+
   const mergedColumns = columns.map((col) => {
     if (!col.editable) {
       return col;
     }
-
     return {
       ...col,
       onCell: (record) => ({
         record,
-        inputType: col.dataIndex === 'age' ? 'number' : 'text',
+        inputType: col.dataIndex === 'owner' ? 'owner' : 'location',
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
+        handleLocation: handleLocation,
+        handleOwner: handleOwner
       }),
     };
   });

@@ -11,6 +11,7 @@ function SelectSerialNumber(props) {
     return (
         <Select
         showSearch
+        
         style={{ width: 200 }}
         placeholder="Select a SerialNumber"
         optionFilterProp="children"
