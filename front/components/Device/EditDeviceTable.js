@@ -64,7 +64,6 @@ const EditableTable = (props) => {
     setEditLocation(newData);
   }
 
-
   useEffect(() => {
     if(deviceList != null){
       const originData = [];
@@ -119,16 +118,28 @@ const EditableTable = (props) => {
       title: 'SerialNumber',
       dataIndex: 'serialNumber',
       editable: false,
+      sorter: {
+        compare: (a, b) => a.serialNumber - b.serialNumber,
+        multiple: 3,
+      },
     },
     {
       title: 'Owner',
       dataIndex: 'owner',
       editable: true,
+      sorter: {
+        compare: (a, b) => a.owner - b.owner,
+        multiple: 3,
+      },
     },
     {
       title: 'Location',
       dataIndex: 'location',
       editable:true,
+      sorter: {
+        compare: (a, b) => a.location - b.location,
+        multiple: 3,
+      },
     },
     {
       title: 'operation',
@@ -183,8 +194,6 @@ const EditableTable = (props) => {
     window.location.reload();
   }
     return (
-      <>
-
       <Form form={form} onFinish={onSubmit}>
         <Table
           components={{
@@ -196,13 +205,13 @@ const EditableTable = (props) => {
           dataSource={data}
           columns={mergedColumns}
           rowClassName="editable-row"
+
           pagination={{
             onChange: cancel,
           }}
         />
         <Button htmlType="submit" type="primary">저장</Button>
       </Form>
-      </>
     );
   
 };
