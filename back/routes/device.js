@@ -14,36 +14,37 @@ router.post('/',(req,res)=>{
 
 router.post('/add',  (req,res)=>{
     const deviceInfo = req.body.deviceInfo;
-    let alreadyDevice =  [];
     for(let i = 0; i<deviceInfo.length;i++){
         Device.findOne({serialNumber:deviceInfo[i].serialNumber})
         .exec((err,device)=>{
             if(err) throw err;
-            if(device || deviceInfo[i] == 'null'){
-
+            if(device || deviceInfo[i] == '-'){
+                return res.status(401).send();
             }else{
                 const device = new Device(deviceInfo[i]);
                 device.save();
             }
         });
     }
-    return res.json({success:true,alreadyDevice});
+    res.json({success:true});
 });
 
 router.post('/edit',(req,res)=>{
     const deviceList = req.body.deviceList;
     for(let i = 0;i<deviceList.length;i++){
-        Device.findOne({serialNumber:deviceList[i].serialNumber})
-        .exec(async (err,device)=>{
-            await device.updateOne({
+        Device.findOneAndUpdate({serialNumber:deviceList[i].serialNumber},{
+            $set:{
                 owner:deviceList[i].owner,
-                location:deviceList[i].location,
-                update_date:Date.now()
-            });
-            device.save();
+                location:deviceList[i].location
+            }
+        })
+        .exec((err,device)=>{
+            console.log(device);
+            // device.save();
         });
-        res.json();
+        
     }
+    res.json({success:true});
 });
 
 router.post('/location/add',(req,res)=>{
@@ -63,8 +64,16 @@ router.post('/location/add',(req,res)=>{
             const location = Location(req.body);
             location.save();
         }
+    });
+});
+
+router.post('/location/load',(req,res)=>{
+    const groupId = req.body.groupId;
+    Location.findOne({groupId})
+    .exec((err,location)=>{
+        if(err) return res.json({error:true,message:'해당되는 정보가 없습니다.'});
+        res.json({success:true,location:location.location});
     })
 })
-
 
 module.exports = router;

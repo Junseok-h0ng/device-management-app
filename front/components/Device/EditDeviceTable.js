@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Typography, Button } from 'antd';
+import { Table, Input, InputNumber, Popconfirm, Form, Typography, Button,Space } from 'antd';
 import { useDispatch,useSelector } from 'react-redux';
-import { deviceEditAction, deviceListAction, editDeviceAction } from '../../_actions/device_action';
+import { deviceEditAction, deviceListAction, editDeviceAction, loadLocationAction } from '../../_actions/device_action';
 import Loading from '../util/Loading';
 import SelectLocation from './Sections/SelectMenu/SelectLocation';
 import SelectOwner from './Sections/SelectMenu/SelectOwner';
@@ -17,10 +17,10 @@ const EditableCell = ({
   children,
   handleLocation,
   handleOwner,
-  
   ...restProps
 }) => {
-  const inputNode = inputType === 'owner' ? <SelectOwner  record={record} handleOwner={handleOwner}/> : <SelectLocation  record={record} handleLocation={handleLocation}/>;
+  const inputNode = inputType === 'owner' ? <SelectOwner  record={record} handleOwner={handleOwner}/> 
+  : <SelectLocation  record={record} handleLocation={handleLocation}/>;
   return (
     <td {...restProps}>
       {editing ? (
@@ -82,12 +82,6 @@ const EditableTable = (props) => {
   }, [deviceList]);
 
   const edit = (record) => {
-    form.setFieldsValue({
-      serialNumber: '',
-      owner: '',
-      location: '',
-      ...record,
-    });
     setEditLocation(record.location);
     setEditOwner(record.owner);
     setEditingKey(record.key);
@@ -180,7 +174,7 @@ const EditableTable = (props) => {
         title: col.title,
         editing: isEditing(record),
         handleLocation: handleLocation,
-        handleOwner: handleOwner,
+        handleOwner: handleOwner
       }),
     };
   });
@@ -189,6 +183,8 @@ const EditableTable = (props) => {
     window.location.reload();
   }
     return (
+      <>
+
       <Form form={form} onFinish={onSubmit}>
         <Table
           components={{
@@ -206,6 +202,7 @@ const EditableTable = (props) => {
         />
         <Button htmlType="submit" type="primary">저장</Button>
       </Form>
+      </>
     );
   
 };
@@ -218,7 +215,8 @@ function EditDeviceTable(props) {
 
   useEffect(() => {
        dispatch(deviceListAction({groupId:props.pid}));
-       dispatch(loadJoinGroupActionRequest({groupId:props.pid}))    
+       dispatch(loadJoinGroupActionRequest({groupId:props.pid}));
+       dispatch(loadLocationAction({groupId:props.pid}));
   }, [])
 
     return (
@@ -227,7 +225,7 @@ function EditDeviceTable(props) {
           {isLoading ?
             <Loading/>
           :
-            <EditableTable/>
+            <EditableTable groupId={props.pid}/>
           }
             
         </div>

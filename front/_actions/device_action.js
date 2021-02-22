@@ -1,5 +1,5 @@
 import {
-    DEVICE_ADD_REQUEST, DEVICE_EDIT_REQUEST, DEVICE_LIST_REQUEST, DEVICE_LOCATION_ADD_REQUEST
+    DEVICE_ADD_REQUEST, DEVICE_EDIT_REQUEST, DEVICE_LIST_REQUEST, DEVICE_LOCATION_ADD_REQUEST, DEVICE_LOCATION_LOAD_REQUEST
 } from './types'
 
 export const addDeviceAction = (data) =>({
@@ -20,4 +20,9 @@ export const editDeviceAction = (data) =>({
 export const addLocationAction = (data) => ({
     type: DEVICE_LOCATION_ADD_REQUEST,
     data
-})
+});
+
+export const loadLocationAction = (data) => ({
+    type:DEVICE_LOCATION_LOAD_REQUEST,
+    data
+});

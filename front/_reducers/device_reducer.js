@@ -1,8 +1,9 @@
-import { DEVICE_ADD_FAILURE, DEVICE_ADD_REQUEST, DEVICE_ADD_SUCCESS, DEVICE_EDIT_REQUEST, DEVICE_EDIT_SUCCESS, DEVICE_EDIT_FAILURE, DEVICE_LIST_FAILURE, DEVICE_LIST_REQUEST, DEVICE_LIST_SUCCESS, DEVICE_LOCATION_ADD_REQUEST, DEVICE_LOCATION_ADD_SUCCESS, DEVICE_LOCATION_ADD_FAILURE } from "../_actions/types";
+import { DEVICE_ADD_FAILURE, DEVICE_ADD_REQUEST, DEVICE_ADD_SUCCESS, DEVICE_EDIT_REQUEST, DEVICE_EDIT_SUCCESS, DEVICE_EDIT_FAILURE, DEVICE_LIST_FAILURE, DEVICE_LIST_REQUEST, DEVICE_LIST_SUCCESS, DEVICE_LOCATION_ADD_REQUEST, DEVICE_LOCATION_ADD_SUCCESS, DEVICE_LOCATION_ADD_FAILURE, DEVICE_LOCATION_LOAD_REQUEST, DEVICE_LOCATION_LOAD_SUCCESS, DEVICE_LOCATION_LOAD_FAILURE } from "../_actions/types";
 
 export const initialState = {
     isLoading:false,
-    deviceList:null
+    deviceList:null,
+    location:null
 }
 
 export default function(state=initialState,action){
@@ -65,6 +66,22 @@ export default function(state=initialState,action){
                 isLoading:false
             }
         case DEVICE_LOCATION_ADD_FAILURE:
+            return{
+                ...state,
+                isLoading:false
+            }
+        case DEVICE_LOCATION_LOAD_REQUEST:
+            return{
+                ...state,
+                isLoading:true
+            }
+        case DEVICE_LOCATION_LOAD_SUCCESS:
+            return{
+                ...state,
+                isLoading:false,
+                location:action.data
+            }
+        case DEVICE_LOCATION_LOAD_FAILURE:
             return{
                 ...state,
                 isLoading:false

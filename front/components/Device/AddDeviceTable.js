@@ -115,7 +115,7 @@ class EditableTable extends React.Component {
         title: 'Location',
         dataIndex: 'location',
         render: (_, record) =>(
-            <SelectLocation record={record} handleLocation={this.handleLocation}/>
+            <SelectLocation record={record} handleLocation={this.handleLocation} groupId={props.pid}/>
           )
       },
       {
