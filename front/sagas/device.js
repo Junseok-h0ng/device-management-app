@@ -2,7 +2,7 @@ import axios from 'axios';
 import { call, put, takeLatest,all,fork } from 'redux-saga/effects';
 import { DEVICE_ADD_FAILURE,DEVICE_ADD_REQUEST,DEVICE_ADD_SUCCESS,
     DEVICE_LIST_FAILURE,DEVICE_LIST_REQUEST,DEVICE_LIST_SUCCESS,
-    DEVICE_EDIT_FAILURE,DEVICE_EDIT_REQUEST,DEVICE_EDIT_SUCCESS } from '../_actions/types';
+    DEVICE_EDIT_FAILURE,DEVICE_EDIT_REQUEST,DEVICE_EDIT_SUCCESS, DEVICE_LOCATION_ADD_REQUEST, DEVICE_LOCATION_ADD_SUCCESS, DEVICE_LOCATION_ADD_FAILURE } from '../_actions/types';
 
 function addDeviceAPI(data){
     return axios.post('/device/add',data);
@@ -12,6 +12,9 @@ function deviceListAPI(data){
 }
 function editDeviceAPI(data){
     return axios.post('/device/edit',data);
+}
+function addLocationAPI(data){
+    return axios.post('/device/location/add',data);
 }
 
 function* addDevice(action){
@@ -54,6 +57,19 @@ function* editDevice(action){
     }
 }
 
+function* addLocation(action){
+    try{
+        yield call(addLocationAPI,action.data);
+        yield put({
+            type:DEVICE_LOCATION_ADD_SUCCESS
+        })
+    }catch(err){
+        yield put({
+            type:DEVICE_LOCATION_ADD_FAILURE
+        })
+    }
+}
+
 function* watchAddDevice(){
     yield takeLatest(DEVICE_ADD_REQUEST,addDevice);
 }
@@ -63,11 +79,15 @@ function* watchDeviceList(){
 function* watchEditDevice(){
     yield takeLatest(DEVICE_EDIT_REQUEST,editDevice);
 }
+function* watchAddLocation(){
+    yield takeLatest(DEVICE_LOCATION_ADD_REQUEST,addLocation);
+}
 
 export default function* deviceSaga(){
     yield all([
         fork(watchAddDevice),
         fork(watchDeviceList),
-        fork(watchEditDevice)
+        fork(watchEditDevice),
+        fork(watchAddLocation)
     ]);
 }

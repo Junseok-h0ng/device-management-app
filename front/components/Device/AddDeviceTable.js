@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Table, Input, Button, Popconfirm, Form, Select} from 'antd';
+import { Table, Input, Button, Popconfirm, Form, Select,Row, Col} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons'
 import {useDispatch} from 'react-redux'
-import { addDeviceAction } from '../../_actions/device_action';
+import { addDeviceAction, addLocationAction } from '../../_actions/device_action';
 import SelectLocation from './Sections/SelectMenu/SelectLocation';
 import SelectOwner from './Sections/SelectMenu/SelectOwner';
 import SelectSerialNumber from './Sections/SelectMenu/SelectSerialNumber';
@@ -33,6 +33,7 @@ const EditableCell = ({
   const [editing, setEditing] = useState(false);
   const inputRef = useRef(null);
   const form = useContext(EditableContext);
+
   useEffect(() => {
     if (editing) {
       inputRef.current.focus();
@@ -220,6 +221,7 @@ class EditableTable extends React.Component {
       window.location.reload();
     }
     return (
+
       <div>
         <Button
           onClick={this.handleAdd}
@@ -247,11 +249,37 @@ class EditableTable extends React.Component {
 
 function DeviceTable(props) {
     const dispatch = useDispatch();
+    const [locationValue, setLocationValue] = useState("")
     useEffect(() => {
       dispatch(loadJoinGroupActionRequest({groupId:props.pid}))   
     }, [])
+    const onSubmitLocation = () =>{
+      const data = {
+        groupId:props.pid,
+        locationValue:locationValue
+      }
+      dispatch(addLocationAction(data));
+      setLocationValue("");
+    }
+
+    const handleLocationValue = (event) =>{
+      setLocationValue(event.target.value);
+    }
+
     return (
         <div>
+            <div style={{marginBottom:'10px'}}>
+            <Form onFinish={onSubmitLocation}>
+              <Button type="primary" htmlType="submit">
+                Add a Location
+              </Button>
+              <Input 
+              style={{marginTop:'10px'}}
+              value={locationValue}
+              onChange={handleLocationValue}
+              />
+            </Form>
+            </div>
             <EditableTable pid={props.pid} dispatch={dispatch}/>
         </div>
     )
