@@ -6,6 +6,8 @@ import { userRoleRequestAction } from '../../_actions/user_actions';
 import { connectedGroupStatus } from '../../_actions/group_actions';
 import Loading from '../../components/util/Loading';
 import { Button,List, Avatar,Table} from 'antd'
+import Link from 'next/link';
+import ErrorPage from '../../components/util/ErrorPage';
 
 
 
@@ -21,10 +23,8 @@ function notice() {
         if(user){
             user.groups.map(group=>{
                 if(group.groupId === pid){
-                    if(group.role === 'owner' || group.role === 'admin'){
-                        dispatch(userRoleRequestAction(group.role));
-                        dispatch(connectedGroupStatus(pid));
-                    }
+                  dispatch(userRoleRequestAction(group.role));
+                  dispatch(connectedGroupStatus(pid));
                 }
             });
         }
@@ -76,14 +76,17 @@ function notice() {
                 isLoading ?
                     <Loading/>
                 :
-                <>
-                    {/* {role == 'owner' || role == 'admin' ?
-                        <Button>Add a Notice</Button>
-                        :
-                        ''
-                    } */}
-                     <Table style={{margin:'0px 10%'}}dataSource={dataSource} columns={columns}/>
-                </>
+                  <div style={{margin:'0px 10%'}}>
+                    {role === 'owner' || role === 'admin' &&
+                      <Button><Link href={`./add/${pid}`}><a>Add a Notice</a></Link></Button>
+                    }
+                    {role != null ?
+                      <Table dataSource={dataSource} columns={columns}/>
+                    : 
+                      <ErrorPage/>
+                    }
+                      
+                  </div>   
             }   
             </div>   
         </div>

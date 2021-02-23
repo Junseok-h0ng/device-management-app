@@ -57,7 +57,6 @@ function sider() {
                 <Menu.Item key="3"><Link href={`/device/list/${connected}`}><a>DeviceList</a></Link></Menu.Item>
             </Menu.SubMenu>
             <Menu.Item key="5" icon={<TeamOutlined />}><Link href={`/team/${connected}`}><a>Team</a></Link></Menu.Item>
-            
             <Menu.Item key="6" icon={<InfoOutlined />}><Link href={`/notice/${connected}`}><a>Notice</a></Link></Menu.Item>
         </>
     )
@@ -65,7 +64,7 @@ function sider() {
         <>
             <Menu.Item key="1" icon={<GroupOutlined />}><Link href={`/group/${connected}`}><a>Group</a></Link></Menu.Item>
             {/* <Menu.Item key="3" icon={<ToolOutlined />}><Link><a>Repair</a></Link></Menu.Item> */}
-            <Menu.Item key="5" icon={<InfoOutlined />}>Notice</Menu.Item>
+            <Menu.Item key="6" icon={<InfoOutlined />}><Link href={`/notice/${connected}`}><a>Notice</a></Link></Menu.Item>
         </>
     )
 
