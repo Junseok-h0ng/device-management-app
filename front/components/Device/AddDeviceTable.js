@@ -103,20 +103,23 @@ class EditableTable extends React.Component {
         dataIndex: 'serialNumber',
         width: '30%',
         editable:true,
+        ellipsis:true
       },
       {
         title: 'Owner',
         dataIndex: 'owner',
         render:(_,record)=>(
           <SelectOwner record={record} handleOwner={this.handleOwner}/>
-        )
+        ),
+        ellipsis:true
       },
       {
         title: 'Location',
         dataIndex: 'location',
         render: (_, record) =>(
             <SelectLocation record={record} handleLocation={this.handleLocation} groupId={props.pid}/>
-          )
+          ),
+          ellipsis:true
       },
       {
         title: 'Delete',
@@ -127,6 +130,7 @@ class EditableTable extends React.Component {
               <a><DeleteOutlined /></a>
             </Popconfirm>
           ) : null,
+        ellipsis:true
       },
     ];
     this.state = {
@@ -206,7 +210,7 @@ class EditableTable extends React.Component {
           editable: col.editable,
           dataIndex: col.dataIndex,
           title: col.title,
-          handleSave: this.handleSave,
+          handleSave: this.handleSave
         })
         ,
       };
@@ -234,6 +238,7 @@ class EditableTable extends React.Component {
         </Button>
         <Form onFinish={onSubmit}>
           <Table
+
             components={components}
             rowClassName={() => 'editable-row'}
             bordered

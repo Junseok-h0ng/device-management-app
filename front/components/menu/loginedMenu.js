@@ -47,20 +47,23 @@ function loginedMenu() {
     )
 
     return (
-        <Row>
-        <Col span={12}>
-            <Dropdown overlay={menu}>
-                <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                    Group <DownOutlined />
-                </a>
-            </Dropdown>
-        </Col>
-        <Col span={12}>
-            <a onClick={onLogout}>
-                Logout
-            </a>
-        </Col>
-    </Row>
+        <div style={{marginLeft:'20%'}}>
+            <Row>
+                <Col span={12}>
+                    <Dropdown overlay={menu}>
+                        <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                            Group <DownOutlined />
+                        </a>
+                    </Dropdown>
+                </Col>
+                <Col span={12}>
+                    <a onClick={onLogout}>
+                        Logout
+                    </a>
+                </Col>
+            </Row>
+        </div>
+        
     )
 }
 

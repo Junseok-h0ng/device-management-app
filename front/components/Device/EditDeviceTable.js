@@ -122,6 +122,7 @@ const EditableTable = (props) => {
         compare: (a, b) => a.serialNumber - b.serialNumber,
         multiple: 3,
       },
+      ellipsis:true
     },
     {
       title: 'Owner',
@@ -131,6 +132,7 @@ const EditableTable = (props) => {
         compare: (a, b) => a.owner - b.owner,
         multiple: 3,
       },
+      ellipsis:true
     },
     {
       title: 'Location',
@@ -140,6 +142,7 @@ const EditableTable = (props) => {
         compare: (a, b) => a.location - b.location,
         multiple: 3,
       },
+      ellipsis:true
     },
     {
       title: 'operation',
@@ -167,6 +170,7 @@ const EditableTable = (props) => {
           </Typography.Link>
         );
       },
+      ellipsis:true
     },
   ];
 

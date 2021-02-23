@@ -33,15 +33,12 @@ function device() {
     
     return (
         <div>
-            <LoginedMenu/>
-            <div style={{
-                display:'flex',justifyContent:'center',alignItems:'center', 
-                width:'100%',height:'100vh',marginTop:'10px'}}>
+            <div>
             {
                 isLoading ?
                     <Loading/>
                 :
-                <div>
+                <div style={{margin:'0px 10%'}}>
                     {role != null ?
                         <EditDeviceTable pid ={pid}/>
                     :

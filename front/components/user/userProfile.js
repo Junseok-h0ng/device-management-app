@@ -1,6 +1,6 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
-import {Avatar} from 'antd';
+import {AutoComplete, Avatar} from 'antd';
 import { UserOutlined } from '@ant-design/icons'
 import LoginedMenu from '../menu/loginedMenu';
 
@@ -10,11 +10,7 @@ function userProfile() {
 
     return (
         <div>
-            <LoginedMenu/>
-            <div style={{
-                display:'flex',justifyContent:'center',alignItems:'center',
-                width:'100%',height:'100vh'
-            }}>
+            <div >
                 <div>
                     <Avatar style={{marginRight:'10px'}} icon={<UserOutlined/>}/>
                     <span>{user.name}</span>

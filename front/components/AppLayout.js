@@ -7,11 +7,12 @@ import { Layout} from 'antd';
 import { userStatusRequestAction } from '../_actions/user_actions';
 import Sider from './menu/sider'
 import Router from 'next/router';
-
+import LoginedMenu from '../components/menu/loginedMenu'
 
 function AppLayout({children}) {
 
-    const {Content, Footer } = Layout;
+    const {Header,Content, Footer } = Layout;
+    const {isLogin} = useSelector(state=>state.user);
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(userStatusRequestAction());
@@ -19,15 +20,18 @@ function AppLayout({children}) {
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
-        <Sider/>
-        <Layout className="site-layout">
-        <Content style={{ margin: '0 16px' }}>
-            <div className="site-layout-background" style={{ margin:'Auto', width:'50%',padding:'10px' }}>
+        <Header>
+            {isLogin &&
+                <LoginedMenu/>  
+            }
+        </Header>
+        <Layout>
+            <Sider/>
+            <Content style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
                 {children}
-            </div>
-        </Content>
-        <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+            </Content>
         </Layout>
+        <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
     </Layout>
     )
 }

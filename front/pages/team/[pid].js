@@ -49,15 +49,18 @@ function team() {
     const columns = [
         {
             title: 'UserId',
-            dataIndex: 'userId'
+            dataIndex: 'userId',
+            ellipsis:true
         },
         {
             title: 'Email',
-            dataIndex: 'email'
+            dataIndex: 'email',
+            ellipsis:true
         },
         {
             title: 'Name',
-            dataIndex: 'name'
+            dataIndex: 'name',
+            ellipsis:true
         }
     ]
     const rowAdminSelection = {
@@ -164,20 +167,20 @@ function team() {
         pushTableData(admins,adminsData);
 
         return (
+            <div>
             <Row gutter={[16,16]}>
                 <Col span={24}>{adminTable}</Col>
                 <Col span={24}>{memberTable}</Col>
                 <Col span={24}>{joinTable}</Col>
             </Row>
+            </div>
+
         )
     } 
 
     return (
         <div>
-        <LoginedMenu/>
-        <div style={{
-                display:'flex',justifyContent:'center',alignItems:'center', 
-                width:'100%',height:'100vh',marginTop:'10px'}}>
+        <div style={{margin:'0px 10%'}}>
             {isLoading ?
                 <Loading/>
             :

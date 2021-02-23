@@ -58,7 +58,7 @@ function sider() {
             </Menu.SubMenu>
             <Menu.Item key="5" icon={<TeamOutlined />}><Link href={`/team/${connected}`}><a>Team</a></Link></Menu.Item>
             
-            <Menu.Item key="6" icon={<InfoOutlined />}>Notice</Menu.Item>
+            <Menu.Item key="6" icon={<InfoOutlined />}><Link href={`/notice/${connected}`}><a>Notice</a></Link></Menu.Item>
         </>
     )
     const memberMenu = (

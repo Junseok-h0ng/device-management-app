@@ -72,7 +72,12 @@ router.post('/location/load',(req,res)=>{
     Location.findOne({groupId})
     .exec((err,location)=>{
         if(err) return res.json({error:true,message:'해당되는 정보가 없습니다.'});
-        res.json({success:true,location:location.location});
+        if(!location){
+            res.json({error:true,message:'위치 정보가 없습니다.'});
+        }else{
+            res.json({success:true,location:location.location});
+        }
+        
     })
 })
 
