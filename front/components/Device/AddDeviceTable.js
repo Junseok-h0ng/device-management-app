@@ -264,7 +264,7 @@ function DeviceTable(props) {
         locationValue:locationValue
       }
       dispatch(addLocationAction(data));
-      setLocationValue("");
+      window.location.reload();
     }
 
     const handleLocationValue = (event) =>{

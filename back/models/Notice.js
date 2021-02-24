@@ -12,8 +12,7 @@ const noticeSchema = mongoose.Schema({
         type:String
     },
     author:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User'
+        type:String
     },
     date:{
         type:Date

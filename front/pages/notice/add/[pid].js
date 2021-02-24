@@ -50,9 +50,9 @@ function AddNotice() {
         const data = {
             groupId:pid,
             title,
+            author:user.name,
             description
         }
-    
         dispatch(addNoticeAction(data));
         Router.push(`/notice/${pid}`);
         

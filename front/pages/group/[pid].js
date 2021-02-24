@@ -6,6 +6,7 @@ import { userRoleRequestAction } from '../../_actions/user_actions';
 import { connectedGroupStatus } from '../../_actions/group_actions';
 import Loading from '../../components/util/Loading'
 import ErrorPage from '../../components/util/ErrorPage';
+import { resetDeviceAction } from '../../_actions/device_action';
 
 function usergroup() {
     const user = useSelector(state=>state.user.data);
@@ -19,6 +20,7 @@ function usergroup() {
            user.groups.map(group=>{
                if(group.groupId === pid){
                 dispatch(userRoleRequestAction(group.role));
+                dispatch(resetDeviceAction());
                 dispatch(connectedGroupStatus(pid));
                }
            });

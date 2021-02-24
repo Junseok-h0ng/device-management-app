@@ -16,7 +16,7 @@ function SelectOwner(props) {
       if(members || admins){
         let list= [];
         admins.map(admin=>(
-          list.push(<Option value={admin_id}>{admin.name}</Option>)
+          list.push(<Option value={admin._id}>{admin.name}</Option>)
         ));
         members.map(member=>(
           list.push(<Option value={member._id}>{member.name}</Option>) 

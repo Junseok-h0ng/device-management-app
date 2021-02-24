@@ -1,5 +1,5 @@
 import {
-    DEVICE_ADD_REQUEST, DEVICE_EDIT_REQUEST, DEVICE_LIST_REQUEST, DEVICE_LOCATION_ADD_REQUEST, DEVICE_LOCATION_LOAD_REQUEST
+    DEVICE_ADD_REQUEST, DEVICE_EDIT_REQUEST, DEVICE_LIST_REQUEST, DEVICE_LOCATION_ADD_REQUEST, DEVICE_LOCATION_LOAD_REQUEST, RESET_DEVICE_STATUS
 } from './types'
 
 export const addDeviceAction = (data) =>({
@@ -25,4 +25,8 @@ export const addLocationAction = (data) => ({
 export const loadLocationAction = (data) => ({
     type:DEVICE_LOCATION_LOAD_REQUEST,
     data
+});
+
+export const resetDeviceAction = () =>({
+    type:RESET_DEVICE_STATUS
 });
