@@ -18,6 +18,7 @@ function notice() {
     const dispatch = useDispatch();
     const user = useSelector(state=>state.user.data);
     const {role,isLoading} = useSelector(state=>state.user);
+    const {info} = useSelector(state=>state.notice);
 
     useEffect(() => {
         if(user){
@@ -29,7 +30,7 @@ function notice() {
                 }
             });
         }
-    }, [user,pid]);
+    }, [user,pid,info]);
 
     
     return (

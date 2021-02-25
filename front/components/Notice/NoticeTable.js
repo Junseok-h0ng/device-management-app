@@ -1,23 +1,24 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {useSelector} from 'react-redux';
-import { Table, Button, Popover } from 'antd';
+import { Form,Table, Button, Popover, Drawer, Input } from 'antd';
 import Link from 'next/link';
 
 function NoticeTable(props) {
 
   const {role} = useSelector(state=>state.user);
+  const userData = useSelector(state=>state.user.data);
+  const {isLoading} = useSelector(state=>state.notice);
   const notices = useSelector(state=>state.notice.data);
   
   const dataSource = [];
 
-
-const columns = [
+  const columns = [
     {
       title: 'Title',
       dataIndex: 'title',
       key: 'title',
       width:'60%',
-      render: (text,record) => <Popover content={record.description} title={text} trigger="click"><a>{text}</a></Popover>,
+      render: (text,record) => <Popover content={record.description} title={text}trigger="click"><a>{text}</a></Popover>,
       ellipsis:true
     },
     {
@@ -25,6 +26,15 @@ const columns = [
       dataIndex: 'author',
       key: 'author',
       width:'20%',
+      render:(text,record) =>{
+        const author = userData._id === record.authorId;
+        return author ?
+        (
+          <Link href={`./edit/${record.groupId}?noticeId=${record.id}`}><a>{text}</a></Link> 
+        ):(
+            text
+          )
+      },
       ellipsis:true
     },
     {
@@ -42,12 +52,14 @@ const columns = [
         id:notice._id,
         title:notice.title,
         description:notice.description,
-        author:notice.author,
-        date:notice.updatedAt
+        authorId:notice.author._id,
+        author:notice.author.name,
+        date:notice.updatedAt,
+        groupId:props.groupId
       });
     });
     return(
-      <Table dataSource={dataSource} columns={columns}/>  
+      <Table loading={isLoading} dataSource={dataSource} columns={columns}/>  
     )
     
   }
