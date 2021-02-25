@@ -30,7 +30,7 @@ function SelectOwner(props) {
         <Select
         showSearch
         defaultValue={props.record.owner}
-        style={{ width: 200 }}
+        style={{ width: "200px" }}
         placeholder="Select a Owner"
         optionFilterProp="children"
         onChange={onChange}

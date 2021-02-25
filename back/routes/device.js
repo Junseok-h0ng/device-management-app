@@ -4,11 +4,20 @@ const {Device} = require('../models/Device');
 const {Location} = require('../models/Location');
 
 router.post('/',(req,res)=>{
-    const groupId = req.body.groupId
+    const groupId = req.body.groupId;
     Device.find({groupId:groupId})
     .exec((err,deviceList)=>{
         if(err) return res.json({error:true});
         res.json({success:true,deviceList})
+    });
+});
+
+router.post('/ownerList',(req,res)=>{
+    const ownerId = req.body.ownerId;
+    Device.find({owner:ownerId})
+    .exec((err,deviceList)=>{
+        if(err) return res.json({error:true});
+        res.json({success:true,deviceList});
     })
 })
 

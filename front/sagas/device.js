@@ -2,13 +2,16 @@ import axios from 'axios';
 import { call, put, takeLatest,all,fork } from 'redux-saga/effects';
 import { DEVICE_ADD_FAILURE,DEVICE_ADD_REQUEST,DEVICE_ADD_SUCCESS,
     DEVICE_LIST_FAILURE,DEVICE_LIST_REQUEST,DEVICE_LIST_SUCCESS,
-    DEVICE_EDIT_FAILURE,DEVICE_EDIT_REQUEST,DEVICE_EDIT_SUCCESS, DEVICE_LOCATION_ADD_REQUEST, DEVICE_LOCATION_ADD_SUCCESS, DEVICE_LOCATION_ADD_FAILURE, DEVICE_LOCATION_LOAD_REQUEST, DEVICE_LOCATION_LOAD_SUCCESS, DEVICE_LOCATION_LOAD_FAILURE } from '../_actions/types';
+    DEVICE_EDIT_FAILURE,DEVICE_EDIT_REQUEST,DEVICE_EDIT_SUCCESS, DEVICE_LOCATION_ADD_REQUEST, DEVICE_LOCATION_ADD_SUCCESS, DEVICE_LOCATION_ADD_FAILURE, DEVICE_LOCATION_LOAD_REQUEST, DEVICE_LOCATION_LOAD_SUCCESS, DEVICE_LOCATION_LOAD_FAILURE, DEVICE_OWNERLIST_REQUEST, DEVICE_OWNERLIST_SUCCESS, DEVICE_OWNERLIST_FAILURE } from '../_actions/types';
 
 function addDeviceAPI(data){
     return axios.post('/device/add',data);
 }
 function deviceListAPI(data){
     return axios.post('/device',data);
+}
+function deviceOwnerListAPI(data){
+    return axios.post('/device/ownerList',data);
 }
 function editDeviceAPI(data){
     return axios.post('/device/edit',data);
@@ -44,6 +47,20 @@ function* deviceList(action){
     }catch(err){
         yield put({
             type:DEVICE_LIST_FAILURE
+        })
+    }
+}
+
+function* deviceOwnerList(action){
+    try{
+        const result = yield call(deviceOwnerListAPI,action.data);
+        yield put({
+            type: DEVICE_OWNERLIST_SUCCESS,
+            data: result.data.deviceList
+        });
+    }catch(err){
+        yield put({
+            type:DEVICE_OWNERLIST_FAILURE
         })
     }
 }
@@ -94,6 +111,9 @@ function* watchAddDevice(){
 function* watchDeviceList(){
     yield takeLatest(DEVICE_LIST_REQUEST,deviceList);
 }
+function* watchDeviceOwnerList(){
+    yield takeLatest(DEVICE_OWNERLIST_REQUEST,deviceOwnerList);
+}
 function* watchEditDevice(){
     yield takeLatest(DEVICE_EDIT_REQUEST,editDevice);
 }
@@ -108,6 +128,7 @@ export default function* deviceSaga(){
     yield all([
         fork(watchAddDevice),
         fork(watchDeviceList),
+        fork(watchDeviceOwnerList),
         fork(watchEditDevice),
         fork(watchAddLocation),
         fork(watchLoadLocation)

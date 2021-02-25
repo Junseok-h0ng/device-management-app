@@ -50,12 +50,11 @@ function sider() {
     const ownerMenu = (
         <>
             <Menu.Item key="1" icon={<GroupOutlined />}><Link href={`/group/${connected}`}><a>Group</a></Link></Menu.Item>
-            
-            {/* <Menu.Item key="4" icon={<ToolOutlined />}><Link><a>Repair</a></Link></Menu.Item> */}
             <Menu.SubMenu key="sub1" icon={<DesktopOutlined/>}>
                 <Menu.Item key="2"><Link href={`/device/add/${connected}`}><a>AddDevice</a></Link></Menu.Item>
                 <Menu.Item key="3"><Link href={`/device/list/${connected}`}><a>DeviceList</a></Link></Menu.Item>
             </Menu.SubMenu>
+            <Menu.Item key="4" icon={<ToolOutlined />}><Link href={`/repair/${connected}`}><a>Repair</a></Link></Menu.Item>
             <Menu.Item key="5" icon={<TeamOutlined />}><Link href={`/team/${connected}`}><a>Team</a></Link></Menu.Item>
             <Menu.Item key="6" icon={<InfoOutlined />}><Link href={`/notice/${connected}`}><a>Notice</a></Link></Menu.Item>
         </>
@@ -63,7 +62,7 @@ function sider() {
     const memberMenu = (
         <>
             <Menu.Item key="1" icon={<GroupOutlined />}><Link href={`/group/${connected}`}><a>Group</a></Link></Menu.Item>
-            {/* <Menu.Item key="3" icon={<ToolOutlined />}><Link><a>Repair</a></Link></Menu.Item> */}
+            <Menu.Item key="4" icon={<ToolOutlined />}><Link href={`/repair/${connected}`}><a>Repair</a></Link></Menu.Item>
             <Menu.Item key="6" icon={<InfoOutlined />}><Link href={`/notice/${connected}`}><a>Notice</a></Link></Menu.Item>
         </>
     )
