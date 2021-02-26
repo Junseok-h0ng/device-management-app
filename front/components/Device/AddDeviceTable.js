@@ -5,7 +5,6 @@ import {useDispatch} from 'react-redux'
 import { addDeviceAction, addLocationAction } from '../../_actions/device_action';
 import SelectLocation from './Sections/SelectMenu/SelectLocation';
 import SelectOwner from './Sections/SelectMenu/SelectOwner';
-import SelectSerialNumber from './Sections/SelectMenu/SelectSerialNumber';
 import { loadJoinGroupActionRequest } from '../../_actions/group_actions';
 const EditableContext = React.createContext(null);
 

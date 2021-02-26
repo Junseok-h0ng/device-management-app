@@ -5,6 +5,7 @@ import userSaga from './user';
 import groupSaga from './group';
 import deviceSaga from './device';
 import noticeSaga from './notice';
+import repairSaga from './repair';
 
 axios.defaults.baseURL = 'http://localhost:8080';
 axios.defaults.withCredentials = true;
@@ -14,6 +15,7 @@ export default function* rootSaga(){
         fork(userSaga),
         fork(groupSaga),
         fork(deviceSaga),
-        fork(noticeSaga)
+        fork(noticeSaga),
+        fork(repairSaga)
     ])
 }

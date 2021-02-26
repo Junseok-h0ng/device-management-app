@@ -48,7 +48,7 @@ function repair() {
                             {role === 'owner' || role === 'admin' ?
                                 <AdminForm/>
                             :
-                                <MemberForm/>
+                                <MemberForm groupId={pid}/>
                             }
                         </div>
                     : 
