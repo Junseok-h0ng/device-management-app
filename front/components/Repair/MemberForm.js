@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import {useDispatch} from 'react-redux';
 import SelectSerialNumber from './Sections/SelectSerialNumber';
-import SelectOption from './Sections/SelectOption';
+import SelectIssue from './Sections/SelectIssue';
 import {Button, Form, Input,message} from 'antd';
 import { addRepairAction } from '../../_actions/repair_action';
 
@@ -9,7 +9,7 @@ function MemberForm(props) {
 
 
     const [deviceId, setDeviceId] = useState("");
-    const [option, setOption] = useState("");
+    const [issue, setIssue] = useState("");
     const [explain, setExplain] = useState("")
 
     const dispatch = useDispatch();
@@ -17,8 +17,8 @@ function MemberForm(props) {
     const handleSerialNumber = (value) =>{
         setDeviceId(value);
     }
-    const handleOption = (value) =>{
-        setOption(value);
+    const handleIssue = (value) =>{
+        setIssue(value);
     }
     const handleExplain = (event)=>{
         setExplain(event.target.value);
@@ -29,13 +29,14 @@ function MemberForm(props) {
         const data ={
             groupId : props.groupId,
             deviceId,
-            option,
-            explain
+            issue,
+            explain,
+            done:false
         }
         console.log(data);
         dispatch(addRepairAction(data));
         setDeviceId('');
-        setOption('');
+        setIssue('');
         setExplain('');
         message.success('수리요청을 성공적으로 완료했습니다.')
     }
@@ -50,7 +51,7 @@ function MemberForm(props) {
                     <SelectSerialNumber handleSerialNumber={handleSerialNumber}/>
                 </Form.Item>
                 <Form.Item>
-                    <SelectOption handleOption={handleOption}/>
+                    <SelectIssue handleIssue={handleIssue}/>
                 </Form.Item>
                 <Form.Item>
                     <Input

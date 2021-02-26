@@ -1,7 +1,8 @@
-import { REPAIR_ADD_FAILURE, REPAIR_ADD_REQUEST, REPAIR_ADD_SUCCESS } from '../_actions/types'
+import { REPAIR_ADD_FAILURE, REPAIR_ADD_REQUEST, REPAIR_ADD_SUCCESS, REPAIR_LOAD_FAILURE, REPAIR_LOAD_REQUEST, REPAIR_LOAD_SUCCESS } from '../_actions/types'
 
 export const initialState = {
-    info:null
+    info:null,
+    list:null
 }
 
 export default function(state=initialState,action){
@@ -17,6 +18,22 @@ export default function(state=initialState,action){
                 isLoading:false
             }
         case REPAIR_ADD_FAILURE:
+            return{
+                ...state,
+                isLoading:false
+            }
+        case REPAIR_LOAD_REQUEST:
+            return{
+                ...state,
+                isLoading:true
+            }
+        case REPAIR_LOAD_SUCCESS:
+            return{
+                ...state,
+                list:action.data,
+                isLoading:false
+            }
+        case REPAIR_LOAD_FAILURE:
             return{
                 ...state,
                 isLoading:false

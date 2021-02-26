@@ -10,6 +10,7 @@ import { loadNoticeAction } from '../../_actions/notice_action';
 import { deviceOwnerListAction } from '../../_actions/device_action';
 import AdminForm from '../../components/Repair/adminForm';
 import MemberForm from '../../components/Repair/memberForm';
+import { loadRepairAction } from '../../_actions/repair_action';
 
 
 
@@ -27,7 +28,6 @@ function repair() {
                 if(group.groupId === pid){
                   dispatch(userRoleRequestAction(group.role));
                   dispatch(connectedGroupStatus(pid));
-                  dispatch(deviceOwnerListAction({ownerId:user._id}));
                 }
             });
         }
@@ -46,7 +46,7 @@ function repair() {
                     {role != null ?
                         <div>
                             {role === 'owner' || role === 'admin' ?
-                                <AdminForm/>
+                                <AdminForm groupId={pid}/>
                             :
                                 <MemberForm groupId={pid}/>
                             }

@@ -9,11 +9,14 @@ const repairSchema = mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'Device'
     },
-    option:{
+    issue:{
         type:String
     },
     explain:{
         type:String
+    },
+    done:{
+        type:Boolean
     }
 
 

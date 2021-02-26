@@ -2,11 +2,11 @@ import React from 'react';
 import { Select } from 'antd';
 
 const { Option } = Select;
-function SelectOption(props) {
+function SelectIssue(props) {
 
 
     function onChange(value) {
-        props.handleOption(value);
+        props.handleIssue(value);
     }
     
 
@@ -14,7 +14,7 @@ function SelectOption(props) {
         <Select
         showSearch
         style={{ width: "200px" }}
-        placeholder="Select a Option"
+        placeholder="Select a Issue"
         optionFilterProp="children"
         onChange={onChange}
         filterOption={(input, option) =>
@@ -29,4 +29,4 @@ function SelectOption(props) {
     )
 }
 
-export default SelectOption
+export default SelectIssue
