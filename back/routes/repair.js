@@ -13,13 +13,25 @@ router.post('/add',(req,res)=>{
 
 router.post('/load',(req,res)=>{
     const groupId = req.body.groupId;
-    Repair.find({groupId})
+    Repair.find({groupId,done:false})
     .populate('deviceId')
     .exec((err,list)=>{
         if(err) return res.json({error:true,err});
         res.json({success:true,list});
+    });
+});
+
+router.post('/complete',(req,res)=>{
+    req.body.map(device=>{
+        Repair.findById({_id:device.id})
+        .exec((err,repair)=>{
+            if(err) return res.json({error:true,err});
+            repair.done = true;
+            repair.save();
+        })
     })
-})
+    res.json({success:true});
+});
 
 
 module.exports = router;

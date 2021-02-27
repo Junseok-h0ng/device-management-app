@@ -1,18 +1,27 @@
-import React,{useState} from 'react';
-import {useDispatch} from 'react-redux';
+import React,{useState,useEffect} from 'react';
+import {useDispatch,useSelector} from 'react-redux';
 import SelectSerialNumber from './Sections/SelectSerialNumber';
 import SelectIssue from './Sections/SelectIssue';
 import {Button, Form, Input,message} from 'antd';
-import { addRepairAction } from '../../_actions/repair_action';
+import { addRepairAction, loadRepairAction } from '../../_actions/repair_action';
+import { deviceOwnerListAction } from '../../_actions/device_action';
 
 function MemberForm(props) {
 
+    const ownerId = useSelector(state=>state.user.data._id);
 
     const [deviceId, setDeviceId] = useState("");
     const [issue, setIssue] = useState("");
     const [explain, setExplain] = useState("")
 
     const dispatch = useDispatch();
+    
+    useEffect(() => {
+        dispatch(deviceOwnerListAction({ownerId}));
+    }, [])
+
+
+   
 
     const handleSerialNumber = (value) =>{
         setDeviceId(value);
@@ -33,7 +42,6 @@ function MemberForm(props) {
             explain,
             done:false
         }
-        console.log(data);
         dispatch(addRepairAction(data));
         setDeviceId('');
         setIssue('');

@@ -1,53 +1,14 @@
 import React, { useState ,useEffect} from 'react';
 import {useDispatch,useSelector} from 'react-redux';
-import { Table, Input, InputNumber, Popconfirm, Form, Typography } from 'antd';
-import Checkbox from 'antd/lib/checkbox/Checkbox';
-import { loadRepairAction } from '../../_actions/repair_action';
+import { Table, Form,Button } from 'antd';
+import { loadRepairAction, repairCompleteAction } from '../../_actions/repair_action';
 import Loading from '../util/Loading';
 
 
-const EditableCell = ({
-  editing,
-  dataIndex,
-  title,
-  inputType,
-  record,
-  index,
-  children,
-  ...restProps
-}) => {
-  const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
-  return (
-    <td {...restProps}>
-      {editing ? (
-        <Form.Item
-          name={dataIndex}
-          style={{
-            margin: 0,
-          }}
-          rules={[
-            {
-              required: true,
-              message: `Please Input ${title}!`,
-            },
-          ]}
-        >
-          {inputNode}
-        </Form.Item>
-      ) : (
-        children
-      )}
-    </td>
-  );
-};
-
 const EditableTable = () => {
-  const [form] = Form.useForm();
   const [data, setData] = useState(originData);
-  const [editingKey, setEditingKey] = useState('');
-  const [checked,setChecked] = useState(false);
-
-
+  const [checkDevice, setCheckDevice] = useState([]);
+  const dispatch = useDispatch();
   const {list} = useSelector(state=>state.repair);
   const originData = [];
 
@@ -55,62 +16,29 @@ const EditableTable = () => {
     if(list != null){
       const originData = [];
       for (let i = 0; i < list.length; i++) {
-        originData.push({
-          key: i.toString(),
-          serialNumber: list[i].deviceId.serialNumber,
-          location: list[i].deviceId.location,
-          issue: list[i].issue,
-          explain: list[i].explain,
-          done:list[i].done
-        });
+          originData.push({
+            key: i.toString(),
+            id:list[i]._id,
+            serialNumber: list[i].deviceId.serialNumber,
+            location: list[i].deviceId.location,
+            issue: list[i].issue,
+            explain: list[i].explain,
+          });
       }
       setData(originData);
     }
   }, [list])
 
-  
-  const isEditing = (record) => record.key === editingKey;
-  const isChecked = (record) => {
-    setChecked(data[record.key].done);
-  }
-  const handleChecked = () =>{
-    setChecked(!checked);
-  } 
-
-  const edit = (record) => {
-    form.setFieldsValue({
-      name: '',
-      age: '',
-      address: '',
-      ...record,
-    });
-    setEditingKey(record.key);
-  };
-
-  const cancel = () => {
-    setEditingKey('');
-  };
-
-  const save = async (key) => {
-    try {
-      const row = await form.validateFields();
-      const newData = [...data];
-      const index = newData.findIndex((item) => key === item.key);
-
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, { ...item, ...row });
-        setData(newData);
-        setEditingKey('');
-      } else {
-        newData.push(row);
-        setData(newData);
-        setEditingKey('');
-      }
-    } catch (errInfo) {
-      console.log('Validate Failed:', errInfo);
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      setCheckDevice(selectedRows);
     }
   };
+
+  const onSubmit = () =>{
+    dispatch(repairCompleteAction(checkDevice));
+    window.location.reload();
+  }
 
 
 
@@ -138,70 +66,23 @@ const EditableTable = () => {
       dataIndex:'explain',
       ellipsis:true
     },
-    {
-      title: 'operation',
-      dataIndex: 'operation',
-      width:'10%',
-      render: (_, record) => {
-        const editable = isEditing(record);
-        isChecked(record);
-        return editable ? (
-          <span>
-            {/* 체크박스를 섹션으로 만들어서 해보자 */}
-            <Checkbox checked={checked} onChange={handleChecked}>fixed</Checkbox>
-            <a
-              href="javascript:;"
-              onClick={() => save(record.key)}
-              style={{
-                marginRight: 8,
-              }}
-            >
-              Save
-            </a>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a>Cancel</a>
-            </Popconfirm>
-          </span>
-        ) : (
-          <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
-            Edit
-          </Typography.Link>
-        );
-      },
-    },
   ];
-  const mergedColumns = columns.map((col) => {
-    if (!col.editable) {
-      return col;
-    }
 
-    return {
-      ...col,
-      onCell: (record) => ({
-        record,
-        inputType: col.dataIndex === 'age' ? 'number' : 'text',
-        dataIndex: col.dataIndex,
-        checked: col.dataIndex,
-        editing: isEditing(record),
-      }),
-    };
-  });
+
+  const [selectionType] = useState('checkbox');
+
   return(
-    <Form form={form} component={false}>
+    <Form onFinish ={onSubmit}>
       <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
+        rowSelection={{
+          type: selectionType,
+          ...rowSelection,
         }}
         bordered
         dataSource={data}
-        columns={mergedColumns}
-        rowClassName="editable-row"
-        pagination={{
-          onChange: cancel,
-        }}
+        columns={columns}
       />
+      <Button htmlType="submit">확인</Button>
     </Form>
   );
 };

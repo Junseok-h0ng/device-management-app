@@ -27,7 +27,7 @@ function repair() {
             user.groups.map(group=>{
                 if(group.groupId === pid){
                   dispatch(userRoleRequestAction(group.role));
-                  dispatch(connectedGroupStatus(pid));
+                  dispatch(connectedGroupStatus(pid));          
                 }
             });
         }

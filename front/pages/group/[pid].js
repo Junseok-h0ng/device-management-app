@@ -42,8 +42,6 @@ function usergroup() {
                     <div>
                         <p>그룹 ID: {pid}</p>
                         <p>그룹의 권한 : {role} </p>
-                        <p>근무지 : </p>
-                        <p>사용중인 장비 : </p>
                     </div>
                     :
                     <ErrorPage/>
