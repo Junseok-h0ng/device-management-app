@@ -4,11 +4,16 @@ const passport = require('passport');
 
 const {User} = require('../models/User');
 
+function deletePassword(userData){
+    const user = Object.assign({},userData.toJSON());
+    delete user.password;
+    return user;
+}
+
 //유저의 로그인 상태여부 검사
 router.post('/',(req,res)=>{
     if(req.user){
-        const user = Object.assign({},req.user.toJSON());
-        delete user.password;
+        const user = deletePassword(req.user);
         return res.status(200).json(user);
     }else{
         return res.status(401).send("로그인을 해야합니다.");
@@ -20,8 +25,7 @@ router.post('/loadData',(req,res)=>{
     User.findById({_id:userId})
     .exec((err,userData)=>{
         if(err) return res.json({error:true});
-        const user = Object.assign({},userData.toJSON());
-        delete user.password;
+        const user = deletePassword(userData);
         return res.json(user)
     })
 })
@@ -40,8 +44,7 @@ router.post('/login',(req,res,next)=>{
         if(info) return res.json({error:true,message:info.message});
         return req.login(user,(err)=>{
             if(err) return next(err);
-            const user = Object.assign({},req.user.toJSON());
-            delete user.password;
+            const user = deletePassword(req.user);
             return res.json(user);
         });
     })(req,res,next);

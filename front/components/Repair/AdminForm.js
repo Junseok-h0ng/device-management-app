@@ -2,7 +2,7 @@ import React, { useState ,useEffect} from 'react';
 import {useDispatch,useSelector} from 'react-redux';
 import { Table, Form,Button } from 'antd';
 import { loadRepairAction, repairCompleteAction } from '../../_actions/repair_action';
-import Loading from '../util/Loading';
+import Loading from '../Util/Loading';
 
 
 const EditableTable = () => {

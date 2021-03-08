@@ -30,7 +30,6 @@ router.post('/load',(req,res)=>{
 
 router.post('/info',(req,res)=>{
     const noticeId = req.body.noticeId;
-    console.log(noticeId);
     Notice.findById({_id:noticeId})
     .exec((err,noticeInfo)=>{
         if(err) return res.json({error:true,message:'불러오는데 오류가 발생했습니다.'});
@@ -39,7 +38,6 @@ router.post('/info',(req,res)=>{
 });
 
 router.post('/edit',(req,res)=>{
-    console.log(req.body);
     const noticeId = req.body.noticeId;
     const title = req.body.title;
     const description = req.body.description;

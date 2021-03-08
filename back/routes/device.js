@@ -48,10 +48,8 @@ router.post('/edit',(req,res)=>{
             }
         })
         .exec((err,device)=>{
-            console.log(device);
-            // device.save();
+            device.save();
         });
-        
     }
     res.json({success:true});
 });

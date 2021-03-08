@@ -12,6 +12,13 @@ router.post('/',(req,res,next)=>{
     });
 });
 
+function deleteUserInfo(userInfo){
+    const user = Object.assign({},userInfo.toJSON());
+    delete user.password;
+    delete user.groups;
+    return user;
+}
+
 router.post('/loadJoin',(req,res)=>{
     const groupId = req.body.groupId;
     Group.findById(groupId)
@@ -23,22 +30,15 @@ router.post('/loadJoin',(req,res)=>{
         let admins = [];
         
         usersInfo.admins.map(memberInfo=>{
-            const user = Object.assign({},memberInfo.toJSON());
-            delete user.password;
-            delete user.groups;
+            const user = deleteUserInfo(memberInfo);
             admins.push(user);
-        })
-
-        usersInfo.members.map(memberInfo=>{{
-            const user = Object.assign({},memberInfo.toJSON());
-            delete user.password;
-            delete user.groups;
+        });
+        usersInfo.members.map(memberInfo=>{
+            const user = deleteUserInfo(memberInfo);
             members.push(user);
-        }});
+        });
         usersInfo.join.map(joinInfo=>{
-            const user = Object.assign({},joinInfo.toJSON());
-            delete user.password;
-            delete user.groups;
+            const user = deleteUserInfo(joinInfo);
             join.push(user);
         });
 

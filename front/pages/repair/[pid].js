@@ -3,17 +3,11 @@ import {useDispatch,useSelector} from 'react-redux'
 import {useRouter} from 'next/router';
 import { userRoleRequestAction } from '../../_actions/user_actions';
 import { connectedGroupStatus } from '../../_actions/group_actions';
-import Loading from '../../components/util/Loading';
+import Loading from '../../components/Util/Loading';
 
-import ErrorPage from '../../components/util/ErrorPage';
-import { loadNoticeAction } from '../../_actions/notice_action';
-import { deviceOwnerListAction } from '../../_actions/device_action';
+import ErrorPage from '../../components/Util/ErrorPage';
 import AdminForm from '../../components/Repair/adminForm';
 import MemberForm from '../../components/Repair/memberForm';
-import { loadRepairAction } from '../../_actions/repair_action';
-
-
-
 
 function repair() {
     const router = useRouter();
