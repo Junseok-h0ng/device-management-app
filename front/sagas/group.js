@@ -1,6 +1,6 @@
 import axios from "axios";
 import { all, fork, put, takeLatest,call} from "redux-saga/effects";
-import { GROUP_CREATE_FAILURE, GROUP_CREATE_REQUEST, GROUP_CREATE_SUCCESS, GROUPS_LOAD_REQUEST, GROUPS_LOAD_SUCCESS, GROUPS_LOAD_FAILURE, GROUP_JOIN_REQUEST, GROUP_JOIN_SUCCESS, GROUP_JOIN_FAILURE, GROUP_LOAD_JOIN_REQUEST, GROUP_LOAD_JOIN_SUCCESS, GROUP_LOAD_JOIN_FAILURE, GROUP_ACCESS_JOIN_REQUEST, GROUP_ACCESS_JOIN_SUCCESS, GROUP_ACCESS_JOIN_FAILURE, GROUP_REJECT_JOIN_REQUEST, GROUP_REJECT_JOIN_SUCCESS, GROUP_REJECT_JOIN_FAILURE, USER_STATUS_REQUEST, GROUP_ROLE_INCREASE_REQUEST, GROUP_ROLE_DECREASE_REQUEST, GROUP_ROLE_INCREASE_FAILURE, GROUP_ROLE_INCREASE_SUCCESS, GROUP_ROLE_DECREASE_SUCCESS, GROUP_ROLE_DECREASE_FAILURE } from "../_actions/types";
+import { GROUP_CREATE_FAILURE, GROUP_CREATE_REQUEST, GROUP_CREATE_SUCCESS, GROUPS_LOAD_REQUEST, GROUPS_LOAD_SUCCESS, GROUPS_LOAD_FAILURE, GROUP_JOIN_REQUEST, GROUP_JOIN_SUCCESS, GROUP_JOIN_FAILURE, GROUP_LOAD_JOIN_REQUEST, GROUP_LOAD_JOIN_SUCCESS, GROUP_LOAD_JOIN_FAILURE, GROUP_ACCESS_JOIN_REQUEST, GROUP_ACCESS_JOIN_SUCCESS, GROUP_ACCESS_JOIN_FAILURE, GROUP_REJECT_JOIN_REQUEST, GROUP_REJECT_JOIN_SUCCESS, GROUP_REJECT_JOIN_FAILURE, USER_STATUS_REQUEST, GROUP_ROLE_INCREASE_REQUEST, GROUP_ROLE_DECREASE_REQUEST, GROUP_ROLE_INCREASE_FAILURE, GROUP_ROLE_INCREASE_SUCCESS, GROUP_ROLE_DECREASE_SUCCESS, GROUP_ROLE_DECREASE_FAILURE, GROUP_DELETE_REQUEST, GROUP_DELETE_SUCCESS, GROUP_DELETE_FAILURE } from "../_actions/types";
 
 function createGroupAPI(data){
     return axios.post('/group/create',data);
@@ -30,6 +30,10 @@ function decreaseRoleGroupAPI(data){
 
 function loadGroupsAPI(data){
     return axios.post('/group',data);
+}
+
+function deleteGroupAPI(data){
+    return axios.post('/group/delete',data);
 }
 
 function* createGroup(action){
@@ -140,6 +144,19 @@ function* loadGroups(action){
     }catch(err){
         yield put({
             type:GROUPS_LOAD_FAILURE
+        });
+    }
+}
+
+function* deleteGroup(action){
+    try{
+        yield call(deleteGroupAPI,action.data);
+        yield put({
+            type:GROUP_DELETE_SUCCESS
+        });
+    }catch(err){
+        yield put({
+            type:GROUP_DELETE_FAILURE
         })
     }
 }
@@ -174,6 +191,10 @@ function* watchLoadGroups(){
     yield takeLatest(GROUPS_LOAD_REQUEST,loadGroups);
 }
 
+function* watchDeleteGroup(){
+    yield takeLatest(GROUP_DELETE_REQUEST,deleteGroup);
+}
+
 export default function* groupSaga(){
     yield all([
         fork(watchCreateGroup),
@@ -183,6 +204,7 @@ export default function* groupSaga(){
         fork(watchAccessJoinGroup),
         fork(watchRejectJoinGroup),
         fork(watchIncreaseRoleGroup),
-        fork(watchDecreaseRoleGroup)
+        fork(watchDecreaseRoleGroup),
+        fork(watchDeleteGroup)
     ])
 }

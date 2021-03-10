@@ -1,9 +1,9 @@
 import React,{useEffect} from 'react'
 import {useSelector,useDispatch} from 'react-redux'
-import {useRouter} from 'next/router';
-import LoginedMenu from '../../components/menu/loginedMenu';
+import  Router,{useRouter} from 'next/router';
+import {Button} from 'antd';
 import { userRoleRequestAction } from '../../_actions/user_actions';
-import { connectedGroupStatus } from '../../_actions/group_actions';
+import { connectedGroupStatus, deleteGroupAction } from '../../_actions/group_actions';
 import Loading from '../../components/util/Loading'
 import ErrorPage from '../../components/util/ErrorPage';
 import { resetDeviceAction } from '../../_actions/device_action';
@@ -26,6 +26,11 @@ function usergroup() {
            });
         }
     }, [user,pid])
+    
+    const deleteGroup = () =>{
+        dispatch(deleteGroupAction({groupId:pid}));
+        Router.push('/');
+    }
 
     return (
         <div>
@@ -42,7 +47,11 @@ function usergroup() {
                     <div>
                         <p>그룹 ID: {pid}</p>
                         <p>그룹의 권한 : {role} </p>
+                        {role === 'owner' &&
+                            <Button onClick={deleteGroup}>그룹 삭제</Button>
+                        }
                     </div>
+                    
                     :
                     <ErrorPage/>
                 }

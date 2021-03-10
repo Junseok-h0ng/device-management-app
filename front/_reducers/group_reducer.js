@@ -4,7 +4,7 @@ import { GROUP_CREATE_FAILURE, GROUP_CREATE_REQUEST, GROUP_CREATE_SUCCESS,
     GROUP_JOIN_REQUEST, GROUP_JOIN_SUCCESS, GROUP_JOIN_FAILURE, 
     GROUP_LOAD_JOIN_REQUEST, GROUP_LOAD_JOIN_SUCCESS,GROUP_LOAD_JOIN_FAILURE, 
     GROUP_ACCESS_JOIN_REQUEST, GROUP_ACCESS_JOIN_SUCCESS, GROUP_ACCESS_JOIN_FAILURE,
-    GROUP_REJECT_JOIN_REQUEST,GROUP_REJECT_JOIN_SUCCESS,GROUP_REJECT_JOIN_FAILURE, GROUP_ROLE_INCREASE_REQUEST, GROUP_ROLE_INCREASE_SUCCESS, GROUP_ROLE_INCREASE_FAILURE, GROUP_ROLE_DECREASE_REQUEST, GROUP_ROLE_DECREASE_SUCCESS, GROUP_ROLE_DECREASE_FAILURE } from "../_actions/types";
+    GROUP_REJECT_JOIN_REQUEST,GROUP_REJECT_JOIN_SUCCESS,GROUP_REJECT_JOIN_FAILURE, GROUP_ROLE_INCREASE_REQUEST, GROUP_ROLE_INCREASE_SUCCESS, GROUP_ROLE_INCREASE_FAILURE, GROUP_ROLE_DECREASE_REQUEST, GROUP_ROLE_DECREASE_SUCCESS, GROUP_ROLE_DECREASE_FAILURE, GROUP_DELETE_REQUEST, GROUP_DELETE_SUCCESS, GROUP_DELETE_FAILURE } from "../_actions/types";
 
 
 export const initialState={
@@ -157,6 +157,21 @@ export default function(state=initialState,action){
             return{
                 ...state,
                 connected:action.data
+            }
+        case GROUP_DELETE_REQUEST:
+            return{
+                ...state,
+                isLoading:true
+            }
+        case GROUP_DELETE_SUCCESS:
+            return{
+                ...state,
+                isLoading:false
+            }
+        case GROUP_DELETE_FAILURE:
+            return{
+                ...state,
+                isLoading:false
             }
         default:
             return{

@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const {Group} = require('../models/Group');
+const {Notice} = require('../models/Notice');
+const {Device} = require('../models/Device');
+const {Repair} = require('../models/Repair');
+const {Location} = require('../models/Location');
 const {User} = require('../models/User');
 
 router.post('/',(req,res,next)=>{
@@ -168,8 +172,32 @@ router.post('/create',(req,res)=>{
         user.groups.push({groupId:group._id,role:'owner'});
         user.save();
         group.save();
-    });
+    }); 
     return res.status(200).json({success:true,history:group._id});
-})
+});
+
+router.post('/delete',(req,res)=>{
+    const groupId = req.body.groupId;
+    Group.findByIdAndDelete({_id:groupId}).exec();
+    Device.deleteMany({groupId:groupId}).exec();
+    Location.deleteMany({groupId:groupId}).exec();
+    Notice.deleteMany({groupId:groupId}).exec();
+    Repair.deleteMany({groupId:groupId}).exec();
+    User.find({groups:{$elemMatch:{groupId:groupId}}})
+    .populate('groups')
+    .exec((err,result)=>{
+        for(let i=0;i<result.length;i++){
+            for(let j=0;j<result[i].groups.length;j++){
+                if(result[i].groups[j].groupId == groupId){
+                    result[i].groups[j].remove();
+                }
+            }
+            result[i].save();
+        }
+        
+       
+    });
+
+});
 
 module.exports = router;
